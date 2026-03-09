@@ -25,7 +25,8 @@ public class Orbiter : MonoBehaviour
 
     void Update()
     {
-        angle += orbitSpeed * Time.deltaTime;
+        float effectiveAngularSpeed = orbitSpeed * orbitRadius / currentRadius;
+        angle += effectiveAngularSpeed * Time.deltaTime;
 
         float rad = angle * Mathf.Deg2Rad;
         transform.position = center.position + new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * currentRadius;
