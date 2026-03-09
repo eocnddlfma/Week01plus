@@ -12,6 +12,10 @@ public class Jaein_PlayerController : MonoBehaviour
     [SerializeField] private float _attackCooldown = 0.75f;
     [SerializeField] private float _attackDuration = 0.65f;
 
+    [Header("Animation")]
+    [SerializeField] private Animator _pivotAnimator; // Inspector에서 Pivot 오브젝트를 드래그 앤 드롭
+    [SerializeField] private string _attackTriggerName = "Attack";
+
     private Rigidbody2D _rigidBody;
     private Vector2 _inputVec;
     private Camera _mainCamera;
@@ -26,6 +30,9 @@ public class Jaein_PlayerController : MonoBehaviour
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         _mainCamera = Camera.main;
+
+        if (_pivotAnimator == null)
+            _pivotAnimator = GetComponentInChildren<Animator>();
 
         _isAlive = true;
     }
@@ -117,14 +124,22 @@ public class Jaein_PlayerController : MonoBehaviour
         _isAttacking = true;
         _lastAttackTime = Time.time;
 
-        // 무기 콜라이더 활성화
+        // 애니메이터 트리거 작동
+        if (_pivotAnimator != null)
+        {
+            // 연타 시 트리거가 쌓이지 않도록 리셋 후 세팅
+            _pivotAnimator.ResetTrigger(_attackTriggerName);
+            _pivotAnimator.SetTrigger(_attackTriggerName);
+        }
 
-        // 애니메이션 트리거 실행
+        // TODO: 무기 콜라이더 활성화 (필요 시)
+        // _weaponCollider.enabled = true;
 
-        // 공격 지속 시간 동안 대기
+        // 애니메이션이 휘둘러지는 시간 동안 대기
         yield return new WaitForSeconds(_attackDuration);
 
-        // 무기 콜라이더 비활성화
+        // TODO: 무기 콜라이더 비활성화
+        // _weaponCollider.enabled = false;
 
         _isAttacking = false;
     }
