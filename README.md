@@ -1,5 +1,7 @@
 # Project Rules
 
+**지금은 핵심 시스템을 구현하기 위해서, MainScene은 비워둔 채로 각자 이름으로 Scene을 생성한 뒤에 테스트를 해주시면 되겠습니다.**
+
 ## 1. 브랜치 규칙
 - 각자 자신의 이름 브랜치에서 작업합니다.
 - 예시: `woosung`, `geunryeol`, `sanghyeon`...
