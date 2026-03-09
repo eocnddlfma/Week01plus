@@ -569,29 +569,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Orbiter
   center: {fileID: 663606803}
   orbitRadius: 4
-  orbitSpeed: 180
-  boomerangMultiplier: 2
-  boomerangDurationFactor: 90
+  orbitSpeed: 360
+  boomerangMultiplier: 2.5
+  boomerangDurationFactor: 85.5
   easeOut:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.0041656494
-      value: -0.002380371
-      inSlope: 1.0443374
-      outSlope: 1.0443374
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.12033106
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: -0.009070352
-      outSlope: -0.009070352
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.2625
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -600,26 +600,29 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.0041656494
+      time: 0
       value: 0
-      inSlope: -0
-      outSlope: -0
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.17154896
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0.9047621
-      outSlope: 0.9047621
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.15062743
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  radiusRecoverySpeed: 2
+  boomerangMinSpeedMultiplier: 0.7
+  boomerangSpeedMultiplier: 1.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

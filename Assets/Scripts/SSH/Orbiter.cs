@@ -11,6 +11,9 @@ public class Orbiter : MonoBehaviour
     public float boomerangDurationFactor = 90f;  // duration = factor / orbitSpeed
     public AnimationCurve easeOut = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);   // 나가는 커브
     public AnimationCurve easeIn  = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);   // 돌아오는 커브
+    public float radiusRecoverySpeed = 2f;                                       // 비부메랑 시 복구 속도 (단위/초)
+    public float boomerangMinSpeedMultiplier = 0.5f;                             // MaxRadius에서의 최소 속도 비율
+    public float boomerangSpeedMultiplier = 1.5f;                                // 부메랑 중 기본 속도 배율
 
     private float BoomerangMaxRadius => orbitRadius * boomerangMultiplier;
 
@@ -25,11 +28,16 @@ public class Orbiter : MonoBehaviour
 
     void Update()
     {
-        float effectiveAngularSpeed = orbitSpeed * orbitRadius / currentRadius;
+        float t = Mathf.Clamp01(Mathf.InverseLerp(orbitRadius, BoomerangMaxRadius, currentRadius));
+        float baseSpeed = orbitSpeed * (isBoomeranging ? boomerangSpeedMultiplier * 2 / boomerangMultiplier : 1f);
+        float effectiveAngularSpeed = baseSpeed * Mathf.Lerp(1f, boomerangMinSpeedMultiplier, t * t);
         angle += effectiveAngularSpeed * Time.deltaTime;
 
         float rad = angle * Mathf.Deg2Rad;
         transform.position = center.position + new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * currentRadius;
+
+        if (!isBoomeranging)
+            currentRadius = Mathf.MoveTowards(currentRadius, orbitRadius, radiusRecoverySpeed * Time.deltaTime);
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame && !isBoomeranging)
         {
