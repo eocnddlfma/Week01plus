@@ -6,6 +6,7 @@ public class Jaein_PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _rotationSpeed = 10f;
 
     [Header("Combat Settings")]
     [SerializeField] private float _attackCooldown = 0.75f;
@@ -81,19 +82,19 @@ public class Jaein_PlayerController : MonoBehaviour
     {
         if (_mainCamera == null || Mouse.current == null) return;
 
-        // [변경됨] Input.mousePosition 대신 Mouse.current 사용
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
-
-        // 마우스 위치를 월드 좌표로 변환
         Vector3 mouseWorldPos = _mainCamera.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, -_mainCamera.transform.position.z));
 
         Vector2 direction = new Vector2(mouseWorldPos.x - transform.position.x, mouseWorldPos.y - transform.position.y);
 
         if (direction.sqrMagnitude > 0.001f)
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            // 2D 탑다운 회전 (Z축 기준)
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            // 1. 목표 각도 계산
+            float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
+
+            // 2. Slerp(구면 선형 보간)를 사용하여 현재 회전에서 목표 회전까지 부드럽게 이동
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
         }
     }
 
