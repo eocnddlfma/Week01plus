@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Orbiter : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class Orbiter : MonoBehaviour
         float rad = angle * Mathf.Deg2Rad;
         transform.position = center.position + new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * currentRadius;
 
-        if (Input.GetKeyDown(KeyCode.Space) && !isBoomeranging)
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && !isBoomeranging)
         {
             float duration = boomerangDurationFactor / orbitSpeed;
             StartCoroutine(BoomerangCoroutine(duration));
