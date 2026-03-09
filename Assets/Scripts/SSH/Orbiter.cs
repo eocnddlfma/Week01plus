@@ -1,4 +1,4 @@
-using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +9,8 @@ public class Orbiter : MonoBehaviour
     public float orbitSpeed = 180f;              // 초당 회전 각도 (도)
     public float boomerangMultiplier = 2f;       // 부메랑 최대 반지름 = orbitRadius × multiplier
     public float boomerangDurationFactor = 90f;  // duration = factor / orbitSpeed
+    public AnimationCurve easeOut = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);   // 나가는 커브
+    public AnimationCurve easeIn  = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);   // 돌아오는 커브
 
     private float BoomerangMaxRadius => orbitRadius * boomerangMultiplier;
 
@@ -30,41 +32,12 @@ public class Orbiter : MonoBehaviour
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame && !isBoomeranging)
         {
+            isBoomeranging = true;
             float duration = boomerangDurationFactor / orbitSpeed;
-            StartCoroutine(BoomerangCoroutine(duration));
+            DOTween.Sequence()
+                .Append(DOTween.To(() => currentRadius, v => currentRadius = v, BoomerangMaxRadius, duration).SetEase(easeOut))
+                .Append(DOTween.To(() => currentRadius, v => currentRadius = v, orbitRadius, duration).SetEase(easeIn))
+                .OnComplete(() => isBoomeranging = false);
         }
-    }
-
-    private IEnumerator BoomerangCoroutine(float duration)
-    {
-        isBoomeranging = true;
-
-        // 나가는 구간: EaseInQuad
-        float elapsed = 0f;
-        float from = orbitRadius;
-        float to = BoomerangMaxRadius;
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / duration);
-            currentRadius = Mathf.Lerp(from, to, t * t);
-            yield return null;
-        }
-        currentRadius = to;
-
-        // 돌아오는 구간: EaseOutQuad
-        elapsed = 0f;
-        from = BoomerangMaxRadius;
-        to = orbitRadius;
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / duration);
-            currentRadius = Mathf.Lerp(from, to, t * (2f - t));
-            yield return null;
-        }
-        currentRadius = to;
-
-        isBoomeranging = false;
     }
 }
