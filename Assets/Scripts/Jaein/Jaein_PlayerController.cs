@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.UI;
 
 public class Jaein_PlayerController : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class Jaein_PlayerController : MonoBehaviour
     private Rigidbody2D _rigidBody;
     private Vector2 _inputVec;
     private Camera _mainCamera;
+    private Vector3 _initialWeaponScale; // 무기의 초기 로컬 스케일 저장용
 
     private BoxCollider2D _weaponCollider;
     private float _lastAttackTime;
@@ -44,15 +46,16 @@ public class Jaein_PlayerController : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody2D>();
         _mainCamera = Camera.main;
 
-        if (_pivotAnimator == null)
-            _pivotAnimator = GetComponentInChildren<Animator>();
+        if (_pivotAnimator == null) _pivotAnimator = GetComponentInChildren<Animator>();
 
-        if (_weaponCollider == null)
-            _weaponCollider = GetComponentInChildren<BoxCollider2D>();
+        if (_weaponCollider == null) _weaponCollider = GetComponentInChildren<BoxCollider2D>();
 
-        if (_weaponTransform == null && _weaponCollider != null) _weaponTransform = _weaponCollider.transform; 
+        if (_weaponTransform == null && _weaponCollider != null) _weaponTransform = _weaponCollider.transform;
 
-        _weaponCollider.enabled = false;
+        if (_weaponTransform != null) _initialWeaponScale = _weaponTransform.localScale; // 무기의 초기 스케일
+
+        if (_weaponCollider != null) _weaponCollider.enabled = false;
+
         _isAlive = true;
     }
 
@@ -130,42 +133,59 @@ public class Jaein_PlayerController : MonoBehaviour
     {
         if (_isAttacking) return;
 
-        // 1. 차지 시작
-        if (Mouse.current.leftButton.wasPressedThisFrame && Time.time >= _lastAttackTime + _attackCooldown)
+        // 1. 차지 시작 판정 (마우스를 누르는 순간)
+        if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            _isCharging = true;
-            _currentChargeTimer = 0f;
-            if (_pivotAnimator != null) _pivotAnimator.SetBool(_chargeBoolName, true);
+            // 쿨타임 체크
+            if (Time.time >= _lastAttackTime + _attackCooldown)
+            {
+                _isCharging = true;
+                _currentChargeTimer = 0f;
+
+                // 애니메이션 파라미터 즉시 설정
+                if (_pivotAnimator != null)
+                {
+                    _pivotAnimator.SetBool(_chargeBoolName, true);
+                    _pivotAnimator.SetBool(_fullChargeBoolName, false);
+                }
+            }
         }
 
-        // 2. 차지 중
+        // 2. 차지 중 로직 (마우스를 누르고 있는 동안 매 프레임 실행)
         if (_isCharging)
         {
+            // 타이머 증가
             _currentChargeTimer += Time.deltaTime;
             float chargePercent = Mathf.Clamp01(_currentChargeTimer / _maxChargeTime);
 
-            // 무기 크기 실시간 조절
+            // [핵심] 무기 크기 실시간 조절과 애니메이션 동기화
             if (_weaponTransform != null)
             {
-                float currentScale = Mathf.Lerp(_minChargeScale, _maxChargeScale, chargePercent);
-                _weaponTransform.localScale = new Vector3(currentScale, currentScale, 1f);
+                float multiplier = Mathf.Lerp(_minChargeScale, _maxChargeScale, chargePercent);
+                _weaponTransform.localScale = _initialWeaponScale * multiplier;
             }
 
-            // 풀 차지 애니메이션 전환
+            // 풀 차지 애니메이션 전환 체크
             if (_currentChargeTimer >= _maxChargeTime)
             {
-                if (_pivotAnimator != null) _pivotAnimator.SetBool(_fullChargeBoolName, true);
+                if (_pivotAnimator != null && !_pivotAnimator.GetBool(_fullChargeBoolName))
+                {
+                    _pivotAnimator.SetBool(_fullChargeBoolName, true);
+                }
             }
 
-            // 3. 차지 해제 (공격 발사)
+            // 3. 차지 해제 및 공격 (마우스를 떼는 순간)
             if (Mouse.current.leftButton.wasReleasedThisFrame)
             {
                 _isCharging = false;
+
                 if (_pivotAnimator != null)
                 {
                     _pivotAnimator.SetBool(_chargeBoolName, false);
                     _pivotAnimator.SetBool(_fullChargeBoolName, false);
                 }
+
+                // 현재까지 쌓인 chargePercent를 넘기며 공격 실행
                 StartCoroutine(AttackRoutine(chargePercent));
             }
         }
@@ -182,9 +202,9 @@ public class Jaein_PlayerController : MonoBehaviour
             _pivotAnimator.SetTrigger(_attackTriggerName);
         }
 
-        // 위성 타격 파워 전달 (위성 스크립트가 있다면)
+        // TODO: Launch() 메서드에 chargePercent 전달하여 공격력 조절
         var orbital = GetComponentInChildren<Jaein_OrbitalWeapon>();
-        if (orbital != null) orbital.Launch(); // TODO: Launch() 메서드에 chargePercent 전달하여 공격력 조절
+        if (orbital != null) orbital.Launch(); 
 
         if (_weaponCollider != null) _weaponCollider.enabled = true;
 
@@ -192,8 +212,10 @@ public class Jaein_PlayerController : MonoBehaviour
 
         if (_weaponCollider != null) _weaponCollider.enabled = false;
 
-        // 크기 원복
-        if (_weaponTransform != null) _weaponTransform.localScale = Vector3.one * _minChargeScale;
+        if (_weaponTransform != null)
+        {
+            _weaponTransform.localScale = _initialWeaponScale * _minChargeScale;
+        }
 
         _isAttacking = false;
     }

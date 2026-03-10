@@ -257,11 +257,11 @@ MonoBehaviour:
   _rotationSpeed: 10
   _playerBody: {fileID: 1402296552}
   _weaponTransform: {fileID: 1231229008}
-  _attackCooldown: 0.75
-  _attackDuration: 0.3
-  _maxChargeTime: 2
+  _attackCooldown: 0
+  _attackDuration: 0.4
+  _maxChargeTime: 0.35
   _minChargeScale: 1
-  _maxChargeScale: 2.5
+  _maxChargeScale: 1.25
   _chargeAnimBool: IsCharging
   _pivotAnimator: {fileID: 0}
   _attackTriggerName: Attack
