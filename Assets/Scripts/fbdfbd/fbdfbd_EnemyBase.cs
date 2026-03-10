@@ -22,8 +22,8 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
     private float _nextAttackTime;
 
     protected Rigidbody2D Rb { get; private set; }
-    protected Transform Target => _target;
-    protected bool IsDead => _isDead;
+    public Transform Target => _target;
+    public bool IsDead => _isDead;
 
     //Range Enemy에서 사용(내부 계산 오류시 사용, 타겟 방향 계산 실패시 마지막 방향 유지)
     protected Vector2 LastDir { get; private set; } = Vector2.down;
@@ -36,6 +36,8 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
         Rb = GetComponent<Rigidbody2D>();
         Rb.gravityScale = 0;
         ScheduleNextAttack();
+
+        Ryeol_GameManager.Instance.UnregisterEnemy();
     }
 
     protected virtual void Update()
@@ -80,6 +82,8 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
 
     protected virtual void OnDeath()
     {
+        Ryeol_GameManager.Instance.UnregisterEnemy();
+
         Debug.Log($"{gameObject.name} 죽었습니다");
     }
 

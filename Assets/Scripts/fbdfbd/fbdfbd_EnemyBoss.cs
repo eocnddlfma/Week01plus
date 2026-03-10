@@ -47,6 +47,7 @@ public class fbdfbd_EnemyBoss : fbdfbd_EnemyBase
     protected override void Awake()
     {
         base.Awake();
+
         BuildSkillRuntimeState();
         Debug.Log("[Boss] Awake complete.");
     }
