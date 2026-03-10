@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.UI;
 
-public class Jaein_PlayerController : MonoBehaviour
+public class Jaein_PlayerController : Jaein_PlayerBase
 {
     [Header("Movement Settings")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -21,7 +21,6 @@ public class Jaein_PlayerController : MonoBehaviour
     [SerializeField] private float _maxChargeTime = 2.0f;
     [SerializeField] private float _minChargeScale = 1.0f;
     [SerializeField] private float _maxChargeScale = 2.5f;   
-    [SerializeField] private string _chargeAnimBool = "IsCharging"; 
 
     [Header("Animation")]
     [SerializeField] private Animator _pivotAnimator; 
@@ -29,7 +28,6 @@ public class Jaein_PlayerController : MonoBehaviour
     [SerializeField] private string _chargeBoolName = "IsCharging";      
     [SerializeField] private string _fullChargeBoolName = "IsFullCharged"; 
 
-    private Rigidbody2D _rigidBody;
     private Vector2 _inputVec;
     private Camera _mainCamera;
     private Vector3 _initialWeaponScale; // 무기의 초기 로컬 스케일 저장용
@@ -39,11 +37,11 @@ public class Jaein_PlayerController : MonoBehaviour
     private float _currentChargeTimer = 0f;
     private bool _isAttacking = false;
     private bool _isCharging = false;
-    private bool _isAlive = true;
 
-    void Start()
+    protected override void Awake()
     {
-        _rigidBody = GetComponent<Rigidbody2D>();
+        base.Awake();
+
         _mainCamera = Camera.main;
 
         if (_pivotAnimator == null) _pivotAnimator = GetComponentInChildren<Animator>();
@@ -52,16 +50,23 @@ public class Jaein_PlayerController : MonoBehaviour
 
         if (_weaponTransform == null && _weaponCollider != null) _weaponTransform = _weaponCollider.transform;
 
-        if (_weaponTransform != null) _initialWeaponScale = _weaponTransform.localScale; // 무기의 초기 스케일
+        if (_weaponTransform != null) _initialWeaponScale = _weaponTransform.localScale;
 
         if (_weaponCollider != null) _weaponCollider.enabled = false;
 
-        _isAlive = true;
+        _isDead = false;
     }
 
     void Update()
     {
-        if (!_isAlive) return;
+        if (_isDead) return;
+
+        // [Debug] T 키를 누르면 플레이어에게 20의 데미지를 입힘
+        if (Keyboard.current.tKey.wasPressedThisFrame)
+        {
+            Debug.Log("[Debug] T Key Pressed: Taking 20 Damage");
+            TakeDamage(20); // PlayerBase에 구현된 TakeDamage 호출
+        }
 
         HandleInput();
 
@@ -76,7 +81,7 @@ public class Jaein_PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!_isAlive) return;
+        if (_isDead) return;
 
         Move();
     }
@@ -101,11 +106,11 @@ public class Jaein_PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (_rigidBody != null)
+        if (Rb != null)
         {
             float speed = _isCharging ? _moveSpeed * 0.5f : _moveSpeed; // Charging 중에는 이동 속도 감소
             //_rigidBody.linearVelocity = _inputVec * _moveSpeed;
-            _rigidBody.linearVelocity = _inputVec * speed;
+            Rb.linearVelocity = _inputVec * speed;
         }
     }
 
@@ -133,16 +138,13 @@ public class Jaein_PlayerController : MonoBehaviour
     {
         if (_isAttacking) return;
 
-        // 1. 차지 시작 판정 (마우스를 누르는 순간)
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            // 쿨타임 체크
             if (Time.time >= _lastAttackTime + _attackCooldown)
             {
                 _isCharging = true;
                 _currentChargeTimer = 0f;
 
-                // 애니메이션 파라미터 즉시 설정
                 if (_pivotAnimator != null)
                 {
                     _pivotAnimator.SetBool(_chargeBoolName, true);
@@ -151,21 +153,17 @@ public class Jaein_PlayerController : MonoBehaviour
             }
         }
 
-        // 2. 차지 중 로직 (마우스를 누르고 있는 동안 매 프레임 실행)
         if (_isCharging)
         {
-            // 타이머 증가
             _currentChargeTimer += Time.deltaTime;
             float chargePercent = Mathf.Clamp01(_currentChargeTimer / _maxChargeTime);
 
-            // [핵심] 무기 크기 실시간 조절과 애니메이션 동기화
             if (_weaponTransform != null)
             {
                 float multiplier = Mathf.Lerp(_minChargeScale, _maxChargeScale, chargePercent);
                 _weaponTransform.localScale = _initialWeaponScale * multiplier;
             }
 
-            // 풀 차지 애니메이션 전환 체크
             if (_currentChargeTimer >= _maxChargeTime)
             {
                 if (_pivotAnimator != null && !_pivotAnimator.GetBool(_fullChargeBoolName))
@@ -174,7 +172,6 @@ public class Jaein_PlayerController : MonoBehaviour
                 }
             }
 
-            // 3. 차지 해제 및 공격 (마우스를 떼는 순간)
             if (Mouse.current.leftButton.wasReleasedThisFrame)
             {
                 _isCharging = false;
@@ -185,7 +182,7 @@ public class Jaein_PlayerController : MonoBehaviour
                     _pivotAnimator.SetBool(_fullChargeBoolName, false);
                 }
 
-                // 현재까지 쌓인 chargePercent를 넘기며 공격 실행
+                // TODO: AttackRoutine에 chargePercent 전달하여 타격력 조절
                 StartCoroutine(AttackRoutine(chargePercent));
             }
         }
@@ -204,7 +201,7 @@ public class Jaein_PlayerController : MonoBehaviour
 
         // TODO: Launch() 메서드에 chargePercent 전달하여 공격력 조절
         var orbital = GetComponentInChildren<Jaein_OrbitalWeapon>();
-        if (orbital != null) orbital.Launch(); 
+        if (orbital != null) orbital.Launch(chargePercent); 
 
         if (_weaponCollider != null) _weaponCollider.enabled = true;
 
@@ -220,11 +217,12 @@ public class Jaein_PlayerController : MonoBehaviour
         _isAttacking = false;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        // TODO: DeathSequence 호출 및 적 충돌 로직 구현
-        // if (other.CompareTag("Enemy")) { ... }
-    }
+    //private void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    // TODO: DeathSequence 호출 및 적 충돌 로직 구현
+    //    // if (other.CompareTag("Enemy")) { ... }
+    //}
 
-    // TODO: IEnumerator DeathSequence() 구현 필요
+    //// TODO: IEnumerator DeathSequence() 구현 필요
+    ///
 }

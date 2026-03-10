@@ -129,8 +129,10 @@ GameObject:
   m_Component:
   - component: {fileID: 29277790}
   - component: {fileID: 29277789}
+  - component: {fileID: 29277794}
   - component: {fileID: 29277792}
   - component: {fileID: 29277791}
+  - component: {fileID: 29277793}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -253,6 +255,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ad0f8887f674a44b10bcbe9270652f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jaein_PlayerController
+  _hp: 0
+  _maxHp: 100
+  _isDead: 0
+  _invincibleDuration: 1
   _moveSpeed: 5
   _rotationSpeed: 10
   _playerBody: {fileID: 1402296552}
@@ -262,11 +268,62 @@ MonoBehaviour:
   _maxChargeTime: 0.35
   _minChargeScale: 1
   _maxChargeScale: 1.25
-  _chargeAnimBool: IsCharging
   _pivotAnimator: {fileID: 0}
   _attackTriggerName: Attack
   _chargeBoolName: IsCharging
   _fullChargeBoolName: IsFullCharged
+--- !u!58 &29277793
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29277788}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.81
+--- !u!114 &29277794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29277788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7928edae95739f4448322a818d21fa33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jaein_PlayerBase
+  _hp: 0
+  _maxHp: 0
+  _isDead: 0
+  _invincibleDuration: 1
 --- !u!1 &331521045
 GameObject:
   m_ObjectHideFlags: 0
