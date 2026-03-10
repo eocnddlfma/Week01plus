@@ -39,6 +39,7 @@ public class Ryeol_GameManager : MonoBehaviour
     private int _currentEnemyCount = 0;
     public int EnemyCount => _currentEnemyCount;
 
+    public event Action OnEnemyUnregistered;
 
     #region 점수&레벨
     private int _score = 0;
@@ -55,10 +56,6 @@ public class Ryeol_GameManager : MonoBehaviour
         return _player;
     }
 
-    public void SetPlayer(GameObject player)
-    {
-        _player = player;
-    }
 
     void Awake()
     {
@@ -124,6 +121,7 @@ public class Ryeol_GameManager : MonoBehaviour
     public void UnregisterEnemy()
     {
         _currentEnemyCount--;
+        OnEnemyUnregistered?.Invoke();
     }
 
     #endregion

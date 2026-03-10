@@ -38,7 +38,7 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
         Rb.gravityScale = 0;
         ScheduleNextAttack();
 
-        //Ryeol_GameManager.Instance.RegisterEnemy();
+        Ryeol_GameManager.Instance.RegisterEnemy();
     }
 
     protected virtual void Update()

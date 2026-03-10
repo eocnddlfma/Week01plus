@@ -13,9 +13,19 @@ MonoBehaviour:
   m_Name: Wave2
   m_EditorClassIdentifier: Assembly-CSharp::Ryeol_WaveData
   id: 2
-  targetScore: 500
-  minEnemyCount: 7
   enemyPrefabs:
+  - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
+  - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
+  - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
+  - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
+  - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
+  - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
+  - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
+  - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
+  - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
+  - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
+  - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
   - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
   minSpawnInterval: 0.5
   maxSpawnInterval: 2
+  isBoss: 0
