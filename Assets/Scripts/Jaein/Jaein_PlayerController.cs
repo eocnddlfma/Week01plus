@@ -6,10 +6,15 @@ public class Jaein_PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _rotationSpeed = 10f;
 
     [Header("Combat Settings")]
     [SerializeField] private float _attackCooldown = 0.75f;
     [SerializeField] private float _attackDuration = 0.65f;
+
+    [Header("Animation")]
+    [SerializeField] private Animator _pivotAnimator; // Inspector에서 Pivot 오브젝트를 드래그 앤 드롭
+    [SerializeField] private string _attackTriggerName = "Attack";
 
     private Rigidbody2D _rigidBody;
     private Vector2 _inputVec;
@@ -25,6 +30,9 @@ public class Jaein_PlayerController : MonoBehaviour
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         _mainCamera = Camera.main;
+
+        if (_pivotAnimator == null)
+            _pivotAnimator = GetComponentInChildren<Animator>();
 
         _isAlive = true;
     }
@@ -81,19 +89,19 @@ public class Jaein_PlayerController : MonoBehaviour
     {
         if (_mainCamera == null || Mouse.current == null) return;
 
-        // [변경됨] Input.mousePosition 대신 Mouse.current 사용
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
-
-        // 마우스 위치를 월드 좌표로 변환
         Vector3 mouseWorldPos = _mainCamera.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, -_mainCamera.transform.position.z));
 
         Vector2 direction = new Vector2(mouseWorldPos.x - transform.position.x, mouseWorldPos.y - transform.position.y);
 
         if (direction.sqrMagnitude > 0.001f)
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            // 2D 탑다운 회전 (Z축 기준)
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            // 1. 목표 각도 계산
+            float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
+
+            // 2. Slerp(구면 선형 보간)를 사용하여 현재 회전에서 목표 회전까지 부드럽게 이동
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
         }
     }
 
@@ -116,14 +124,22 @@ public class Jaein_PlayerController : MonoBehaviour
         _isAttacking = true;
         _lastAttackTime = Time.time;
 
-        // 무기 콜라이더 활성화
+        // 애니메이터 트리거 작동
+        if (_pivotAnimator != null)
+        {
+            // 연타 시 트리거가 쌓이지 않도록 리셋 후 세팅
+            _pivotAnimator.ResetTrigger(_attackTriggerName);
+            _pivotAnimator.SetTrigger(_attackTriggerName);
+        }
 
-        // 애니메이션 트리거 실행
+        // TODO: 무기 콜라이더 활성화 (필요 시)
+        // _weaponCollider.enabled = true;
 
-        // 공격 지속 시간 동안 대기
+        // 애니메이션이 휘둘러지는 시간 동안 대기
         yield return new WaitForSeconds(_attackDuration);
 
-        // 무기 콜라이더 비활성화
+        // TODO: 무기 콜라이더 비활성화
+        // _weaponCollider.enabled = false;
 
         _isAttacking = false;
     }
