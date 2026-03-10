@@ -8,6 +8,9 @@ public class Jaein_PlayerController : MonoBehaviour
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _rotationSpeed = 10f;
 
+    [Header("References")]
+    [SerializeField] private Transform _playerBody;
+
     [Header("Combat Settings")]
     [SerializeField] private float _attackCooldown = 0.75f;
     [SerializeField] private float _attackDuration = 0.65f;
@@ -101,7 +104,7 @@ public class Jaein_PlayerController : MonoBehaviour
             Quaternion targetRotation = Quaternion.Euler(0, 0, targetAngle);
 
             // 2. Slerp(구면 선형 보간)를 사용하여 현재 회전에서 목표 회전까지 부드럽게 이동
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+            _playerBody.rotation = Quaternion.Slerp(_playerBody.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
         }
     }
 
