@@ -11,6 +11,8 @@ public class Jaein_PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform _playerBody; // Body와 OrbitCenter를 별개로 회전시키기 위함
 
+    public Vector2 FacingDirection => _playerBody != null ? (Vector2)_playerBody.right : Vector2.right;
+
     [Header("Combat Settings")]
     [SerializeField] private float _attackCooldown = 0.75f;
     [SerializeField] private float _attackDuration = 0.65f;

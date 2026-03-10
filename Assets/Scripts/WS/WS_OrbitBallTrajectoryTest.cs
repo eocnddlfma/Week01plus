@@ -18,7 +18,6 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
     [SerializeField] private float _startAngle = 0.0f;
 
     [Header("Launch")]
-    [SerializeField] private KeyCode _testHitKey = KeyCode.Space;
     [SerializeField] private float _launchSpeed = 14.0f;
     [SerializeField] private float _launchSpeedOffset = 2.0f;
     [SerializeField] private float _launchDuration = 0.35f;

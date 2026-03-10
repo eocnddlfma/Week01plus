@@ -51,6 +51,8 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool _drawOrbitGizmo = true;
 
+    private Jaein_PlayerController _playerController;
+
     private BallState _state = BallState.Orbit;
     public BallState State => _state;
     private float _angleDeg;
@@ -60,6 +62,12 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     private float _snapTimer;
     private float _snapStartRadius;
     private BallState _prevState = BallState.Orbit;
+
+    private void Awake()
+    {
+        _playerController = FindAnyObjectByType<Jaein_PlayerController>();
+        _center = _playerController.transform;
+    }
 
     private void Start()
     {
@@ -182,18 +190,12 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     {
         if (_center == null) return;
 
-        Vector2 currentPos = transform.position;
-        Vector2 radialDir = ((Vector2)currentPos - (Vector2)_center.position).normalized;
-
-        if (radialDir.sqrMagnitude <= 0.0001f)
-        {
-            radialDir = GetRadialDirection(_angleDeg);
-        }
-
-        Vector2 tangentDir = new Vector2(-radialDir.y, radialDir.x);
+        Vector2 facingDir = _playerController != null
+            ? _playerController.FacingDirection
+            : GetRadialDirection(_angleDeg);
 
         float randomOffset = Random.Range(-_randomAngleOffset, _randomAngleOffset);
-        Vector2 launchDir = RotateVector(tangentDir, randomOffset).normalized;
+        Vector2 launchDir = RotateVector(facingDir, randomOffset).normalized;
 
         _velocity = launchDir * (_launchSpeed + Random.Range(-_launchSpeedOffset, _launchSpeedOffset));
         _stateTimer = _launchDuration + Random.Range(-_launchDurationOffset, _launchDurationOffset);
@@ -235,10 +237,10 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         switch (_state)
         {
             case BallState.Orbit:
-                Vector2 radialDir = ((Vector2)simPos - (Vector2)_center.position).normalized;
-                if (radialDir.sqrMagnitude <= 0.0001f)
-                    radialDir = GetRadialDirection(_angleDeg);
-                simVel = new Vector2(-radialDir.y, radialDir.x) * _launchSpeed;
+                Vector2 facingDir = _playerController != null
+                    ? _playerController.FacingDirection
+                    : GetRadialDirection(_angleDeg);
+                simVel = facingDir * _launchSpeed;
                 simStateTimer = _launchDuration;
                 simReturnTimeElapsed = 0f;
                 isLaunched = true;

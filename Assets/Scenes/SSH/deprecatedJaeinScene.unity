@@ -604,8 +604,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jaein_OrbitalWeaponTrajectory
   _weapon: {fileID: 506403629}
-  _simulationSteps: 500
-  _simulationDt: 0.02
+  _simulationSteps: 10
+  _simulationDt: 0.01
   _launchColor:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
