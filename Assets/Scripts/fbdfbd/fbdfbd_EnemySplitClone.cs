@@ -12,10 +12,6 @@ public class fbdfbd_EnemySplitClone : fbdfbd_EnemyBase
         return distanceToTarget <= _attackRange;
     }
 
-    protected override void FixedUpdate()
-    {
-    }
-
     protected override void DoAttack()
     {
         Vector2 origin = Rb.position;
@@ -23,7 +19,7 @@ public class fbdfbd_EnemySplitClone : fbdfbd_EnemyBase
 
         for (int i = 0; i < hits.Length; i++)
         {
-            Debug.Log($"Split Clone {this.name} {_targetMask}, 타격 {i}");
+            Debug.Log($"Split Clone {GetInstanceID()} {_targetMask}, 타격 {i}");
         }
     }
 }

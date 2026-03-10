@@ -15,6 +15,7 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
     [Min(0f)][SerializeField] private float _moveSpeed = 2f;
     [Min(0f)][SerializeField] private float _stopDistance = 1.2f;
     [Min(0f)][SerializeField] private float _moveLerpSpeed = 8f;
+    private float _distanceTolerance;
 
     [Header("Group Movement")]
     [SerializeField] private LayerMask _enemyLayerMask;
@@ -40,6 +41,10 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
     // Range Enemy에서 사용
     protected Vector2 LastDir { get; private set; } = Vector2.down;
 
+    protected void InitDistanceTolerance()
+    {
+        _distanceTolerance = Random.Range(0.1f, 0.7f);
+    }
     protected virtual bool CanAttack(float distanceToTarget) => false;
     protected abstract void DoAttack();
 
@@ -100,17 +105,23 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
         Vector2 toRealTarget = realTargetPos - Rb.position;
         float distToRealTarget = toRealTarget.magnitude;
 
-        if (distToRealTarget <= _stopDistance)
+        Vector2 desiredMove = Vector2.zero;
+
+        if (distToRealTarget > _stopDistance + _distanceTolerance)
         {
-            _currentVelocity = Vector2.Lerp(_currentVelocity, Vector2.zero, _moveLerpSpeed * Time.fixedDeltaTime);
-            Rb.linearVelocity = _currentVelocity;
-            return;
+            desiredMove = CalculateMoveDirection();
+        }
+        else if (distToRealTarget < _stopDistance - _distanceTolerance)
+        {
+            desiredMove = -toRealTarget.normalized;
         }
 
-        Vector2 desiredMove = CalculateMoveDirection();
         Vector2 targetVelocity = desiredMove * _moveSpeed;
+        _currentVelocity = Vector2.Lerp(
+            _currentVelocity,
+            targetVelocity,
+            _moveLerpSpeed * Time.fixedDeltaTime);
 
-        _currentVelocity = Vector2.Lerp(_currentVelocity, targetVelocity, _moveLerpSpeed * Time.fixedDeltaTime);
         Rb.linearVelocity = _currentVelocity;
     }
 
