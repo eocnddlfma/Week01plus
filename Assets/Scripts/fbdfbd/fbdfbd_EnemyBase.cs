@@ -26,6 +26,9 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
     public Transform Target => _target;
     public bool IsDead => _isDead;
 
+    private Vector2 _externalVelocity;
+    public void AddExternalVelocity(Vector2 vel) => _externalVelocity += vel;
+
     //Range Enemy에서 사용(내부 계산 오류시 사용, 타겟 방향 계산 실패시 마지막 방향 유지)
     protected Vector2 LastDir { get; private set; } = Vector2.down;
 
@@ -70,15 +73,9 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
         Vector2 toTarget = (Vector2)_target.position - Rb.position;
         float dist = toTarget.magnitude;
 
-        if (dist > _stopDistance)
-        {
-            Vector2 vel = toTarget.normalized * _moveSpeed;
-            Rb.linearVelocity = vel;
-        }
-        else
-        {
-            Rb.linearVelocity = Vector2.zero;
-        }
+        Vector2 moveVel = dist > _stopDistance ? toTarget.normalized * _moveSpeed : Vector2.zero;
+        Rb.linearVelocity = moveVel + _externalVelocity;
+        _externalVelocity = Vector2.zero;
     }
 
     protected virtual void OnDeath()

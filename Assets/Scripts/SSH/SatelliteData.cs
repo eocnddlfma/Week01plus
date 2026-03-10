@@ -24,6 +24,8 @@ public class SatelliteData : MonoBehaviour
     [Tooltip("발사 후 원래 궤도로 복귀하는 속도")]
     [Range(1, 5)] [SerializeField] private int returnPower;
 
+    //스탯은 attackpower를 제외하고 실제로 뭐 있는게 아니라 표기용, 인스펙터상 값을 보여줄수는 없으니...
+
     public string SatelliteName => satelliteName;
     public string Description => description;
     public Rarity Rarity => rarity;

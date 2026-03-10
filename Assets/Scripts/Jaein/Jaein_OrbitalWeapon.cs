@@ -10,7 +10,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     }
 
     [Header("Center Reference")]
-    [SerializeField] private Transform _center;
+    [SerializeField] protected Transform _center;
 
     [Header("Orbit Settings")]
     [SerializeField] private float _orbitRadius = 2.0f;
@@ -21,7 +21,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [SerializeField] private KeyCode _testHitKey = KeyCode.Space;
     [SerializeField] private float _launchSpeed = 14.0f;
     [SerializeField] private float _launchSpeedOffset = 2.0f;
-    [SerializeField] private float _launchDuration = 0.35f;
+    [SerializeField] protected float _launchDuration = 0.35f;
     [SerializeField] private float _launchDurationOffset = 0.05f;
     [SerializeField] private float _randomAngleOffset = 10.0f;
 
@@ -53,12 +53,12 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
     private Jaein_PlayerController _playerController;
 
-    private BallState _state = BallState.Orbit;
+    protected BallState _state = BallState.Orbit;
     public BallState State => _state;
     private float _angleDeg;
-    private float _stateTimer;
-    private float _returnTimeElapsed;
-    private Vector2 _velocity;
+    protected float _stateTimer;
+    protected float _returnTimeElapsed;
+    protected Vector2 _velocity;
     private float _snapTimer;
     private float _snapStartRadius;
     private BallState _prevState = BallState.Orbit;
@@ -69,7 +69,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         _center = _playerController.transform;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         _angleDeg = _startAngle;
         Vector2 radialDir = GetRadialDirection(_angleDeg);
@@ -202,7 +202,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         _state = BallState.Launched;
     }
 
-    private void RejoinOrbit(Vector2 currentPos)
+    protected virtual void RejoinOrbit(Vector2 currentPos)
     {
         Vector2 fromCenter = currentPos - (Vector2)_center.position;
 
@@ -219,6 +219,13 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         _snapTimer = _snapDuration;
         _velocity = Vector2.zero;
         _state = BallState.Orbit;
+    }
+
+    // Orbit 상태가 아닌 공에 외부 속도를 추가 (중력 등 외부 효과용)
+    public void AddVelocity(Vector2 delta)
+    {
+        if (_state == BallState.Orbit) return;
+        _velocity += delta;
     }
 
     public Vector2[] SimulateTrajectory(int maxSteps, float simDt)
@@ -312,7 +319,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         while (_angleDeg < 0.0f) _angleDeg += 360.0f;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Weapon"))
         {
@@ -322,8 +329,12 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
                 Launch();
             }
         }
-    }
 
+        if (other.TryGetComponent<fbdfbd_EnemyProjectile>(out _))
+        {
+            Destroy(other.gameObject);
+        }
+    }
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
