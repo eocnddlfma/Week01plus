@@ -231,7 +231,7 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
             return;
 
         _hp -= damage;
-
+        WS_DamageTextManager.I.Show(damage, transform.position);
         if (_hp <= 0)
         {
             _hp = 0;
