@@ -20,12 +20,18 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
     [Header("Launch")]
     [SerializeField] private KeyCode _testHitKey = KeyCode.Space;
     [SerializeField] private float _launchSpeed = 14.0f;
+    [SerializeField] private float _launchSpeedOffset = 2.0f;
     [SerializeField] private float _launchDuration = 0.35f;
+    [SerializeField] private float _launchDurationOffset = 0.05f;
     [SerializeField] private float _randomAngleOffset = 10.0f;
 
     [Header("Return - Pull To Center")]
     [SerializeField] private float _returnStrength = 16.0f;
     [SerializeField] private float _returnDamping = 1.0f;
+
+    [Header("Return - Escalation")]
+    [SerializeField] private float _returnStrengthMax = 60.0f;
+    [SerializeField] private float _returnEscalationTime = 3.0f;
 
     [Header("Return - Orbit Assist")]
     [SerializeField] private float _orbitAssistStrength = 12.0f;
@@ -36,7 +42,11 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
 
     [Header("Rejoin Orbit")]
     [SerializeField] private float _rejoinDistanceToOrbit = 0.2f;
-    [SerializeField] private float _rejoinVelocityLimit = 2.0f;
+    [SerializeField] private float _rejoinVelocityLimit = 8.0f;
+    [SerializeField] private float _rejoinBrakeDamping = 8.0f;
+
+    [Header("Snap To Orbit")]
+    [SerializeField] private float _snapDuration = 0.3f;
 
     [Header("Debug")]
     [SerializeField] private bool _drawOrbitGizmo = true;
@@ -45,12 +55,18 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
 
     private float _angleDeg;
     private float _stateTimer;
+    private float _returnTimeElapsed;
     private Vector2 _velocity;
+    private float _snapTimer;
+    private float _snapStartRadius;
+    private BallState _prevState = BallState.Orbit;
 
     private void Start()
     {
         _angleDeg = _startAngle;
-        SnapToOrbit();
+        Vector2 radialDir = GetRadialDirection(_angleDeg);
+        transform.position = (Vector2)_center.position + radialDir * _orbitRadius;
+        _velocity = Vector2.zero;
     }
 
     private void Update()
@@ -66,9 +82,15 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(_testHitKey))
+        if (Input.GetMouseButtonDown(0) && _state == BallState.Orbit)
         {
             FakeHit();
+        }
+
+        if (_state != _prevState)
+        {
+            Debug.Log($"[OrbitBall] State: {_prevState} ¡æ {_state}");
+            _prevState = _state;
         }
 
         switch (_state)
@@ -92,8 +114,16 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
         _angleDeg += _orbitAngularSpeed * dt;
         NormalizeAngle();
 
+        float radius = _orbitRadius;
+        if (_snapTimer > 0.0f)
+        {
+            _snapTimer -= dt;
+            float t = Mathf.SmoothStep(0.0f, 1.0f, 1.0f - Mathf.Max(_snapTimer, 0.0f) / _snapDuration);
+            radius = Mathf.Lerp(_snapStartRadius, _orbitRadius, t);
+        }
+
         Vector2 radialDir = GetRadialDirection(_angleDeg);
-        transform.position = (Vector2)_center.position + radialDir * _orbitRadius;
+        transform.position = (Vector2)_center.position + radialDir * radius;
     }
 
     private void UpdateLaunched(float dt)
@@ -103,6 +133,7 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
 
         if (_stateTimer <= 0.0f)
         {
+            _returnTimeElapsed = 0.0f;
             _state = BallState.Returning;
         }
     }
@@ -126,9 +157,21 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
             ? new Vector2(-radialDir.y, radialDir.x)
             : new Vector2(radialDir.y, -radialDir.x);
 
-        Vector2 pullAcceleration = toCenterDir * _returnStrength;
+        _returnTimeElapsed += dt;
+        float distanceToOrbit = Mathf.Abs(distanceToCenter - _orbitRadius);
+
+        float escalationT = Mathf.Clamp01(_returnTimeElapsed / _returnEscalationTime);
+        float baseEscalation = Mathf.Lerp(0.0f, _returnStrengthMax - _returnStrength, escalationT);
+        float escalationStrength;
+        if (distanceToOrbit > 1.5f)
+            escalationStrength = baseEscalation;
+        else
+            escalationStrength = baseEscalation * 0.1f;
+
+        Vector2 pullAcceleration = toCenterDir * (_returnStrength + escalationStrength);
         Vector2 orbitAssistAcceleration = tangentDir * _orbitAssistStrength;
-        Vector2 dampingAcceleration = -_velocity * _returnDamping;
+        float brakeDamping = distanceToOrbit <= _rejoinDistanceToOrbit ? _rejoinBrakeDamping : 0.0f;
+        Vector2 dampingAcceleration = -_velocity * (_returnDamping + brakeDamping);
 
         Vector2 totalAcceleration = pullAcceleration + orbitAssistAcceleration + dampingAcceleration;
 
@@ -141,8 +184,6 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
 
         currentPos += _velocity * dt;
         transform.position = currentPos;
-
-        float distanceToOrbit = Mathf.Abs(distanceToCenter - _orbitRadius);
 
         if (distanceToOrbit <= _rejoinDistanceToOrbit && _velocity.magnitude <= _rejoinVelocityLimit)
         {
@@ -170,8 +211,8 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
         float randomOffset = Random.Range(-_randomAngleOffset, _randomAngleOffset);
         Vector2 launchDir = Rotate(tangentDir, randomOffset).normalized;
 
-        _velocity = launchDir * _launchSpeed;
-        _stateTimer = _launchDuration;
+        _velocity = launchDir * (_launchSpeed + Random.Range(-_launchSpeedOffset, _launchSpeedOffset));
+        _stateTimer = _launchDuration + Random.Range(-_launchDurationOffset, _launchDurationOffset);
         _state = BallState.Launched;
     }
 
@@ -188,16 +229,10 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
         _angleDeg = Mathf.Atan2(radialDir.y, radialDir.x) * Mathf.Rad2Deg;
         NormalizeAngle();
 
+        _snapStartRadius = fromCenter.magnitude;
+        _snapTimer = _snapDuration;
         _velocity = Vector2.zero;
         _state = BallState.Orbit;
-
-        SnapToOrbit();
-    }
-
-    private void SnapToOrbit()
-    {
-        Vector2 radialDir = GetRadialDirection(_angleDeg);
-        transform.position = (Vector2)_center.position + radialDir * _orbitRadius;
     }
 
     private Vector2 GetRadialDirection(float angleDeg)
