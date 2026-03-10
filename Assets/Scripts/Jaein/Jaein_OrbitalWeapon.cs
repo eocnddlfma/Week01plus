@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class OrbitBallBoomerangSpiralTest : MonoBehaviour
+public class Jaein_OrbitalWeapon : MonoBehaviour
 {
     private enum BallState
     {
@@ -9,32 +9,28 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
         Returning
     }
 
-    [Header("Center")]
+    [Header("Center Reference")]
     [SerializeField] private Transform _center;
 
-    [Header("Orbit")]
+    [Header("Orbit Settings")]
     [SerializeField] private float _orbitRadius = 2.0f;
     [SerializeField] private float _orbitAngularSpeed = 180.0f;
     [SerializeField] private float _startAngle = 0.0f;
 
-    [Header("Launch")]
+    [Header("Launch Settings")]
     [SerializeField] private KeyCode _testHitKey = KeyCode.Space;
     [SerializeField] private float _launchSpeed = 14.0f;
     [SerializeField] private float _launchDuration = 0.35f;
     [SerializeField] private float _randomAngleOffset = 10.0f;
 
-    [Header("Return - Pull To Center")]
+    [Header("Return - Physics")]
     [SerializeField] private float _returnStrength = 16.0f;
     [SerializeField] private float _returnDamping = 1.0f;
-
-    [Header("Return - Orbit Assist")]
     [SerializeField] private float _orbitAssistStrength = 12.0f;
     [SerializeField] private bool _useCounterClockwiseAssist = true;
-
-    [Header("Return - Speed Clamp")]
     [SerializeField] private float _maxReturnSpeed = 18.0f;
 
-    [Header("Rejoin Orbit")]
+    [Header("Rejoin Settings")]
     [SerializeField] private float _rejoinDistanceToOrbit = 0.2f;
     [SerializeField] private float _rejoinVelocityLimit = 2.0f;
 
@@ -42,7 +38,6 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
     [SerializeField] private bool _drawOrbitGizmo = true;
 
     private BallState _state = BallState.Orbit;
-
     private float _angleDeg;
     private float _stateTimer;
     private Vector2 _velocity;
@@ -55,39 +50,42 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
 
     private void Update()
     {
-        if (_center == null)
-        {
-            return;
-        }
+        if (_center == null) return;
 
         float dt = Time.deltaTime;
-        if (dt <= 0.0f)
-        {
-            return;
-        }
+        if (dt <= 0.0f) return;
 
+        HandleInput();
+        UpdateState(dt);
+    }
+
+    private void HandleInput()
+    {
         if (Input.GetKeyDown(_testHitKey))
         {
-            FakeHit();
+            Launch();
         }
+    }
 
+    private void UpdateState(float dt)
+    {
         switch (_state)
         {
             case BallState.Orbit:
-                UpdateOrbit(dt);
+                UpdateOrbitState(dt);
                 break;
 
             case BallState.Launched:
-                UpdateLaunched(dt);
+                UpdateLaunchedState(dt);
                 break;
 
             case BallState.Returning:
-                UpdateReturning(dt);
+                UpdateReturningState(dt);
                 break;
         }
     }
 
-    private void UpdateOrbit(float dt)
+    private void UpdateOrbitState(float dt)
     {
         _angleDeg += _orbitAngularSpeed * dt;
         NormalizeAngle();
@@ -96,7 +94,7 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
         transform.position = (Vector2)_center.position + radialDir * _orbitRadius;
     }
 
-    private void UpdateLaunched(float dt)
+    private void UpdateLaunchedState(float dt)
     {
         _stateTimer -= dt;
         transform.position = (Vector2)transform.position + _velocity * dt;
@@ -107,7 +105,7 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
         }
     }
 
-    private void UpdateReturning(float dt)
+    private void UpdateReturningState(float dt)
     {
         Vector2 currentPos = transform.position;
         Vector2 fromCenter = currentPos - (Vector2)_center.position;
@@ -144,18 +142,18 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
 
         float distanceToOrbit = Mathf.Abs(distanceToCenter - _orbitRadius);
 
-        if (distanceToOrbit <= _rejoinDistanceToOrbit && _velocity.magnitude <= _rejoinVelocityLimit)
+        if (distanceToOrbit <= _rejoinDistanceToOrbit)
         {
-            RejoinOrbit(currentPos);
+            if (_velocity.magnitude <= _rejoinVelocityLimit * 1.5f)
+            {
+                RejoinOrbit(currentPos);
+            }
         }
     }
 
-    private void FakeHit()
+    public void Launch()
     {
-        if (_center == null)
-        {
-            return;
-        }
+        if (_center == null) return;
 
         Vector2 currentPos = transform.position;
         Vector2 radialDir = ((Vector2)currentPos - (Vector2)_center.position).normalized;
@@ -168,7 +166,7 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
         Vector2 tangentDir = new Vector2(-radialDir.y, radialDir.x);
 
         float randomOffset = Random.Range(-_randomAngleOffset, _randomAngleOffset);
-        Vector2 launchDir = Rotate(tangentDir, randomOffset).normalized;
+        Vector2 launchDir = RotateVector(tangentDir, randomOffset).normalized;
 
         _velocity = launchDir * _launchSpeed;
         _stateTimer = _launchDuration;
@@ -206,7 +204,7 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
         return new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
     }
 
-    private Vector2 Rotate(Vector2 v, float angleDeg)
+    private Vector2 RotateVector(Vector2 v, float angleDeg)
     {
         float rad = angleDeg * Mathf.Deg2Rad;
         float cos = Mathf.Cos(rad);
@@ -220,24 +218,26 @@ public class OrbitBallBoomerangSpiralTest : MonoBehaviour
 
     private void NormalizeAngle()
     {
-        while (_angleDeg >= 360.0f)
-        {
-            _angleDeg -= 360.0f;
-        }
+        while (_angleDeg >= 360.0f) _angleDeg -= 360.0f;
+        while (_angleDeg < 0.0f) _angleDeg += 360.0f;
+    }
 
-        while (_angleDeg < 0.0f)
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Weapon"))
         {
-            _angleDeg += 360.0f;
+            if (_state != BallState.Launched)
+            {
+                Debug.Log("Hit! State: " + _state);
+                Launch();
+            }
         }
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if (!_drawOrbitGizmo || _center == null)
-        {
-            return;
-        }
+        if (!_drawOrbitGizmo || _center == null) return;
 
         Gizmos.color = Color.red;
         const int segmentCount = 96;
