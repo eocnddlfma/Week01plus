@@ -35,6 +35,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     private Vector3 _initialWeaponScale; // 무기의 초기 로컬 스케일 저장용
 
     private BoxCollider2D _weaponCollider;
+    private Jaein_WeaponChargeInfo _weaponChargeInfo;
     private float _lastAttackTime;
     private float _currentChargeTimer = 0f;
     private bool _isAttacking = false;
@@ -54,7 +55,15 @@ public class Jaein_PlayerController : Jaein_PlayerBase
 
         if (_weaponTransform != null) _initialWeaponScale = _weaponTransform.localScale;
 
-        if (_weaponCollider != null) _weaponCollider.enabled = false;
+        if (_weaponCollider != null)
+        {
+            _weaponCollider.enabled = false;
+            _weaponChargeInfo = _weaponCollider.GetComponent<Jaein_WeaponChargeInfo>();
+            if (_weaponChargeInfo == null)
+            {
+                _weaponChargeInfo = _weaponCollider.gameObject.AddComponent<Jaein_WeaponChargeInfo>();
+            }
+        }
 
         _isDead = false;
     }
@@ -63,7 +72,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     {
         if (_isDead) return;
 
-        // [Debug] T 키를 누르면 플레이어에게 20의 데미지를 입힘
+        // Debug
         if (Keyboard.current.tKey.wasPressedThisFrame)
         {
             Debug.Log("[Debug] T Key Pressed: Taking 20 Damage");
@@ -184,7 +193,12 @@ public class Jaein_PlayerController : Jaein_PlayerBase
                     _pivotAnimator.SetBool(_fullChargeBoolName, false);
                 }
 
-                // TODO: AttackRoutine에 chargePercent 전달하여 타격력 조절
+                // 무기에 차지 퍼센트 정보 설정 (위성이 충돌 시 이 값을 읽음)
+                if (_weaponChargeInfo != null)
+                {
+                    _weaponChargeInfo.SetChargePercent(chargePercent);
+                }
+
                 StartCoroutine(AttackRoutine(chargePercent));
             }
         }
@@ -201,9 +215,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
             _pivotAnimator.SetTrigger(_attackTriggerName);
         }
 
-        // TODO: Launch() 메서드에 chargePercent 전달하여 공격력 조절
-        var orbital = GetComponentInChildren<Jaein_OrbitalWeapon>();
-        if (orbital != null) orbital.Launch(chargePercent); 
+        // 무기와 위성의 충돌 시 WeaponChargeInfo를 통해 chargePercent를 전달
 
         if (_weaponCollider != null) _weaponCollider.enabled = true;
 
@@ -216,15 +228,12 @@ public class Jaein_PlayerController : Jaein_PlayerBase
             _weaponTransform.localScale = _initialWeaponScale * _minChargeScale;
         }
 
+        // 공격 종료 시 차지 정보 리셋
+        if (_weaponChargeInfo != null)
+        {
+            _weaponChargeInfo.ResetCharge();
+        }
+
         _isAttacking = false;
     }
-
-    //private void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    // TODO: DeathSequence 호출 및 적 충돌 로직 구현
-    //    // if (other.CompareTag("Enemy")) { ... }
-    //}
-
-    //// TODO: IEnumerator DeathSequence() 구현 필요
-    ///
 }
