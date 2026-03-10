@@ -18,7 +18,6 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [SerializeField] private float _startAngle = 0.0f;
 
     [Header("Launch Settings")]
-    [SerializeField] private KeyCode _testHitKey = KeyCode.Space;
     [SerializeField] private float _launchSpeed = 14.0f;
     [SerializeField] private float _launchSpeedOffset = 2.0f;
     [SerializeField] protected float _launchDuration = 0.35f;
@@ -178,23 +177,12 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
         vel += (pullAcceleration + orbitAssistAcceleration + dampingAcceleration) * dt;
 
-        float currentMaxSpeed = _state == BallState.Launched ? 100f : _maxReturnSpeed;
+        if (vel.magnitude > _maxReturnSpeed)
+            vel = vel.normalized * _maxReturnSpeed;
 
-        if (_velocity.magnitude > currentMaxSpeed)
-        {
-            _velocity = _velocity.normalized * currentMaxSpeed;
-        }
+        pos += vel * dt;
 
-        currentPos += _velocity * dt;
-        transform.position = currentPos;
-
-        if (distanceToOrbit <= _rejoinDistanceToOrbit)
-        {
-            if (_velocity.magnitude <= _rejoinVelocityLimit * 1.5f)
-            {
-                RejoinOrbit(currentPos);
-            }
-        }
+        return distanceToOrbit <= _rejoinDistanceToOrbit && vel.magnitude <= _rejoinVelocityLimit * 1.5f;
     }
 
     // Launch �޼��� ����

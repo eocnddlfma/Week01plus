@@ -41,9 +41,6 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
     private Vector2 _externalVelocity;
     public void AddExternalVelocity(Vector2 vel) => _externalVelocity += vel;
 
-    private Vector2 _externalVelocity;
-    public void AddExternalVelocity(Vector2 vel) => _externalVelocity += vel;
-
     // Range Enemy에서 사용
     protected Vector2 LastDir { get; private set; } = Vector2.down;
 
@@ -128,7 +125,8 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
             targetVelocity,
             _moveLerpSpeed * Time.fixedDeltaTime);
 
-        Rb.linearVelocity = _currentVelocity;
+        Rb.linearVelocity = _currentVelocity + _externalVelocity;
+        _externalVelocity = Vector2.zero;
     }
 
     private Vector2 CalculateMoveDirection()
