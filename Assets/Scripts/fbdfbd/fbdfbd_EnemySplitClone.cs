@@ -19,7 +19,12 @@ public class fbdfbd_EnemySplitClone : fbdfbd_EnemyBase
 
         for (int i = 0; i < hits.Length; i++)
         {
-            Debug.Log($"Split Clone {GetInstanceID()} {_targetMask}, 타격 {i}");
+            Jaein_ObjectBase dmg = hits[i].GetComponent<Jaein_ObjectBase>();
+            if (dmg != null)
+            {
+                dmg.TakeDamage(_damage);
+            }
+            Debug.Log($"Melee {_targetMask}, 타격 {i}");
         }
     }
 }

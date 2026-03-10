@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class fbdfbd_BossBase : fbdfbd_EnemyBase
+public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
 {
     [System.Serializable]
     protected class BossSkillSlot

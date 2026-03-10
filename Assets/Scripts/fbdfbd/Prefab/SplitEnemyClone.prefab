@@ -169,16 +169,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9fe04aff7b7b2f4baa34b96078e84c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemySplitClone
-  _target: {fileID: 0}
   _hp: 0
   _maxHp: 0
   _isDead: 0
+  _target: {fileID: 0}
   _moveSpeed: 1
   _stopDistance: 1
   _moveLerpSpeed: 8
   _enemyLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _separationRadius: 0.7
   _separationWeight: 1
   _targetOffsetRadius: 0.5

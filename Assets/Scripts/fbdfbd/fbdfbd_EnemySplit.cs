@@ -13,11 +13,11 @@ public class fbdfbd_EnemySplit : fbdfbd_EnemyBase
     [SerializeField] private List<Transform> _spawnPosList = new();
 
     [Header("Split Timing")]
-    [Min(0f)][SerializeField] private float _splitInterval = 2f;
+    [Min(0f)][SerializeField] private float _splitInterval = 0.3f;
+    [Min(0f)][SerializeField] private float _splitCycleInterval = 2f;
 
     private Coroutine _splitRoutine;
-    private bool _isSpliting = false;
-    private bool _isSplitComplete;
+    private bool _isSplitting = false;
 
     protected override bool CanAttack(float distanceToTarget)
     {
@@ -31,8 +31,24 @@ public class fbdfbd_EnemySplit : fbdfbd_EnemyBase
 
         for (int i = 0; i < hits.Length; i++)
         {
-            Debug.Log($"Split {this.name} : {_targetMask}, 타격 {i}");
+            Jaein_ObjectBase dmg = hits[i].GetComponent<Jaein_ObjectBase>();
+            if (dmg != null)
+            {
+                dmg.TakeDamage(_damage);
+            }
+
+            Debug.Log($"Melee {_targetMask}, 타격 {i}");
         }
+    }
+
+    protected override void FixedUpdate()
+    {
+        if (_isSplitting)
+        {
+            Rb.linearVelocity = Vector2.zero;
+            return;
+        }
+        base.FixedUpdate();
     }
 
     private void Start()
@@ -45,26 +61,31 @@ public class fbdfbd_EnemySplit : fbdfbd_EnemyBase
 
     private IEnumerator SplitRoutine()
     {
-        _isSpliting = true;
-        for (int i = 0; i < _splitEnemyCloneCount; i++)
+        while (true)
         {
-            yield return new WaitForSeconds(_splitInterval);
+            _isSplitting = true;
 
-            SpawnClone();
+            for (int i = 0; i < _splitEnemyCloneCount; i++)
+            {
+                SpawnClone();
+                yield return new WaitForSeconds(_splitInterval);
+            }
+
+            _isSplitting = false;
+
+            yield return new WaitForSeconds(_splitCycleInterval);
         }
-        _isSplitComplete = true;
     }
 
     private bool CanStartSplit()
     {
-        return _splitEnemyClonePrefab != null;
+        return _splitEnemyClonePrefab != null
+            && _spawnPosList != null
+            && _spawnPosList.Count > 0;
     }
 
     private void SpawnClone()
     {
-        if (_spawnPosList == null || _spawnPosList.Count == 0)
-            return;
-
         Transform spawnPos = _spawnPosList[Random.Range(0, _spawnPosList.Count)];
 
         if (spawnPos == null)
@@ -98,5 +119,6 @@ public class fbdfbd_EnemySplit : fbdfbd_EnemyBase
 
         StopCoroutine(_splitRoutine);
         _splitRoutine = null;
+        _isSplitting = false;
     }
 }

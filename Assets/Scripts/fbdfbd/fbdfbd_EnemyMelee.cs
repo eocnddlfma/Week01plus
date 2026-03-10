@@ -19,6 +19,11 @@ public class fbdfbd_EnemyMelee : fbdfbd_EnemyBase
 
         for (int i = 0; i < hits.Length; i++)
         {
+            Jaein_ObjectBase dmg = hits[i].GetComponent<Jaein_ObjectBase>();
+            if (dmg != null)
+            {
+                dmg.TakeDamage(_damage);
+            }
             Debug.Log($"Melee {_targetMask}, 타격 {i}");
         }
     }
