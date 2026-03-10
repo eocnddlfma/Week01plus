@@ -90,7 +90,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     {
         if (_state != _prevState)
         {
-            Debug.Log($"[OrbitBall] State: {_prevState} ¡æ {_state}");
+            Debug.Log($"[OrbitBall] State: {_prevState} ï¿½ï¿½ {_state}");
             _prevState = _state;
         }
 
@@ -178,15 +178,27 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
         vel += (pullAcceleration + orbitAssistAcceleration + dampingAcceleration) * dt;
 
-        if (vel.magnitude > _maxReturnSpeed)
-            vel = vel.normalized * _maxReturnSpeed;
+        float currentMaxSpeed = _state == BallState.Launched ? 100f : _maxReturnSpeed;
 
-        pos += vel * dt;
+        if (_velocity.magnitude > currentMaxSpeed)
+        {
+            _velocity = _velocity.normalized * currentMaxSpeed;
+        }
 
-        return distanceToOrbit <= _rejoinDistanceToOrbit && vel.magnitude <= _rejoinVelocityLimit * 1.5f;
+        currentPos += _velocity * dt;
+        transform.position = currentPos;
+
+        if (distanceToOrbit <= _rejoinDistanceToOrbit)
+        {
+            if (_velocity.magnitude <= _rejoinVelocityLimit * 1.5f)
+            {
+                RejoinOrbit(currentPos);
+            }
+        }
     }
 
-    public void Launch()
+    // Launch ï¿½Þ¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public void Launch(float chargePercent= 0.0f)
     {
         if (_center == null) return;
 
@@ -197,9 +209,16 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         float randomOffset = Random.Range(-_randomAngleOffset, _randomAngleOffset);
         Vector2 launchDir = RotateVector(facingDir, randomOffset).normalized;
 
-        _velocity = launchDir * (_launchSpeed + Random.Range(-_launchSpeedOffset, _launchSpeedOffset));
-        _stateTimer = _launchDuration + Random.Range(-_launchDurationOffset, _launchDurationOffset);
+        float powerMultiplier = 1.0f + (chargePercent * 10.5f);
+        _velocity = launchDir * (_launchSpeed * powerMultiplier + Random.Range(-_launchSpeedOffset, _launchSpeedOffset));
+
+        float durationMultiplier = 1.0f + (chargePercent * 1.0f);
+        _stateTimer = _launchDuration * durationMultiplier + Random.Range(-_launchDurationOffset, _launchDurationOffset);
+
+        _returnTimeElapsed = 0.0f;
         _state = BallState.Launched;
+
+        Debug.Log($"[Orbital] Charge: {chargePercent * 100}%, Speed: {_velocity.magnitude}");
     }
 
     protected virtual void RejoinOrbit(Vector2 currentPos)
@@ -221,7 +240,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         _state = BallState.Orbit;
     }
 
-    // Orbit »óÅÂ°¡ ¾Æ´Ñ °ø¿¡ ¿ÜºÎ ¼Óµµ¸¦ Ãß°¡ (Áß·Â µî ¿ÜºÎ È¿°ú¿ë)
+    // Orbit ï¿½ï¿½ï¿½Â°ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Üºï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ß°ï¿½ (ï¿½ß·ï¿½ ï¿½ï¿½ ï¿½Üºï¿½ È¿ï¿½ï¿½ï¿½ï¿½)
     public void AddVelocity(Vector2 delta)
     {
         if (_state == BallState.Orbit) return;

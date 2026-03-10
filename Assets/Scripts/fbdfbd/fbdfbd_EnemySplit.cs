@@ -9,12 +9,14 @@ public class fbdfbd_EnemySplit : fbdfbd_EnemyBase
     [Min(1)][SerializeField] private int _damage = 1;
     [SerializeField] private LayerMask _targetMask;
     [SerializeField] private GameObject _splitEnemyClonePrefab;
-    [SerializeField] private List<Transform> _splitCloneEnemyPosList = new();
+    [Min(1)][SerializeField] private int _splitEnemyCloneCount = 4;
+    [SerializeField] private List<Transform> _spawnPosList = new();
 
     [Header("Split Timing")]
     [Min(0f)][SerializeField] private float _splitInterval = 2f;
 
     private Coroutine _splitRoutine;
+    private bool _isSpliting = false;
     private bool _isSplitComplete;
 
     protected override bool CanAttack(float distanceToTarget)
@@ -43,49 +45,37 @@ public class fbdfbd_EnemySplit : fbdfbd_EnemyBase
 
     private IEnumerator SplitRoutine()
     {
-        foreach (Transform spawnPoint in _splitCloneEnemyPosList)
+        _isSpliting = true;
+        for (int i = 0; i < _splitEnemyCloneCount; i++)
         {
             yield return new WaitForSeconds(_splitInterval);
 
-            if (ShouldStopSplit())
-                yield break;
-
-            if (spawnPoint == null)
-                continue;
-
-            SpawnClone(spawnPoint);
+            SpawnClone();
         }
-
         _isSplitComplete = true;
     }
 
     private bool CanStartSplit()
     {
-        return _splitEnemyClonePrefab != null
-            && _splitCloneEnemyPosList != null
-            && _splitCloneEnemyPosList.Count > 0;
+        return _splitEnemyClonePrefab != null;
     }
 
-    private bool ShouldStopSplit()
+    private void SpawnClone()
     {
-        return IsDead || _isSplitComplete || !gameObject.activeInHierarchy;
-    }
+        if (_spawnPosList == null || _spawnPosList.Count == 0)
+            return;
 
-    private void SpawnClone(Transform spawnPoint)
-    {
-        GameObject clone = Instantiate(_splitEnemyClonePrefab, transform);
+        Transform spawnPos = _spawnPosList[Random.Range(0, _spawnPosList.Count)];
 
-        clone.transform.localPosition = spawnPoint.localPosition;
-        clone.transform.localRotation = spawnPoint.localRotation;
+        if (spawnPos == null)
+            return;
 
-        if (clone.TryGetComponent<Rigidbody2D>(out Rigidbody2D cloneRb))
-        {
-            cloneRb.linearVelocity = Vector2.zero;
-            cloneRb.angularVelocity = 0f;
-            cloneRb.bodyType = RigidbodyType2D.Kinematic;
-        }
+        GameObject clone = Instantiate(
+            _splitEnemyClonePrefab,
+            spawnPos.position,
+            spawnPos.rotation);
 
-        if (clone.TryGetComponent<fbdfbd_EnemySplitClone>(out fbdfbd_EnemySplitClone splitClone))
+        if (clone.TryGetComponent(out fbdfbd_EnemySplitClone splitClone))
         {
             splitClone.SetTarget(Target);
         }
