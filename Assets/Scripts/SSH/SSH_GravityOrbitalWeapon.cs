@@ -44,7 +44,7 @@ public class SSH_GravityOrbitalWeapon : Jaein_OrbitalWeapon
                 Vector2 toBallMe = (Vector2)transform.position - (Vector2)ball.transform.position;
                 if (toBallMe.sqrMagnitude <= 0.001f) continue;
 
-                ball.AddVelocity(toBallMe.normalized * currentStrength * 0.1f * Time.fixedDeltaTime);
+                ball.AddVelocity(toBallMe.normalized * currentStrength * 0.3f * Time.fixedDeltaTime);
                 continue;
             }
 
