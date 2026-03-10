@@ -28,7 +28,6 @@ public class Ryeol_EnemySpawner : MonoBehaviour
         _currentWaveData = GetCurrentWaveData();
 
         StartCoroutine(CoSpawnEnemy());
-
     }
 
     private void OnDestroy()
