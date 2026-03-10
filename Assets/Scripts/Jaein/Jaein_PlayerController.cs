@@ -15,6 +15,12 @@ public class Jaein_PlayerController : Jaein_PlayerBase
 
     public Vector2 FacingDirection => _playerBody != null ? (Vector2)_playerBody.right : Vector2.right;
 
+    [Header("Dash Settings")]
+    [SerializeField] private KeyCode _dashKey = KeyCode.Space;
+    [SerializeField] private float _dashSpeed = 15f;
+    [SerializeField] private float _dashDuration = 0.15f;
+    [SerializeField] private float _dashCooldown = 1.0f;
+
     [Header("Combat Settings")]
     [SerializeField] private float _attackCooldown = 0.75f;
     [SerializeField] private float _attackDuration = 0.65f;
@@ -22,13 +28,13 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     [Header("Charge Settings")]
     [SerializeField] private float _maxChargeTime = 2.0f;
     [SerializeField] private float _minChargeScale = 1.0f;
-    [SerializeField] private float _maxChargeScale = 2.5f;   
+    [SerializeField] private float _maxChargeScale = 2.5f;
 
     [Header("Animation")]
-    [SerializeField] private Animator _pivotAnimator; 
+    [SerializeField] private Animator _pivotAnimator;
     [SerializeField] private string _attackTriggerName = "Attack";
-    [SerializeField] private string _chargeBoolName = "IsCharging";      
-    [SerializeField] private string _fullChargeBoolName = "IsFullCharged"; 
+    [SerializeField] private string _chargeBoolName = "IsCharging";
+    [SerializeField] private string _fullChargeBoolName = "IsFullCharged";
 
     private Vector2 _inputVec;
     private Camera _mainCamera;
@@ -36,6 +42,10 @@ public class Jaein_PlayerController : Jaein_PlayerBase
 
     private BoxCollider2D _weaponCollider;
     private Jaein_WeaponChargeInfo _weaponChargeInfo;
+
+    private float _lastDashTime = -100f;
+    private bool _isDashing = false;
+
     private float _lastAttackTime;
     private float _currentChargeTimer = 0f;
     private bool _isAttacking = false;
@@ -73,16 +83,17 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         if (_isDead) return;
 
         // Debug
-        if (Keyboard.current.tKey.wasPressedThisFrame)
-        {
-            Debug.Log("[Debug] T Key Pressed: Taking 20 Damage");
-            TakeDamage(20); // PlayerBase에 구현된 TakeDamage 호출
-        }
+        //if (Keyboard.current.tKey.wasPressedThisFrame)
+        //{
+        //    Debug.Log("[Debug] T Key Pressed: Taking 20 Damage");
+        //    TakeDamage(20); // PlayerBase에 구현된 TakeDamage 호출
+        //}
 
         HandleInput();
+        HandleDash();
 
-        // 공격 중이 아닐 때만 마우스 방향을 바라봄
-        if (!_isAttacking)
+        // 공격 중이거나 대쉬 중일 때는 마우스 방향을 바라보지 않음
+        if (!_isAttacking && !_isDashing)
         {
             RotateTowardsMouse();
         }
@@ -92,7 +103,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
 
     void FixedUpdate()
     {
-        if (_isDead) return;
+        if (_isDead || _isDashing) return;
 
         Move();
     }
@@ -115,12 +126,40 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         _inputVec = new Vector2(h, v).normalized;
     }
 
+    private void HandleDash()
+    {
+        if (Input.GetKeyDown(_dashKey) && Time.time >= _lastDashTime + _dashCooldown && !_isDashing)
+        {
+            Debug.Log("Dash");
+            // 입력 방향이 없으면 바라보는 방향으로, 있으면 입력 방향으로 대쉬
+            Vector2 dashDir = _inputVec.sqrMagnitude > 0.001f ? _inputVec : (Vector2)_playerBody.right;
+            StartCoroutine(DashRoutine(dashDir));
+        }
+    }
+
+    private IEnumerator DashRoutine(Vector2 dir)
+    {
+        _isDashing = true;
+        _lastDashTime = Time.time;
+
+        float originalDrag = Rb.linearDamping;
+        Rb.linearDamping = 0;
+        Rb.linearVelocity = dir.normalized * _dashSpeed;
+
+        yield return new WaitForSeconds(_dashDuration);
+
+        Rb.linearDamping = originalDrag;
+
+        // Rb.linearVelocity = Vector2.zero; 
+
+        _isDashing = false;
+    }
+
     private void Move()
     {
         if (Rb != null)
         {
             float speed = _isCharging ? _moveSpeed * 0.5f : _moveSpeed; // Charging 중에는 이동 속도 감소
-            //_rigidBody.linearVelocity = _inputVec * _moveSpeed;
             Rb.linearVelocity = _inputVec * speed;
         }
     }
