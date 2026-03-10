@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class Ryeol_CheatManager : MonoBehaviour
 {
@@ -6,34 +6,34 @@ public class Ryeol_CheatManager : MonoBehaviour
 
     void Update()
     {
-        // Q: Á¡¼ö Ãß°¡
-        if (Input.GetKeyDown(KeyCode.Q))
+        // 1: ì ìˆ˜ ì¶”ê°€
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Ryeol_GameManager.Instance.AddScore(_cheatScore);
-            Debug.Log($"[Cheat] Á¡¼ö +{_cheatScore} / ÇöÀç Á¡¼ö: {Ryeol_GameManager.Instance.GetScore()}");
+            Debug.Log($"[Cheat] ì ìˆ˜ +{_cheatScore} / í˜„ì¬ ì ìˆ˜: {Ryeol_GameManager.Instance.GetScore()}");
         }
 
-        // W: Á¡¼ö ÃÊ±âÈ­
-        if (Input.GetKeyDown(KeyCode.W))
+        // 2: ì ìˆ˜ ì´ˆê¸°í™”
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             // TODO
-            Debug.Log("[Cheat] Á¡¼ö ÃÊ±âÈ­");
+            Debug.Log("[Cheat] ì ìˆ˜ ì´ˆê¸°í™”");
         }
 
-        // E: Àû ¼ö 1 Ãß°¡
-        if (Input.GetKeyDown(KeyCode.E))
+        // 3: ì  ìˆ˜ 1 ì¶”ê°€
+        if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Ryeol_GameManager.Instance.RegisterEnemy();
-            Debug.Log($"[Cheat] Àû ¼ö +1 / ÇöÀç Àû ¼ö: {Ryeol_GameManager.Instance.EnemyCount}");
+            Debug.Log($"[Cheat] ì  ìˆ˜ +1 / í˜„ì¬ ì  ìˆ˜: {Ryeol_GameManager.Instance.EnemyCount}");
         }
 
-        // R: Àû ¼ö ÃÊ±âÈ­
-        if (Input.GetKeyDown(KeyCode.R))
+        // 4: ì  ìˆ˜ 1 ë‚´ë¦¼
+        if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            int count = Ryeol_GameManager.Instance.EnemyCount;
-            for (int i = 0; i < count; i++)
-                Ryeol_GameManager.Instance.UnregisterEnemy();
-            Debug.Log("[Cheat] Àû ¼ö ÃÊ±âÈ­");
+            //int count = Ryeol_GameManager.Instance.EnemyCount;
+            //for (int i = 0; i < count; i++)
+            Ryeol_GameManager.Instance.UnregisterEnemy();
+            Debug.Log($"[Cheat] ì  ìˆ˜ -1 / í˜„ì¬ ì  ìˆ˜: {Ryeol_GameManager.Instance.EnemyCount}");
         }
     }
 }

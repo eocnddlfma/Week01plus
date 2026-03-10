@@ -8,13 +8,7 @@ public class Ryeol_GameScene : MonoBehaviour
     // UI
 
     [SerializeField] private Ryeol_EnemySpawner _enemySpawner;
-    [SerializeField] private GameObject _player;
 
-    private void Awake()
-    {
-        Ryeol_GameManager.Instance.SetPlayer(_player);
-        Ryeol_GameManager.Instance.StartGame();
-    }
     private void Start()
     {
         Init();
@@ -25,6 +19,7 @@ public class Ryeol_GameScene : MonoBehaviour
         Debug.Log("@>> GameScene Init()");
 
         Ryeol_GameManager.Instance.OnStateChanged += HandleStateChanged;
+
     }
 
     private void OnDestroy()

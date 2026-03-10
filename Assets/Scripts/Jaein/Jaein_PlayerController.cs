@@ -13,11 +13,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     [SerializeField] private Transform _playerBody; // Body와 OrbitCenter를 별개로 회전시키기 위함
     [SerializeField] private Transform _weaponTransform;
 
-    [Header("Dash Settings")]
-    [SerializeField] private KeyCode _dashKey = KeyCode.Space;
-    [SerializeField] private float _dashSpeed = 15f;
-    [SerializeField] private float _dashDuration = 0.15f;
-    [SerializeField] private float _dashCooldown = 1.0f;
+    public Vector2 FacingDirection => _playerBody != null ? (Vector2)_playerBody.right : Vector2.right;
 
     [Header("Combat Settings")]
     [SerializeField] private float _attackCooldown = 0.75f;
@@ -40,8 +36,6 @@ public class Jaein_PlayerController : Jaein_PlayerBase
 
     private BoxCollider2D _weaponCollider;
     private Jaein_WeaponChargeInfo _weaponChargeInfo;
-    private float _lastDashTime;
-    private bool _isDashing = false;
     private float _lastAttackTime;
     private float _currentChargeTimer = 0f;
     private bool _isAttacking = false;
@@ -79,14 +73,13 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         if (_isDead) return;
 
         // Debug
-        //if (Keyboard.current.tKey.wasPressedThisFrame)
-        //{
-        //    Debug.Log("[Debug] T Key Pressed: Taking 20 Damage");
-        //    TakeDamage(20); // PlayerBase에 구현된 TakeDamage 호출
-        //}
+        if (Keyboard.current.tKey.wasPressedThisFrame)
+        {
+            Debug.Log("[Debug] T Key Pressed: Taking 20 Damage");
+            TakeDamage(20); // PlayerBase에 구현된 TakeDamage 호출
+        }
 
         HandleInput();
-        HandleDash();
 
         // 공격 중이 아닐 때만 마우스 방향을 바라봄
         if (!_isAttacking)
@@ -99,7 +92,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
 
     void FixedUpdate()
     {
-        if (_isDead || _isDashing) return;
+        if (_isDead) return;
 
         Move();
     }
@@ -120,34 +113,6 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         }
 
         _inputVec = new Vector2(h, v).normalized;
-    }
-
-    private void HandleDash()
-    {
-
-        // 쿨타임 체크 및 스페이스바 입력 확인
-        if (Input.GetKeyDown(_dashKey) && Time.time >= _lastDashTime + _dashCooldown && !_isDashing)
-        {
-            Debug.Log("Dash");
-            // 입력 방향이 없으면 바라보는 방향으로, 있으면 입력 방향으로 대쉬
-            Vector2 dashDir = _inputVec.sqrMagnitude > 0.001f ? _inputVec : (Vector2)_playerBody.right;
-            StartCoroutine(DashRoutine(dashDir));
-        }
-    }
-
-    private IEnumerator DashRoutine(Vector2 dir)
-    {
-        _isDashing = true;
-        _lastDashTime = Time.time;
-
-        float originalDrag = Rb.linearDamping;
-        Rb.linearDamping = 0; 
-        Rb.linearVelocity = dir * _dashSpeed;
-
-        yield return new WaitForSeconds(_dashDuration);
-
-        Rb.linearDamping = originalDrag;
-        _isDashing = false;
     }
 
     private void Move()
