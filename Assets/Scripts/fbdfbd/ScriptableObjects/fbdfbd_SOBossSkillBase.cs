@@ -1,8 +1,8 @@
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "BossSkill", menuName = "ScriptableObjects/BossSkill")]
-public abstract class fbdfbd_SOBossSkillBase : ScriptableObject
+[CreateAssetMenu(fileName = "BossSkill", menuName = "Scriptable Objects/BossSkill")]
+public class fbdfbd_SOBossSkillBase : ScriptableObject
 {
     [SerializeField] private string _skillName;
     [SerializeField] private float _skillNumber;

@@ -1,15 +1,10 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class fbdfbd_EnemyBase : MonoBehaviour
+public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
 {
     [Header("Target")]
     [SerializeField] private Transform _target;
-
-    [Header("Health")]
-    [SerializeField] private int _hp;
-    [SerializeField] private int _maxHp;
-    [SerializeField] private bool _isDead;
 
     [Header("Movement")]
     [Min(0f)][SerializeField] private float _moveSpeed = 2f;
@@ -34,9 +29,7 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
     private Vector2 _personalOffset;
     private float _noiseSeed;
 
-    protected Rigidbody2D Rb { get; private set; }
     public Transform Target => _target;
-    public bool IsDead => _isDead;
 
     private Vector2 _externalVelocity;
     public void AddExternalVelocity(Vector2 vel) => _externalVelocity += vel;
@@ -51,10 +44,10 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
     protected virtual bool CanAttack(float distanceToTarget) => false;
     protected abstract void DoAttack();
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
-        Rb = GetComponent<Rigidbody2D>();
-        Rb.gravityScale = 0f;
+        base.Awake();
+
         Rb.freezeRotation = true;
 
         _noiseSeed = Random.Range(0f, 1000f);
@@ -221,7 +214,7 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
         return new Vector2(nx, ny) * _noiseWeight;
     }
 
-    protected virtual void OnDeath()
+    protected override void OnDeath()
     {
         Rb.linearVelocity = Vector2.zero;
 
@@ -240,7 +233,7 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
         _nextAttackTime = Time.time + Random.Range(min, max);
     }
 
-    public virtual void TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
         if (_isDead)
             return;

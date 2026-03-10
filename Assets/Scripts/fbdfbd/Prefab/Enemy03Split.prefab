@@ -309,16 +309,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e07c878c7b788514993caf68cc4d966c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemySplit
-  _target: {fileID: 0}
   _hp: 0
   _maxHp: 0
   _isDead: 0
+  _target: {fileID: 0}
   _moveSpeed: 1
   _stopDistance: 1.2
   _moveLerpSpeed: 8
   _enemyLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _separationRadius: 0.7
   _separationWeight: 1
   _targetOffsetRadius: 0.5
@@ -341,6 +341,7 @@ MonoBehaviour:
   - {fileID: 6270880269005899680}
   - {fileID: 2073888437754286051}
   _splitInterval: 0.5
+  _splitCycleInterval: 2
 --- !u!1 &8290461832455394934
 GameObject:
   m_ObjectHideFlags: 0
