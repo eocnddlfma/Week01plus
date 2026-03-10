@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Jaein_OrbitalWeapon : MonoBehaviour
 {
-    private enum BallState
+    public enum BallState
     {
         Orbit,
         Launched,
@@ -36,7 +36,6 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [Header("Return - Orbit Assist")]
     [SerializeField] private float _orbitAssistStrength = 12.0f;
     [SerializeField] private bool _useCounterClockwiseAssist = true;
-    [SerializeField] private float distanceMultiplier = 0.5f; // Distance에 따른 가중치 (조정 가능)
 
     [Header("Return - Speed Clamp")]
     [SerializeField] private float _maxReturnSpeed = 18.0f;
@@ -53,6 +52,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [SerializeField] private bool _drawOrbitGizmo = true;
 
     private BallState _state = BallState.Orbit;
+    public BallState State => _state;
     private float _angleDeg;
     private float _stateTimer;
     private float _returnTimeElapsed;
@@ -133,59 +133,49 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
     private void UpdateReturningState(float dt)
     {
-        Vector2 currentPos = transform.position;
-        Vector2 fromCenter = currentPos - (Vector2)_center.position;
+        Vector2 pos = transform.position;
+        if (StepReturnPhysics(ref pos, ref _velocity, ref _returnTimeElapsed, _angleDeg, dt))
+            RejoinOrbit(pos);
+        transform.position = pos;
+    }
+
+    private bool StepReturnPhysics(ref Vector2 pos, ref Vector2 vel, ref float returnTimeElapsed, float fallbackAngleDeg, float dt)
+    {
+        Vector2 fromCenter = pos - (Vector2)_center.position;
         float distanceToCenter = fromCenter.magnitude;
 
         if (distanceToCenter <= 0.0001f)
         {
-            fromCenter = GetRadialDirection(_angleDeg) * 0.001f;
+            fromCenter = GetRadialDirection(fallbackAngleDeg) * 0.001f;
             distanceToCenter = fromCenter.magnitude;
         }
 
         Vector2 radialDir = fromCenter / distanceToCenter;
         Vector2 toCenterDir = -radialDir;
-
         Vector2 tangentDir = _useCounterClockwiseAssist
             ? new Vector2(-radialDir.y, radialDir.x)
             : new Vector2(radialDir.y, -radialDir.x);
 
-        _returnTimeElapsed += dt;
+        returnTimeElapsed += dt;
         float distanceToOrbit = Mathf.Abs(distanceToCenter - _orbitRadius);
 
-        float escalationT = Mathf.Clamp01(_returnTimeElapsed / _returnEscalationTime);
+        float escalationT = Mathf.Clamp01(returnTimeElapsed / _returnEscalationTime);
         float baseEscalation = Mathf.Lerp(0.0f, _returnStrengthMax - _returnStrength, escalationT);
-        float escalationStrength = baseEscalation * Mathf.Max(1.0f, distanceToOrbit * distanceMultiplier);
-        
-        if (distanceToOrbit > 1.5f)
-            escalationStrength = baseEscalation;
-        else
-            escalationStrength = baseEscalation * 0.1f;
+        float escalationStrength = distanceToOrbit > 1.5f ? baseEscalation : baseEscalation * 0.1f;
 
         Vector2 pullAcceleration = toCenterDir * (_returnStrength + escalationStrength);
         Vector2 orbitAssistAcceleration = tangentDir * _orbitAssistStrength;
         float brakeDamping = distanceToOrbit <= _rejoinDistanceToOrbit ? _rejoinBrakeDamping : 0.0f;
-        Vector2 dampingAcceleration = -_velocity * (_returnDamping + brakeDamping);
+        Vector2 dampingAcceleration = -vel * (_returnDamping + brakeDamping);
 
-        Vector2 totalAcceleration = pullAcceleration + orbitAssistAcceleration + dampingAcceleration;
+        vel += (pullAcceleration + orbitAssistAcceleration + dampingAcceleration) * dt;
 
-        _velocity += totalAcceleration * dt;
+        if (vel.magnitude > _maxReturnSpeed)
+            vel = vel.normalized * _maxReturnSpeed;
 
-        if (_velocity.magnitude > _maxReturnSpeed)
-        {
-            _velocity = _velocity.normalized * _maxReturnSpeed;
-        }
+        pos += vel * dt;
 
-        currentPos += _velocity * dt;
-        transform.position = currentPos;
-
-        if (distanceToOrbit <= _rejoinDistanceToOrbit)
-        {
-            if (_velocity.magnitude <= _rejoinVelocityLimit * 1.5f)
-            {
-                RejoinOrbit(currentPos);
-            }
-        }
+        return distanceToOrbit <= _rejoinDistanceToOrbit && vel.magnitude <= _rejoinVelocityLimit * 1.5f;
     }
 
     public void Launch()
@@ -227,6 +217,73 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         _snapTimer = _snapDuration;
         _velocity = Vector2.zero;
         _state = BallState.Orbit;
+    }
+
+    public Vector2[] SimulateTrajectory(int maxSteps, float simDt)
+    {
+        if (_center == null) return System.Array.Empty<Vector2>();
+
+        var positions = new System.Collections.Generic.List<Vector2>(maxSteps + 1);
+
+        Vector2 simPos = transform.position;
+        Vector2 simVel;
+        float simStateTimer;
+        float simReturnTimeElapsed;
+        float simAngleDeg = _angleDeg;
+        bool isLaunched;
+
+        switch (_state)
+        {
+            case BallState.Orbit:
+                Vector2 radialDir = ((Vector2)simPos - (Vector2)_center.position).normalized;
+                if (radialDir.sqrMagnitude <= 0.0001f)
+                    radialDir = GetRadialDirection(_angleDeg);
+                simVel = new Vector2(-radialDir.y, radialDir.x) * _launchSpeed;
+                simStateTimer = _launchDuration;
+                simReturnTimeElapsed = 0f;
+                isLaunched = true;
+                break;
+            case BallState.Launched:
+                simVel = _velocity;
+                simStateTimer = _stateTimer;
+                simReturnTimeElapsed = _returnTimeElapsed;
+                isLaunched = true;
+                break;
+            case BallState.Returning:
+                simVel = _velocity;
+                simStateTimer = 0f;
+                simReturnTimeElapsed = _returnTimeElapsed;
+                isLaunched = false;
+                break;
+            default:
+                return System.Array.Empty<Vector2>();
+        }
+
+        positions.Add(simPos);
+
+        for (int i = 0; i < maxSteps; i++)
+        {
+            if (isLaunched)
+            {
+                simStateTimer -= simDt;
+                simPos += simVel * simDt;
+                positions.Add(simPos);
+
+                if (simStateTimer <= 0f)
+                {
+                    simReturnTimeElapsed = 0f;
+                    isLaunched = false;
+                }
+            }
+            else
+            {
+                bool rejoined = StepReturnPhysics(ref simPos, ref simVel, ref simReturnTimeElapsed, simAngleDeg, simDt);
+                positions.Add(simPos);
+                if (rejoined) break;
+            }
+        }
+
+        return positions.ToArray();
     }
 
     private Vector2 GetRadialDirection(float angleDeg)
