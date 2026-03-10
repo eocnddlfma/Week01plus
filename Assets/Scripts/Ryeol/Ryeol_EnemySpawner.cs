@@ -81,6 +81,7 @@ public class Ryeol_EnemySpawner : MonoBehaviour
 
         // 적 생성
         GameObject enemy = Instantiate(randomEnemyPrefab, spawnPosition, Quaternion.identity);
+        enemy.GetComponent<fbdfbd_EnemyBase>().SetTarget(_player.transform); // 적 타겟 주입
         enemy.transform.SetParent(_enemyContainer);
     }
 

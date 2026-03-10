@@ -16,5 +16,6 @@ MonoBehaviour:
   targetScore: 500
   minEnemyCount: 7
   enemyPrefabs:
-  - {fileID: 4992690344610420515, guid: 840fa230660f9d949a2cee0ab51ccf70, type: 3}
-  speedMultiplier: 1
+  - {fileID: 6089281691577615938, guid: a341c097cdca950489849fd3059febaf, type: 3}
+  minSpawnInterval: 0.5
+  maxSpawnInterval: 2
