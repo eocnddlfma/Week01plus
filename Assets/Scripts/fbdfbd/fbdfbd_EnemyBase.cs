@@ -55,7 +55,7 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
 
         ScheduleNextAttack();
 
-        // Ryeol_GameManager.Instance.RegisterEnemy();
+        Ryeol_GameManager.Instance.RegisterEnemy();
     }
 
     protected virtual void Update()
