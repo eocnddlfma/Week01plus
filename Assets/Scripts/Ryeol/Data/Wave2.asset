@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afd842d64226f5941808b2e929ea36d4, type: 3}
+  m_Name: Wave2
+  m_EditorClassIdentifier: Assembly-CSharp::Ryeol_WaveData
+  id: 2
+  targetScore: 500
+  minEnemyCount: 7
+  enemyPrefabs:
+  - {fileID: 4992690344610420515, guid: 840fa230660f9d949a2cee0ab51ccf70, type: 3}
+  speedMultiplier: 1
