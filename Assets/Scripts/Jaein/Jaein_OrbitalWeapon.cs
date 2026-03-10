@@ -75,21 +75,8 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
         float dt = Time.deltaTime;
         if (dt <= 0.0f) return;
-
-        HandleInput();
         UpdateState(dt);
     }
-
-    private void HandleInput()
-    {
-        if (Input.GetKeyDown(_testHitKey))
-        if (Input.GetMouseButtonDown(0) && _state == BallState.Orbit)
-
-        {
-            Launch();
-        }
-    }
-
 
     private void UpdateState(float dt)
     {
