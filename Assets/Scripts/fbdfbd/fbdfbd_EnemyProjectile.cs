@@ -48,8 +48,15 @@ public class fbdfbd_EnemyProjectile : MonoBehaviour
         if ((_targetMask.value & (1 << other.gameObject.layer)) == 0) return;
 
 
-        Debug.Log($"Range 투사체 타격");
-        
+        Jaein_ObjectBase dmg = other.GetComponent<Jaein_ObjectBase>();
+        if (dmg != null)
+        {
+            dmg.TakeDamage(_damage);
+            Debug.Log($"Range 투사체 타격, 데미지: {_damage}");
+        }
+
+
+
 
         Destroy(gameObject);
     }

@@ -144,6 +144,15 @@ MonoBehaviour:
   _isDead: 0
   _moveSpeed: 2
   _stopDistance: 5
+  _moveLerpSpeed: 8
+  _enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _separationRadius: 0.7
+  _separationWeight: 7
+  _targetOffsetRadius: 0.5
+  _noiseWeight: 0
+  _noiseSpeed: 1.2
   _attackIntervalMin: 1
   _attackIntervalMax: 2
   _attackRange: 6
@@ -154,7 +163,7 @@ MonoBehaviour:
   _damage: 1
   _targetMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!60 &2730655439801448259
 PolygonCollider2D:
   m_ObjectHideFlags: 0

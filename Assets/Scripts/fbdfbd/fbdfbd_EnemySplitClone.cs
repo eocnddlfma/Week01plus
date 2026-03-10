@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class fbdfbd_EnemyMelee : fbdfbd_EnemyBase
+public class fbdfbd_EnemySplitClone : fbdfbd_EnemyBase
 {
-    [Header("Melee")]
+    [Header("SplitEnemy")]
     [Min(0.1f)][SerializeField] private float _attackRange = 1.2f;
     [Min(1)][SerializeField] private int _damage = 1;
     [SerializeField] private LayerMask _targetMask;
