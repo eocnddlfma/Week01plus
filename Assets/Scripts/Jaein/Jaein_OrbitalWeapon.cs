@@ -76,18 +76,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         float dt = Time.deltaTime;
         if (dt <= 0.0f) return;
 
-        //HandleInput();
         UpdateState(dt);
-    }
-
-    private void HandleInput()
-    {
-        if (Input.GetKeyDown(_testHitKey))
-        if (Input.GetMouseButtonDown(0) && _state == BallState.Orbit)
-
-        {
-            Launch();
-        }
     }
 
 
@@ -95,7 +84,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     {
         if (_state != _prevState)
         {
-            Debug.Log($"[OrbitBall] State: {_prevState} → {_state}");
+            //Debug.Log($"[OrbitBall] State: {_prevState} → {_state}");
             _prevState = _state;
         }
 
@@ -203,7 +192,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         }
     }
 
-    // Launch 메서드 수정
+    // 위성 발사
     public void Launch(float chargePercent= 0.0f)
     {
         if (_center == null) return;
@@ -221,16 +210,16 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         float randomOffset = Random.Range(-_randomAngleOffset, _randomAngleOffset);
         Vector2 launchDir = RotateVector(tangentDir, randomOffset).normalized;
 
-        float powerMultiplier = 1.0f + (chargePercent * 10.5f);
+        float powerMultiplier = 1.0f + (chargePercent * 0.5f);
         _velocity = launchDir * (_launchSpeed * powerMultiplier + Random.Range(-_launchSpeedOffset, _launchSpeedOffset));
 
-        float durationMultiplier = 1.0f + (chargePercent * 1.0f);
+        float durationMultiplier = 1.0f + (chargePercent * 0.5f);
         _stateTimer = _launchDuration * durationMultiplier + Random.Range(-_launchDurationOffset, _launchDurationOffset);
 
         _returnTimeElapsed = 0.0f;
         _state = BallState.Launched;
 
-        Debug.Log($"[Orbital] Charge: {chargePercent * 100}%, Speed: {_velocity.magnitude}");
+        //Debug.Log($"[Orbital] Charge: {chargePercent * 100}%, Speed: {_velocity.magnitude}");
     }
 
     private void RejoinOrbit(Vector2 currentPos)
@@ -282,8 +271,16 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         {
             if (_state != BallState.Launched)
             {
-                Debug.Log("Hit! State: " + _state);
-                Launch();
+                // 무기에서 차지 정보를 읽어옴
+                float chargePercent = 0f;
+                var chargeInfo = other.GetComponent<Jaein_WeaponChargeInfo>();
+                if (chargeInfo != null)
+                {
+                    chargePercent = chargeInfo.ChargePercent;
+                }
+
+                //Debug.Log($"Hit! State: {_state}, ChargePercent: {chargePercent * 100}%");
+                Launch(chargePercent);
             }
         }
     }
