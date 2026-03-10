@@ -28,17 +28,17 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [Header("Return - Physics")]
     [SerializeField] private float _returnStrength = 16.0f;
     [SerializeField] private float _returnDamping = 1.0f;
-<<<<<<<< HEAD:Assets/Scripts/Jaein/Jaein_OrbitalWeapon.cs
-========
 
     [Header("Return - Escalation")]
-    [SerializeField] private float _returnStrengthMax = 60.0f;
+    [SerializeField] private float _returnStrengthMax = 150.0f;
     [SerializeField] private float _returnEscalationTime = 3.0f;
 
     [Header("Return - Orbit Assist")]
->>>>>>>> sanghyeon:Assets/Scripts/WS/WS_OrbitBallTrajectoryTest.cs
     [SerializeField] private float _orbitAssistStrength = 12.0f;
     [SerializeField] private bool _useCounterClockwiseAssist = true;
+    [SerializeField] private float distanceMultiplier = 0.5f; // Distance에 따른 가중치 (조정 가능)
+
+    [Header("Return - Speed Clamp")]
     [SerializeField] private float _maxReturnSpeed = 18.0f;
 
     [Header("Rejoin Settings")]
@@ -76,7 +76,6 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         float dt = Time.deltaTime;
         if (dt <= 0.0f) return;
 
-<<<<<<<< HEAD:Assets/Scripts/Jaein/Jaein_OrbitalWeapon.cs
         HandleInput();
         UpdateState(dt);
     }
@@ -84,25 +83,22 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     private void HandleInput()
     {
         if (Input.GetKeyDown(_testHitKey))
-========
         if (Input.GetMouseButtonDown(0) && _state == BallState.Orbit)
->>>>>>>> sanghyeon:Assets/Scripts/WS/WS_OrbitBallTrajectoryTest.cs
+
         {
             Launch();
         }
     }
 
-<<<<<<<< HEAD:Assets/Scripts/Jaein/Jaein_OrbitalWeapon.cs
+
     private void UpdateState(float dt)
     {
-========
         if (_state != _prevState)
         {
             Debug.Log($"[OrbitBall] State: {_prevState} → {_state}");
             _prevState = _state;
         }
 
->>>>>>>> sanghyeon:Assets/Scripts/WS/WS_OrbitBallTrajectoryTest.cs
         switch (_state)
         {
             case BallState.Orbit:
@@ -172,7 +168,8 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
         float escalationT = Mathf.Clamp01(_returnTimeElapsed / _returnEscalationTime);
         float baseEscalation = Mathf.Lerp(0.0f, _returnStrengthMax - _returnStrength, escalationT);
-        float escalationStrength;
+        float escalationStrength = baseEscalation * Mathf.Max(1.0f, distanceToOrbit * distanceMultiplier);
+        
         if (distanceToOrbit > 1.5f)
             escalationStrength = baseEscalation;
         else
@@ -195,13 +192,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         currentPos += _velocity * dt;
         transform.position = currentPos;
 
-<<<<<<<< HEAD:Assets/Scripts/Jaein/Jaein_OrbitalWeapon.cs
-        float distanceToOrbit = Mathf.Abs(distanceToCenter - _orbitRadius);
-
         if (distanceToOrbit <= _rejoinDistanceToOrbit)
-========
-        if (distanceToOrbit <= _rejoinDistanceToOrbit && _velocity.magnitude <= _rejoinVelocityLimit)
->>>>>>>> sanghyeon:Assets/Scripts/WS/WS_OrbitBallTrajectoryTest.cs
         {
             if (_velocity.magnitude <= _rejoinVelocityLimit * 1.5f)
             {

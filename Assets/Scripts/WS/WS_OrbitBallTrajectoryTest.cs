@@ -1,6 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Jaein_OrbitalWeapon : MonoBehaviour
+public class OrbitBallBoomerangSpiralTest : MonoBehaviour
 {
     private enum BallState
     {
@@ -9,15 +9,15 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         Returning
     }
 
-    [Header("Center Reference")]
+    [Header("Center")]
     [SerializeField] private Transform _center;
 
-    [Header("Orbit Settings")]
+    [Header("Orbit")]
     [SerializeField] private float _orbitRadius = 2.0f;
     [SerializeField] private float _orbitAngularSpeed = 180.0f;
     [SerializeField] private float _startAngle = 0.0f;
 
-    [Header("Launch Settings")]
+    [Header("Launch")]
     [SerializeField] private KeyCode _testHitKey = KeyCode.Space;
     [SerializeField] private float _launchSpeed = 14.0f;
     [SerializeField] private float _launchSpeedOffset = 2.0f;
@@ -25,23 +25,22 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [SerializeField] private float _launchDurationOffset = 0.05f;
     [SerializeField] private float _randomAngleOffset = 10.0f;
 
-    [Header("Return - Physics")]
+    [Header("Return - Pull To Center")]
     [SerializeField] private float _returnStrength = 16.0f;
     [SerializeField] private float _returnDamping = 1.0f;
-<<<<<<<< HEAD:Assets/Scripts/Jaein/Jaein_OrbitalWeapon.cs
-========
 
     [Header("Return - Escalation")]
     [SerializeField] private float _returnStrengthMax = 60.0f;
     [SerializeField] private float _returnEscalationTime = 3.0f;
 
     [Header("Return - Orbit Assist")]
->>>>>>>> sanghyeon:Assets/Scripts/WS/WS_OrbitBallTrajectoryTest.cs
     [SerializeField] private float _orbitAssistStrength = 12.0f;
     [SerializeField] private bool _useCounterClockwiseAssist = true;
+
+    [Header("Return - Speed Clamp")]
     [SerializeField] private float _maxReturnSpeed = 18.0f;
 
-    [Header("Rejoin Settings")]
+    [Header("Rejoin Orbit")]
     [SerializeField] private float _rejoinDistanceToOrbit = 0.2f;
     [SerializeField] private float _rejoinVelocityLimit = 8.0f;
     [SerializeField] private float _rejoinBrakeDamping = 8.0f;
@@ -53,6 +52,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [SerializeField] private bool _drawOrbitGizmo = true;
 
     private BallState _state = BallState.Orbit;
+
     private float _angleDeg;
     private float _stateTimer;
     private float _returnTimeElapsed;
@@ -71,55 +71,45 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
     private void Update()
     {
-        if (_center == null) return;
+        if (_center == null)
+        {
+            return;
+        }
 
         float dt = Time.deltaTime;
-        if (dt <= 0.0f) return;
-
-<<<<<<<< HEAD:Assets/Scripts/Jaein/Jaein_OrbitalWeapon.cs
-        HandleInput();
-        UpdateState(dt);
-    }
-
-    private void HandleInput()
-    {
-        if (Input.GetKeyDown(_testHitKey))
-========
-        if (Input.GetMouseButtonDown(0) && _state == BallState.Orbit)
->>>>>>>> sanghyeon:Assets/Scripts/WS/WS_OrbitBallTrajectoryTest.cs
+        if (dt <= 0.0f)
         {
-            Launch();
+            return;
         }
-    }
 
-<<<<<<<< HEAD:Assets/Scripts/Jaein/Jaein_OrbitalWeapon.cs
-    private void UpdateState(float dt)
-    {
-========
+        if (Input.GetMouseButtonDown(0) && _state == BallState.Orbit)
+        {
+            FakeHit();
+        }
+
         if (_state != _prevState)
         {
-            Debug.Log($"[OrbitBall] State: {_prevState} �� {_state}");
+            Debug.Log($"[OrbitBall] State: {_prevState} → {_state}");
             _prevState = _state;
         }
 
->>>>>>>> sanghyeon:Assets/Scripts/WS/WS_OrbitBallTrajectoryTest.cs
         switch (_state)
         {
             case BallState.Orbit:
-                UpdateOrbitState(dt);
+                UpdateOrbit(dt);
                 break;
 
             case BallState.Launched:
-                UpdateLaunchedState(dt);
+                UpdateLaunched(dt);
                 break;
 
             case BallState.Returning:
-                UpdateReturningState(dt);
+                UpdateReturning(dt);
                 break;
         }
     }
 
-    private void UpdateOrbitState(float dt)
+    private void UpdateOrbit(float dt)
     {
         _angleDeg += _orbitAngularSpeed * dt;
         NormalizeAngle();
@@ -136,7 +126,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         transform.position = (Vector2)_center.position + radialDir * radius;
     }
 
-    private void UpdateLaunchedState(float dt)
+    private void UpdateLaunched(float dt)
     {
         _stateTimer -= dt;
         transform.position = (Vector2)transform.position + _velocity * dt;
@@ -148,7 +138,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         }
     }
 
-    private void UpdateReturningState(float dt)
+    private void UpdateReturning(float dt)
     {
         Vector2 currentPos = transform.position;
         Vector2 fromCenter = currentPos - (Vector2)_center.position;
@@ -164,8 +154,8 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         Vector2 toCenterDir = -radialDir;
 
         Vector2 tangentDir = _useCounterClockwiseAssist
-            ? new Vector2(-radialDir.y, radialDir.x)
-            : new Vector2(radialDir.y, -radialDir.x);
+        ? new Vector2(-radialDir.y, radialDir.x)
+        : new Vector2(radialDir.y, -radialDir.x);
 
         _returnTimeElapsed += dt;
         float distanceToOrbit = Mathf.Abs(distanceToCenter - _orbitRadius);
@@ -195,24 +185,18 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         currentPos += _velocity * dt;
         transform.position = currentPos;
 
-<<<<<<<< HEAD:Assets/Scripts/Jaein/Jaein_OrbitalWeapon.cs
-        float distanceToOrbit = Mathf.Abs(distanceToCenter - _orbitRadius);
-
-        if (distanceToOrbit <= _rejoinDistanceToOrbit)
-========
         if (distanceToOrbit <= _rejoinDistanceToOrbit && _velocity.magnitude <= _rejoinVelocityLimit)
->>>>>>>> sanghyeon:Assets/Scripts/WS/WS_OrbitBallTrajectoryTest.cs
         {
-            if (_velocity.magnitude <= _rejoinVelocityLimit * 1.5f)
-            {
-                RejoinOrbit(currentPos);
-            }
+            RejoinOrbit(currentPos);
         }
     }
 
-    public void Launch()
+    private void FakeHit()
     {
-        if (_center == null) return;
+        if (_center == null)
+        {
+            return;
+        }
 
         Vector2 currentPos = transform.position;
         Vector2 radialDir = ((Vector2)currentPos - (Vector2)_center.position).normalized;
@@ -225,7 +209,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         Vector2 tangentDir = new Vector2(-radialDir.y, radialDir.x);
 
         float randomOffset = Random.Range(-_randomAngleOffset, _randomAngleOffset);
-        Vector2 launchDir = RotateVector(tangentDir, randomOffset).normalized;
+        Vector2 launchDir = Rotate(tangentDir, randomOffset).normalized;
 
         _velocity = launchDir * (_launchSpeed + Random.Range(-_launchSpeedOffset, _launchSpeedOffset));
         _stateTimer = _launchDuration + Random.Range(-_launchDurationOffset, _launchDurationOffset);
@@ -257,40 +241,38 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         return new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
     }
 
-    private Vector2 RotateVector(Vector2 v, float angleDeg)
+    private Vector2 Rotate(Vector2 v, float angleDeg)
     {
         float rad = angleDeg * Mathf.Deg2Rad;
         float cos = Mathf.Cos(rad);
         float sin = Mathf.Sin(rad);
 
         return new Vector2(
-            v.x * cos - v.y * sin,
-            v.x * sin + v.y * cos
+        v.x * cos - v.y * sin,
+        v.x * sin + v.y * cos
         );
     }
 
     private void NormalizeAngle()
     {
-        while (_angleDeg >= 360.0f) _angleDeg -= 360.0f;
-        while (_angleDeg < 0.0f) _angleDeg += 360.0f;
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Weapon"))
+        while (_angleDeg >= 360.0f)
         {
-            if (_state != BallState.Launched)
-            {
-                Debug.Log("Hit! State: " + _state);
-                Launch();
-            }
+            _angleDeg -= 360.0f;
+        }
+
+        while (_angleDeg < 0.0f)
+        {
+            _angleDeg += 360.0f;
         }
     }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
-        if (!_drawOrbitGizmo || _center == null) return;
+        if (!_drawOrbitGizmo || _center == null)
+        {
+            return;
+        }
 
         Gizmos.color = Color.red;
         const int segmentCount = 96;
