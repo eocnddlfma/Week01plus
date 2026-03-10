@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Jaein_OrbitalWeapon : MonoBehaviour
 {
-    private enum BallState
+    public enum BallState
     {
         Orbit,
         Launched,
@@ -10,7 +10,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     }
 
     [Header("Center Reference")]
-    [SerializeField] private Transform _center;
+    [SerializeField] protected Transform _center;
 
     [Header("Orbit Settings")]
     [SerializeField] private float _orbitRadius = 2.0f;
@@ -18,10 +18,9 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [SerializeField] private float _startAngle = 0.0f;
 
     [Header("Launch Settings")]
-    [SerializeField] private KeyCode _testHitKey = KeyCode.Space;
     [SerializeField] private float _launchSpeed = 14.0f;
     [SerializeField] private float _launchSpeedOffset = 2.0f;
-    [SerializeField] private float _launchDuration = 0.35f;
+    [SerializeField] protected float _launchDuration = 0.35f;
     [SerializeField] private float _launchDurationOffset = 0.05f;
     [SerializeField] private float _randomAngleOffset = 10.0f;
 
@@ -36,7 +35,6 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [Header("Return - Orbit Assist")]
     [SerializeField] private float _orbitAssistStrength = 12.0f;
     [SerializeField] private bool _useCounterClockwiseAssist = true;
-    [SerializeField] private float distanceMultiplier = 0.5f; // Distance¿¡ µû¸¥ °¡ÁßÄ¡ (Á¶Á¤ °¡´É)
 
     [Header("Return - Speed Clamp")]
     [SerializeField] private float _maxReturnSpeed = 18.0f;
@@ -52,16 +50,25 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool _drawOrbitGizmo = true;
 
-    private BallState _state = BallState.Orbit;
+    private Jaein_PlayerController _playerController;
+
+    protected BallState _state = BallState.Orbit;
+    public BallState State => _state;
     private float _angleDeg;
-    private float _stateTimer;
-    private float _returnTimeElapsed;
-    private Vector2 _velocity;
+    protected float _stateTimer;
+    protected float _returnTimeElapsed;
+    protected Vector2 _velocity;
     private float _snapTimer;
     private float _snapStartRadius;
     private BallState _prevState = BallState.Orbit;
 
-    private void Start()
+    private void Awake()
+    {
+        _playerController = FindAnyObjectByType<Jaein_PlayerController>();
+        _center = _playerController.transform;
+    }
+
+    protected virtual void Start()
     {
         _angleDeg = _startAngle;
         Vector2 radialDir = GetRadialDirection(_angleDeg);
@@ -75,27 +82,14 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
         float dt = Time.deltaTime;
         if (dt <= 0.0f) return;
-
-        HandleInput();
         UpdateState(dt);
     }
-
-    private void HandleInput()
-    {
-        if (Input.GetKeyDown(_testHitKey))
-        if (Input.GetMouseButtonDown(0) && _state == BallState.Orbit)
-
-        {
-            Launch();
-        }
-    }
-
 
     private void UpdateState(float dt)
     {
         if (_state != _prevState)
         {
-            Debug.Log($"[OrbitBall] State: {_prevState} ¡æ {_state}");
+            //Debug.Log($"[OrbitBall] State: {_prevState} ï¿½ï¿½ {_state}");
             _prevState = _state;
         }
 
@@ -146,84 +140,76 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
     private void UpdateReturningState(float dt)
     {
-        Vector2 currentPos = transform.position;
-        Vector2 fromCenter = currentPos - (Vector2)_center.position;
+        Vector2 pos = transform.position;
+        if (StepReturnPhysics(ref pos, ref _velocity, ref _returnTimeElapsed, _angleDeg, dt))
+            RejoinOrbit(pos);
+        transform.position = pos;
+    }
+
+    private bool StepReturnPhysics(ref Vector2 pos, ref Vector2 vel, ref float returnTimeElapsed, float fallbackAngleDeg, float dt)
+    {
+        Vector2 fromCenter = pos - (Vector2)_center.position;
         float distanceToCenter = fromCenter.magnitude;
 
         if (distanceToCenter <= 0.0001f)
         {
-            fromCenter = GetRadialDirection(_angleDeg) * 0.001f;
+            fromCenter = GetRadialDirection(fallbackAngleDeg) * 0.001f;
             distanceToCenter = fromCenter.magnitude;
         }
 
         Vector2 radialDir = fromCenter / distanceToCenter;
         Vector2 toCenterDir = -radialDir;
-
         Vector2 tangentDir = _useCounterClockwiseAssist
             ? new Vector2(-radialDir.y, radialDir.x)
             : new Vector2(radialDir.y, -radialDir.x);
 
-        _returnTimeElapsed += dt;
+        returnTimeElapsed += dt;
         float distanceToOrbit = Mathf.Abs(distanceToCenter - _orbitRadius);
 
-        float escalationT = Mathf.Clamp01(_returnTimeElapsed / _returnEscalationTime);
+        float escalationT = Mathf.Clamp01(returnTimeElapsed / _returnEscalationTime);
         float baseEscalation = Mathf.Lerp(0.0f, _returnStrengthMax - _returnStrength, escalationT);
-        float escalationStrength = baseEscalation * Mathf.Max(1.0f, distanceToOrbit * distanceMultiplier);
-        
-        if (distanceToOrbit > 1.5f)
-            escalationStrength = baseEscalation;
-        else
-            escalationStrength = baseEscalation * 0.1f;
+        float escalationStrength = distanceToOrbit > 1.5f ? baseEscalation : baseEscalation * 0.1f;
 
         Vector2 pullAcceleration = toCenterDir * (_returnStrength + escalationStrength);
         Vector2 orbitAssistAcceleration = tangentDir * _orbitAssistStrength;
         float brakeDamping = distanceToOrbit <= _rejoinDistanceToOrbit ? _rejoinBrakeDamping : 0.0f;
-        Vector2 dampingAcceleration = -_velocity * (_returnDamping + brakeDamping);
+        Vector2 dampingAcceleration = -vel * (_returnDamping + brakeDamping);
 
-        Vector2 totalAcceleration = pullAcceleration + orbitAssistAcceleration + dampingAcceleration;
+        vel += (pullAcceleration + orbitAssistAcceleration + dampingAcceleration) * dt;
 
-        _velocity += totalAcceleration * dt;
+        if (vel.magnitude > _maxReturnSpeed)
+            vel = vel.normalized * _maxReturnSpeed;
 
-        if (_velocity.magnitude > _maxReturnSpeed)
-        {
-            _velocity = _velocity.normalized * _maxReturnSpeed;
-        }
+        pos += vel * dt;
 
-        currentPos += _velocity * dt;
-        transform.position = currentPos;
-
-        if (distanceToOrbit <= _rejoinDistanceToOrbit)
-        {
-            if (_velocity.magnitude <= _rejoinVelocityLimit * 1.5f)
-            {
-                RejoinOrbit(currentPos);
-            }
-        }
+        return distanceToOrbit <= _rejoinDistanceToOrbit && vel.magnitude <= _rejoinVelocityLimit * 1.5f;
     }
 
-    public void Launch()
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½
+    public void Launch(float chargePercent= 0.0f)
     {
         if (_center == null) return;
 
-        Vector2 currentPos = transform.position;
-        Vector2 radialDir = ((Vector2)currentPos - (Vector2)_center.position).normalized;
-
-        if (radialDir.sqrMagnitude <= 0.0001f)
-        {
-            radialDir = GetRadialDirection(_angleDeg);
-        }
-
-        Vector2 tangentDir = new Vector2(-radialDir.y, radialDir.x);
+        Vector2 facingDir = _playerController != null
+            ? _playerController.FacingDirection
+            : GetRadialDirection(_angleDeg);
 
         float randomOffset = Random.Range(-_randomAngleOffset, _randomAngleOffset);
-        Vector2 launchDir = RotateVector(tangentDir, randomOffset).normalized;
+        Vector2 launchDir = RotateVector(facingDir, randomOffset).normalized;
 
-        _velocity = launchDir * (_launchSpeed + Random.Range(-_launchSpeedOffset, _launchSpeedOffset));
-        _stateTimer = _launchDuration + Random.Range(-_launchDurationOffset, _launchDurationOffset);
+        float powerMultiplier = 1.0f + (chargePercent * 0.5f);
+        _velocity = launchDir * (_launchSpeed * powerMultiplier + Random.Range(-_launchSpeedOffset, _launchSpeedOffset));
+
+        float durationMultiplier = 1.0f + (chargePercent * 0.5f);
+        _stateTimer = _launchDuration * durationMultiplier + Random.Range(-_launchDurationOffset, _launchDurationOffset);
+
+        _returnTimeElapsed = 0.0f;
         _state = BallState.Launched;
+
+        //Debug.Log($"[Orbital] Charge: {chargePercent * 100}%, Speed: {_velocity.magnitude}");
     }
 
-    private void RejoinOrbit(Vector2 currentPos)
+    protected virtual void RejoinOrbit(Vector2 currentPos)
     {
         Vector2 fromCenter = currentPos - (Vector2)_center.position;
 
@@ -240,6 +226,80 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         _snapTimer = _snapDuration;
         _velocity = Vector2.zero;
         _state = BallState.Orbit;
+    }
+
+    // Orbit ï¿½ï¿½ï¿½Â°ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Üºï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½ß°ï¿½ (ï¿½ß·ï¿½ ï¿½ï¿½ ï¿½Üºï¿½ È¿ï¿½ï¿½ï¿½ï¿½)
+    public void AddVelocity(Vector2 delta)
+    {
+        if (_state == BallState.Orbit) return;
+        _velocity += delta;
+    }
+
+    public Vector2[] SimulateTrajectory(int maxSteps, float simDt)
+    {
+        if (_center == null) return System.Array.Empty<Vector2>();
+
+        var positions = new System.Collections.Generic.List<Vector2>(maxSteps + 1);
+
+        Vector2 simPos = transform.position;
+        Vector2 simVel;
+        float simStateTimer;
+        float simReturnTimeElapsed;
+        float simAngleDeg = _angleDeg;
+        bool isLaunched;
+
+        switch (_state)
+        {
+            case BallState.Orbit:
+                Vector2 facingDir = _playerController != null
+                    ? _playerController.FacingDirection
+                    : GetRadialDirection(_angleDeg);
+                simVel = facingDir * _launchSpeed;
+                simStateTimer = _launchDuration;
+                simReturnTimeElapsed = 0f;
+                isLaunched = true;
+                break;
+            case BallState.Launched:
+                simVel = _velocity;
+                simStateTimer = _stateTimer;
+                simReturnTimeElapsed = _returnTimeElapsed;
+                isLaunched = true;
+                break;
+            case BallState.Returning:
+                simVel = _velocity;
+                simStateTimer = 0f;
+                simReturnTimeElapsed = _returnTimeElapsed;
+                isLaunched = false;
+                break;
+            default:
+                return System.Array.Empty<Vector2>();
+        }
+
+        positions.Add(simPos);
+
+        for (int i = 0; i < maxSteps; i++)
+        {
+            if (isLaunched)
+            {
+                simStateTimer -= simDt;
+                simPos += simVel * simDt;
+                positions.Add(simPos);
+
+                if (simStateTimer <= 0f)
+                {
+                    simReturnTimeElapsed = 0f;
+                    isLaunched = false;
+                }
+            }
+            else
+            {
+                bool rejoined = StepReturnPhysics(ref simPos, ref simVel, ref simReturnTimeElapsed, simAngleDeg, simDt);
+                positions.Add(simPos);
+                if (rejoined) break;
+            }
+        }
+
+        return positions.ToArray();
     }
 
     private Vector2 GetRadialDirection(float angleDeg)
@@ -266,18 +326,30 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         while (_angleDeg < 0.0f) _angleDeg += 360.0f;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Weapon"))
         {
             if (_state != BallState.Launched)
             {
-                Debug.Log("Hit! State: " + _state);
-                Launch();
+                // ï¿½ï¿½ï¿½â¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½
+                float chargePercent = 0f;
+                var chargeInfo = other.GetComponent<Jaein_WeaponChargeInfo>();
+                if (chargeInfo != null)
+                {
+                    chargePercent = chargeInfo.ChargePercent;
+                }
+
+                //Debug.Log($"Hit! State: {_state}, ChargePercent: {chargePercent * 100}%");
+                Launch(chargePercent);
             }
         }
-    }
 
+        if (other.TryGetComponent<fbdfbd_EnemyProjectile>(out _))
+        {
+            Destroy(other.gameObject);
+        }
+    }
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

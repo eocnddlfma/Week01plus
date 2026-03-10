@@ -1,20 +1,16 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class fbdfbd_EnemyBase : MonoBehaviour
+public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
 {
     [Header("Target")]
     [SerializeField] private Transform _target;
-
-    [Header("Health")]
-    [SerializeField] private int _hp;
-    [SerializeField] private int _maxHp;
-    [SerializeField] private bool _isDead;
 
     [Header("Movement")]
     [Min(0f)][SerializeField] private float _moveSpeed = 2f;
     [Min(0f)][SerializeField] private float _stopDistance = 1.2f;
     [Min(0f)][SerializeField] private float _moveLerpSpeed = 8f;
+    private float _distanceTolerance;
 
     [Header("Group Movement")]
     [SerializeField] private LayerMask _enemyLayerMask;
@@ -33,20 +29,25 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
     private Vector2 _personalOffset;
     private float _noiseSeed;
 
-    protected Rigidbody2D Rb { get; private set; }
     public Transform Target => _target;
-    public bool IsDead => _isDead;
+
+    private Vector2 _externalVelocity;
+    public void AddExternalVelocity(Vector2 vel) => _externalVelocity += vel;
 
     // Range Enemy에서 사용
     protected Vector2 LastDir { get; private set; } = Vector2.down;
 
+    protected void InitDistanceTolerance()
+    {
+        _distanceTolerance = Random.Range(0.1f, 0.7f);
+    }
     protected virtual bool CanAttack(float distanceToTarget) => false;
     protected abstract void DoAttack();
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
-        Rb = GetComponent<Rigidbody2D>();
-        Rb.gravityScale = 0f;
+        base.Awake();
+
         Rb.freezeRotation = true;
 
         _noiseSeed = Random.Range(0f, 1000f);
@@ -100,18 +101,25 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
         Vector2 toRealTarget = realTargetPos - Rb.position;
         float distToRealTarget = toRealTarget.magnitude;
 
-        if (distToRealTarget <= _stopDistance)
+        Vector2 desiredMove = Vector2.zero;
+
+        if (distToRealTarget > _stopDistance + _distanceTolerance)
         {
-            _currentVelocity = Vector2.Lerp(_currentVelocity, Vector2.zero, _moveLerpSpeed * Time.fixedDeltaTime);
-            Rb.linearVelocity = _currentVelocity;
-            return;
+            desiredMove = CalculateMoveDirection();
+        }
+        else if (distToRealTarget < _stopDistance - _distanceTolerance)
+        {
+            desiredMove = -toRealTarget.normalized;
         }
 
-        Vector2 desiredMove = CalculateMoveDirection();
         Vector2 targetVelocity = desiredMove * _moveSpeed;
+        _currentVelocity = Vector2.Lerp(
+            _currentVelocity,
+            targetVelocity,
+            _moveLerpSpeed * Time.fixedDeltaTime);
 
-        _currentVelocity = Vector2.Lerp(_currentVelocity, targetVelocity, _moveLerpSpeed * Time.fixedDeltaTime);
-        Rb.linearVelocity = _currentVelocity;
+        Rb.linearVelocity = _currentVelocity + _externalVelocity;
+        _externalVelocity = Vector2.zero;
     }
 
     private Vector2 CalculateMoveDirection()
@@ -206,7 +214,7 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
         return new Vector2(nx, ny) * _noiseWeight;
     }
 
-    protected virtual void OnDeath()
+    protected override void OnDeath()
     {
         Rb.linearVelocity = Vector2.zero;
 
@@ -225,7 +233,7 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
         _nextAttackTime = Time.time + Random.Range(min, max);
     }
 
-    public virtual void TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
         if (_isDead)
             return;

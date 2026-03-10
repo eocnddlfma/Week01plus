@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2913364853311540968
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: _launchSpeed
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: _snapDuration
+      value: 0.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: _returnDamping
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: _orbitAngularSpeed
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: _rejoinBrakeDamping
+      value: 1.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: _orbitAssistStrength
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: _rejoinVelocityLimit
+      value: 9.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: _returnEscalationTime
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: _rejoinDistanceToOrbit
+      value: 1.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: rarity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: description
+      value: "\uD68C\uC624\uB9AC\uACF5\uC740 \uD68C\uC624\uB9AC\uCC98\uB7FC \uD68C\uC624\uB9AC\uCCD0\uC694!\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: launchPower
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: returnPower
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: orbitalPower
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: rotationPower
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: satelliteName
+      value: "\uD68C\uC624\uB9AC \uACF5"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_Name
+      value: WhirlSatellite Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.37841
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.57888
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
