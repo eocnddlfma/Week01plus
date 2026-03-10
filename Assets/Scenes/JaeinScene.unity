@@ -255,6 +255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Jaein_PlayerController
   _moveSpeed: 5
   _rotationSpeed: 10
+  _playerBody: {fileID: 1402296552}
   _attackCooldown: 0.75
   _attackDuration: 0.65
   _pivotAnimator: {fileID: 0}
@@ -531,8 +532,8 @@ MonoBehaviour:
   _launchSpeed: 14
   _launchDuration: 0.35
   _randomAngleOffset: 10
-  _returnStrength: 16
-  _returnDamping: 1
+  _returnStrength: 36
+  _returnDamping: 1.75
   _orbitAssistStrength: 12
   _useCounterClockwiseAssist: 1
   _maxReturnSpeed: 18
@@ -794,7 +795,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
