@@ -76,7 +76,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         float dt = Time.deltaTime;
         if (dt <= 0.0f) return;
 
-        HandleInput();
+        //HandleInput();
         UpdateState(dt);
     }
 
@@ -184,9 +184,11 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
         _velocity += totalAcceleration * dt;
 
-        if (_velocity.magnitude > _maxReturnSpeed)
+        float currentMaxSpeed = _state == BallState.Launched ? 100f : _maxReturnSpeed;
+
+        if (_velocity.magnitude > currentMaxSpeed)
         {
-            _velocity = _velocity.normalized * _maxReturnSpeed;
+            _velocity = _velocity.normalized * currentMaxSpeed;
         }
 
         currentPos += _velocity * dt;
@@ -201,7 +203,8 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         }
     }
 
-    public void Launch()
+    // Launch 메서드 수정
+    public void Launch(float chargePercent= 0.0f)
     {
         if (_center == null) return;
 
@@ -218,9 +221,16 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         float randomOffset = Random.Range(-_randomAngleOffset, _randomAngleOffset);
         Vector2 launchDir = RotateVector(tangentDir, randomOffset).normalized;
 
-        _velocity = launchDir * (_launchSpeed + Random.Range(-_launchSpeedOffset, _launchSpeedOffset));
-        _stateTimer = _launchDuration + Random.Range(-_launchDurationOffset, _launchDurationOffset);
+        float powerMultiplier = 1.0f + (chargePercent * 10.5f);
+        _velocity = launchDir * (_launchSpeed * powerMultiplier + Random.Range(-_launchSpeedOffset, _launchSpeedOffset));
+
+        float durationMultiplier = 1.0f + (chargePercent * 1.0f);
+        _stateTimer = _launchDuration * durationMultiplier + Random.Range(-_launchDurationOffset, _launchDurationOffset);
+
+        _returnTimeElapsed = 0.0f;
         _state = BallState.Launched;
+
+        Debug.Log($"[Orbital] Charge: {chargePercent * 100}%, Speed: {_velocity.magnitude}");
     }
 
     private void RejoinOrbit(Vector2 currentPos)
