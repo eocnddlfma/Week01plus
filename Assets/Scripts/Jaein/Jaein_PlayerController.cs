@@ -10,22 +10,33 @@ public class Jaein_PlayerController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Transform _playerBody; // Body와 OrbitCenter를 별개로 회전시키기 위함
+    [SerializeField] private Transform _weaponTransform;
 
     [Header("Combat Settings")]
     [SerializeField] private float _attackCooldown = 0.75f;
     [SerializeField] private float _attackDuration = 0.65f;
-    private BoxCollider2D _weaponCollider;
+
+    [Header("Charge Settings")]
+    [SerializeField] private float _maxChargeTime = 2.0f;
+    [SerializeField] private float _minChargeScale = 1.0f;
+    [SerializeField] private float _maxChargeScale = 2.5f;   
+    [SerializeField] private string _chargeAnimBool = "IsCharging"; 
 
     [Header("Animation")]
     [SerializeField] private Animator _pivotAnimator; 
     [SerializeField] private string _attackTriggerName = "Attack";
+    [SerializeField] private string _chargeBoolName = "IsCharging";      
+    [SerializeField] private string _fullChargeBoolName = "IsFullCharged"; 
 
     private Rigidbody2D _rigidBody;
     private Vector2 _inputVec;
     private Camera _mainCamera;
 
+    private BoxCollider2D _weaponCollider;
     private float _lastAttackTime;
+    private float _currentChargeTimer = 0f;
     private bool _isAttacking = false;
+    private bool _isCharging = false;
     private bool _isAlive = true;
 
     void Start()
@@ -38,6 +49,8 @@ public class Jaein_PlayerController : MonoBehaviour
 
         if (_weaponCollider == null)
             _weaponCollider = GetComponentInChildren<BoxCollider2D>();
+
+        if (_weaponTransform == null && _weaponCollider != null) _weaponTransform = _weaponCollider.transform; 
 
         _weaponCollider.enabled = false;
         _isAlive = true;
@@ -87,7 +100,9 @@ public class Jaein_PlayerController : MonoBehaviour
     {
         if (_rigidBody != null)
         {
-            _rigidBody.linearVelocity = _inputVec * _moveSpeed;
+            float speed = _isCharging ? _moveSpeed * 0.5f : _moveSpeed; // Charging 중에는 이동 속도 감소
+            //_rigidBody.linearVelocity = _inputVec * _moveSpeed;
+            _rigidBody.linearVelocity = _inputVec * speed;
         }
     }
 
@@ -113,38 +128,72 @@ public class Jaein_PlayerController : MonoBehaviour
 
     private void HandleAttack()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (_isAttacking) return;
+
+        // 1. 차지 시작
+        if (Mouse.current.leftButton.wasPressedThisFrame && Time.time >= _lastAttackTime + _attackCooldown)
         {
-            if (!_isAttacking && Time.time >= _lastAttackTime + _attackCooldown)
+            _isCharging = true;
+            _currentChargeTimer = 0f;
+            if (_pivotAnimator != null) _pivotAnimator.SetBool(_chargeBoolName, true);
+        }
+
+        // 2. 차지 중
+        if (_isCharging)
+        {
+            _currentChargeTimer += Time.deltaTime;
+            float chargePercent = Mathf.Clamp01(_currentChargeTimer / _maxChargeTime);
+
+            // 무기 크기 실시간 조절
+            if (_weaponTransform != null)
             {
-                _lastAttackTime = Time.time;
-                Debug.Log("Attack!");
-                StartCoroutine(AttackRoutine());
+                float currentScale = Mathf.Lerp(_minChargeScale, _maxChargeScale, chargePercent);
+                _weaponTransform.localScale = new Vector3(currentScale, currentScale, 1f);
+            }
+
+            // 풀 차지 애니메이션 전환
+            if (_currentChargeTimer >= _maxChargeTime)
+            {
+                if (_pivotAnimator != null) _pivotAnimator.SetBool(_fullChargeBoolName, true);
+            }
+
+            // 3. 차지 해제 (공격 발사)
+            if (Mouse.current.leftButton.wasReleasedThisFrame)
+            {
+                _isCharging = false;
+                if (_pivotAnimator != null)
+                {
+                    _pivotAnimator.SetBool(_chargeBoolName, false);
+                    _pivotAnimator.SetBool(_fullChargeBoolName, false);
+                }
+                StartCoroutine(AttackRoutine(chargePercent));
             }
         }
     }
 
-    private IEnumerator AttackRoutine()
+    private IEnumerator AttackRoutine(float chargePercent)
     {
         _isAttacking = true;
         _lastAttackTime = Time.time;
 
-        // 애니메이터 트리거 작동
         if (_pivotAnimator != null)
         {
-            // 연타 시 트리거가 쌓이지 않도록 리셋 후 세팅
             _pivotAnimator.ResetTrigger(_attackTriggerName);
             _pivotAnimator.SetTrigger(_attackTriggerName);
         }
 
-        // TODO: 무기 콜라이더 활성화 
-        _weaponCollider.enabled = true;
+        // 위성 타격 파워 전달 (위성 스크립트가 있다면)
+        var orbital = GetComponentInChildren<Jaein_OrbitalWeapon>();
+        if (orbital != null) orbital.Launch(); // TODO: Launch() 메서드에 chargePercent 전달하여 공격력 조절
 
-        // 애니메이션이 휘둘러지는 시간 동안 대기
+        if (_weaponCollider != null) _weaponCollider.enabled = true;
+
         yield return new WaitForSeconds(_attackDuration);
 
-        // TODO: 무기 콜라이더 비활성화
-        _weaponCollider.enabled = false;
+        if (_weaponCollider != null) _weaponCollider.enabled = false;
+
+        // 크기 원복
+        if (_weaponTransform != null) _weaponTransform.localScale = Vector3.one * _minChargeScale;
 
         _isAttacking = false;
     }
