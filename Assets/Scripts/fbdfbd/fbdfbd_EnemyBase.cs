@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -37,7 +38,7 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
         Rb.gravityScale = 0;
         ScheduleNextAttack();
 
-        Ryeol_GameManager.Instance.RegisterEnemy();
+        //Ryeol_GameManager.Instance.RegisterEnemy();
     }
 
     protected virtual void Update()
@@ -85,6 +86,10 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
         Ryeol_GameManager.Instance.UnregisterEnemy();
 
         Debug.Log($"{gameObject.name} 죽었습니다");
+
+        //김우성 추가: dev
+        Destroy(gameObject);
+        Ryeol_GameManager.Instance.AddScore(100);
     }
 
     private void ScheduleNextAttack()

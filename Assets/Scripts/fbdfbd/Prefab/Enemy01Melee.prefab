@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 1414166037066353909}
   - component: {fileID: 25957428285945982}
   - component: {fileID: 1350870756940331031}
-  m_Layer: 7
+  - component: {fileID: 8576393412488235236}
+  m_Layer: 6
   m_Name: Enemy01Melee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbad097d948bb8e4a828c1f4c2a91286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_Enemy_Melee
-  _targetTag: Player
   _target: {fileID: 0}
   _hp: 1
   _maxHp: 1
@@ -114,11 +114,11 @@ MonoBehaviour:
   _stopDistance: 0.5
   _attackIntervalMin: 1
   _attackIntervalMax: 2
-  attackRange: 1
-  damage: 1
-  targetMask:
+  _attackRange: 1.2
+  _damage: 1
+  _targetMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
 --- !u!60 &1350870756940331031
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -169,3 +169,30 @@ PolygonCollider2D:
       - {x: -0.5, y: -0.28866667}
       - {x: 0.5, y: -0.28866667}
   m_UseDelaunayMesh: 1
+--- !u!50 &8576393412488235236
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100931100401140479}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
