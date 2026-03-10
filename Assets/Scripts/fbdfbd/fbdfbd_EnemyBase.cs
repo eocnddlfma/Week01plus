@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -86,7 +87,9 @@ public abstract class fbdfbd_EnemyBase : MonoBehaviour
 
         Debug.Log($"{gameObject.name} 죽었습니다");
 
-        Destroy(this);
+        //김우성 추가: dev
+        Destroy(gameObject);
+        Ryeol_GameManager.Instance.AddScore(100);
     }
 
     private void ScheduleNextAttack()
