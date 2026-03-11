@@ -20,9 +20,9 @@ MonoBehaviour:
   _bossSkillParticle: {fileID: 1470878046072542513, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
   _mineProjectilePrefab: {fileID: 4752453250131162497, guid: 304e73bfc89b3b94481486bdd3fe5b5b, type: 3}
   _damage: 1
-  _projectileSpeed: 8
-  _speedRandomPercent: 0.4
-  _deceleration: 5
+  _projectileSpeed: 10
+  _speedRandomPercent: 0.7
+  _deceleration: 4
   _stopSpeedThreshold: 0.05
   _blinkDuration: 0.5
   _explodeDelay: 0

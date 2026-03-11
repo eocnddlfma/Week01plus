@@ -33,7 +33,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6177873188286416343}
+  - {fileID: 7239742072564515658}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7586198245119859031
@@ -171,13 +171,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemyBossMineProjectile
   _rb: {fileID: 5184056009651690481}
-  _triggerCollider: {fileID: 3957031141241515337}
   _spriteRenderer: {fileID: 7586198245119859031}
-  _explosionTriggerTime: 0.08
-  _fallbackExplosionRadius: 0.8
+  _explodeParticle: {fileID: 5871840765888018355}
+  _explosionRadius: 2.5
   _blinkMinInterval: 0.06
   _blinkMaxInterval: 0.16
-  _explodeParticle: {fileID: 4081615899977684327}
 --- !u!1001 &5264851014697352942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -232,6 +230,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2066225291962563385, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3271927891017563556, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3271927891017563556, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
+      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8193263865222556553, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
@@ -331,13 +337,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
---- !u!198 &4081615899977684327 stripped
+--- !u!198 &5871840765888018355 stripped
 ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8193263865222556553, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1759915740079212893, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
   m_PrefabInstance: {fileID: 5264851014697352942}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &6177873188286416343 stripped
+--- !u!4 &7239742072564515658 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 2066225291962563385, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3271927891017563556, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
   m_PrefabInstance: {fileID: 5264851014697352942}
   m_PrefabAsset: {fileID: 0}

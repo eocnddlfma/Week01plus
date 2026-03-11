@@ -11,11 +11,14 @@ public class fbdfbd_BossSkillMineShot : fbdfbd_BossSkillBase
     [FormerlySerializedAs("_firePos")]
     [SerializeField] private Transform _firePoint;
 
+    private fbdfbd_EnemyBase _owner;
     private Coroutine _fireRoutine;
     private float _wobbleSeed;
 
     private void Awake()
     {
+        _owner = GetComponent<fbdfbd_EnemyBase>();
+
         if (_firePoint == null)
             _firePoint = transform;
     }
@@ -83,7 +86,8 @@ public class fbdfbd_BossSkillMineShot : fbdfbd_BossSkillBase
                 _data.BlinkDuration,
                 _data.ExplodeDelay,
                 _data.TargetMask,
-                gameObject);
+                gameObject,
+                _owner != null ? _owner.Target : null);
 
             if (_data.ProjectileInterval > 0f && i < count - 1)
                 yield return new WaitForSeconds(_data.ProjectileInterval);

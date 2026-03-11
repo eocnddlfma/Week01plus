@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -7,15 +6,13 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
 {
     [Header("Runtime Components")]
     [SerializeField] private Rigidbody2D _rb;
-    [SerializeField] private Collider2D _triggerCollider;
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private ParticleSystem _explodeParticle;
 
     [Header("Explosion Runtime")]
-    [Min(0.01f)][SerializeField] private float _explosionTriggerTime = 0.08f;
-    [Min(0f)][SerializeField] private float _fallbackExplosionRadius = 0.8f;
+    [Min(0f)][SerializeField] private float _explosionRadius = 0.8f;
     [Min(0.01f)][SerializeField] private float _blinkMinInterval = 0.06f;
     [Min(0.01f)][SerializeField] private float _blinkMaxInterval = 0.16f;
-    [SerializeField] private ParticleSystem _explodeParticle;
 
     private int _damage;
     private Vector2 _direction;
@@ -26,39 +23,27 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
     private float _explodeDelay;
     private LayerMask _targetMask;
     private GameObject _owner;
+    private Transform _target;
 
     private bool _isInitialized;
     private bool _isStopped;
     private bool _isExploded;
-    private bool _isDamageWindowOpen;
-
     private Coroutine _stopRoutine;
-    private readonly HashSet<int> _damagedTargets = new HashSet<int>();
-    private readonly Collider2D[] _overlapResults = new Collider2D[16];
 
     private void Awake()
     {
         if (_rb == null)
             _rb = GetComponent<Rigidbody2D>();
 
-        if (_triggerCollider == null)
-            _triggerCollider = GetComponent<Collider2D>();
-
         if (_spriteRenderer == null)
             _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        if (_explodeParticle == null)
+            _explodeParticle = GetComponentInChildren<ParticleSystem>(true);
 
         _rb.gravityScale = 0f;
         _rb.bodyType = RigidbodyType2D.Kinematic;
         _rb.freezeRotation = true;
-
-        if (_triggerCollider != null)
-        {
-            _triggerCollider.isTrigger = true;
-            _triggerCollider.enabled = false;
-        }
-
-        if (_explodeParticle == null)
-            _explodeParticle = GetComponentInChildren<ParticleSystem>(true);
 
         if (_explodeParticle != null)
             _explodeParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
@@ -73,7 +58,8 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
         float blinkDuration,
         float explodeDelay,
         LayerMask targetMask,
-        GameObject owner)
+        GameObject owner,
+        Transform target)
     {
         _damage = Mathf.Max(1, damage);
         _direction = direction.sqrMagnitude > 0.0001f ? direction.normalized : Vector2.up;
@@ -84,15 +70,12 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
         _explodeDelay = Mathf.Max(0f, explodeDelay);
         _targetMask = targetMask;
         _owner = owner;
+        _target = target;
 
         _isInitialized = true;
         _isStopped = false;
         _isExploded = false;
-        _isDamageWindowOpen = false;
-        _damagedTargets.Clear();
-
-        if (_triggerCollider != null)
-            _triggerCollider.enabled = false;
+        _stopRoutine = null;
 
         if (_spriteRenderer != null)
             _spriteRenderer.enabled = true;
@@ -171,13 +154,38 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
             return;
 
         _isExploded = true;
+
         if (_spriteRenderer != null)
             _spriteRenderer.enabled = false;
 
+        ApplyDamageToInjectedTarget();
         float fxLifeTime = OnExplodeFx();
-        StartCoroutine(ExplosionDamageWindowRoutine());
-        float destroyDelay = Mathf.Max(_explosionTriggerTime, fxLifeTime);
-        StartCoroutine(DestroyAfterExplodeWindow(destroyDelay));
+        StartCoroutine(DestroyAfterExplodeWindow(fxLifeTime));
+    }
+
+    private void ApplyDamageToInjectedTarget()
+    {
+        if (_target == null)
+            return;
+
+        if (_owner != null && _target.gameObject == _owner)
+            return;
+
+        if ((_targetMask.value & (1 << _target.gameObject.layer)) == 0)
+            return;
+
+        float radius = Mathf.Max(0f, _explosionRadius);
+        Vector2 delta = (Vector2)_target.position - _rb.position;
+        if (delta.sqrMagnitude > radius * radius)
+            return;
+
+        Debug.Log("Mine explosion hit target in range.");
+
+        Jaein_ObjectBase damageable = _target.GetComponent<Jaein_ObjectBase>();
+        if (damageable != null)
+        {
+            damageable.TakeDamage(_damage);
+        }
     }
 
     private IEnumerator DestroyAfterExplodeWindow(float delay)
@@ -186,78 +194,6 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
             yield return new WaitForSeconds(delay);
 
         Destroy(gameObject);
-    }
-
-    private void ApplyDamageToCurrentOverlaps()
-    {
-        if (_triggerCollider != null)
-        {
-            ContactFilter2D filter = new ContactFilter2D();
-            filter.useLayerMask = true;
-            filter.layerMask = _targetMask;
-
-            int count = _triggerCollider.Overlap(filter, _overlapResults);
-            for (int i = 0; i < count; i++)
-                TryDamage(_overlapResults[i]);
-
-            return;
-        }
-
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, _fallbackExplosionRadius, _targetMask);
-        for (int i = 0; i < hits.Length; i++)
-            TryDamage(hits[i]);
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (!_isDamageWindowOpen)
-            return;
-
-        TryDamage(other);
-    }
-
-    private IEnumerator ExplosionDamageWindowRoutine()
-    {
-        if (_triggerCollider == null)
-        {
-            ApplyDamageToCurrentOverlaps();
-            yield break;
-        }
-
-        _isDamageWindowOpen = true;
-        _triggerCollider.enabled = true;
-
-        // Enable moment overlap check + short trigger window for late entries.
-        ApplyDamageToCurrentOverlaps();
-
-        if (_explosionTriggerTime > 0f)
-            yield return new WaitForSeconds(_explosionTriggerTime);
-
-        _triggerCollider.enabled = false;
-        _isDamageWindowOpen = false;
-    }
-
-    private void TryDamage(Collider2D other)
-    {
-        if (other == null)
-            return;
-
-        if (_owner != null && other.gameObject == _owner)
-            return;
-
-        if ((_targetMask.value & (1 << other.gameObject.layer)) == 0)
-            return;
-
-        int id = other.gameObject.GetInstanceID();
-        if (_damagedTargets.Contains(id))
-            return;
-
-        Jaein_ObjectBase damageable = other.GetComponent<Jaein_ObjectBase>();
-        if (damageable == null)
-            return;
-
-        _damagedTargets.Add(id);
-        damageable.TakeDamage(_damage);
     }
 
     private void OnBlinkStartFx()
@@ -277,7 +213,6 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
             _explodeParticle.gameObject.SetActive(true);
 
         _explodeParticle.Play(true);
-
         return EstimateFxLifeTime(_explodeParticle);
     }
 
@@ -295,12 +230,11 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
         for (int i = 0; i < systems.Length; i++)
         {
             ParticleSystem.MainModule main = systems[i].main;
-
             float startDelay = GetCurveMax(main.startDelay);
             float duration = Mathf.Max(0f, main.duration);
             float startLife = GetCurveMax(main.startLifetime);
-
             float candidate = startDelay + duration + startLife;
+
             if (candidate > maxLife)
                 maxLife = candidate;
         }
@@ -320,4 +254,20 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
 
         return Mathf.Max(0f, value);
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Vector3 center = Application.isPlaying && _rb != null
+            ? (Vector3)_rb.position
+            : transform.position;
+
+        float radius = Mathf.Max(0f, _explosionRadius);
+        Gizmos.color = new Color(1f, 0.35f, 0.1f, 0.35f);
+        Gizmos.DrawSphere(center, radius);
+        Gizmos.color = new Color(1f, 0.35f, 0.1f, 0.95f);
+        Gizmos.DrawWireSphere(center, radius);
+    }
+#endif
+
 }
