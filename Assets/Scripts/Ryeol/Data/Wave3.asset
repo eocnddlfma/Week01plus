@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afd842d64226f5941808b2e929ea36d4, type: 3}
   m_Name: Wave3
   m_EditorClassIdentifier: Assembly-CSharp::Ryeol_WaveData
-  id: 3
+  id: 2
   enemyPrefabs:
-  - {fileID: 4100931100401140479, guid: 6a7ac9444c936c14487ab3d48624d4c2, type: 3}
+  - {fileID: 3809240490651407635, guid: e7c4fbadbb06aee42ba0017bc453ee80, type: 3}
   minSpawnInterval: 0.5
   maxSpawnInterval: 2
   isBoss: 1

@@ -310,8 +310,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e07c878c7b788514993caf68cc4d966c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemySplit
-  _hp: 0
-  _maxHp: 0
+  _hp: 1
+  _maxHp: 1
   _isDead: 0
   _target: {fileID: 0}
   _moveSpeed: 1
