@@ -51,6 +51,9 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     private bool _isAttacking = false;
     private bool _isCharging = false;
 
+    [Header("Camera Effect by WooSung")]
+    [SerializeField] private WS_ChargeCameraEffect cameraEffect;
+
     protected override void Awake()
     {
         base.Awake();
@@ -198,6 +201,8 @@ public class Jaein_PlayerController : Jaein_PlayerBase
                     _pivotAnimator.SetBool(_chargeBoolName, true);
                     _pivotAnimator.SetBool(_fullChargeBoolName, false);
                 }
+
+                cameraEffect.BeginCharge();
             }
         }
 
@@ -223,6 +228,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
             if (Mouse.current.leftButton.wasReleasedThisFrame)
             {
                 _isCharging = false;
+                cameraEffect.EndCharge();
 
                 if (_pivotAnimator != null)
                 {
