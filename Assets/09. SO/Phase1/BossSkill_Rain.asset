@@ -22,10 +22,10 @@ MonoBehaviour:
   _spawnY: 30
   _rangeWidth: 46
   _stepDelay: 4
-  _damage: 10
+  _damage: 1
   _targetMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   _phases:
   - count: 250
     spawnDelay: 0.04

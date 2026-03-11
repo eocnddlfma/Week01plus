@@ -19,11 +19,11 @@ MonoBehaviour:
   _skillRepeatCount: 0
   _bossSkillParticle: {fileID: 0}
   _weaponPrefab: {fileID: 6786342706268129414, guid: 9c7e141d8971519438a26ab09a3dfa65, type: 3}
-  _weaponOffset: {x: 0, y: -4, z: 0}
-  _damage: 10
+  _weaponOffset: {x: 0, y: -8, z: 0}
+  _damage: 1
   _targetMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   _warningDuration: 0.8
   _warningPrefab: {fileID: 6806057993752959667, guid: a85c1f51512bf3640a9322748448db5b, type: 3}
   _waitAtPoint: 0.5
