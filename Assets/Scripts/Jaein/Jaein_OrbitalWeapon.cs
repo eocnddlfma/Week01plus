@@ -204,6 +204,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         _stateTimer = _launchDuration * durationMultiplier + Random.Range(-_launchDurationOffset, _launchDurationOffset);
 
         _returnTimeElapsed = 0.0f;
+        
         _state = BallState.Launched;
 
         //Debug.Log($"[Orbital] Charge: {chargePercent * 100}%, Speed: {_velocity.magnitude}");
@@ -345,10 +346,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
             }
         }
 
-        if (other.TryGetComponent<fbdfbd_EnemyProjectile>(out _))
-        {
-            Destroy(other.gameObject);
-        }
+        // 구 충돌시 총알 지우는 코드 if (other.TryGetComponent<fbdfbd_EnemyProjectile>(out _)) Destroy(other.gameObject);
     }
 #if UNITY_EDITOR
     private void OnDrawGizmos()
