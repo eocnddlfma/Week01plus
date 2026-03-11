@@ -85,6 +85,7 @@ public class Ryeol_UI_GameScene : MonoBehaviour
 
     private void ShowPanel()
     {
+        _gameEndPanel.alpha = 1.0f;
         _gameEndPanel.interactable = true;
         _gameEndPanel.blocksRaycasts = true;
 
