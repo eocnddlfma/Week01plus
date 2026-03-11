@@ -237,10 +237,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 7
+  m_SortingOrder: 40
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.4811321, g: 0.061946016, b: 0.015886446, a: 1}
+  m_Color: {r: 1, g: 0.34259552, b: 0.2688679, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -420,10 +420,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 7
+  m_SortingOrder: 40
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.4811321, g: 0.061946016, b: 0.015886446, a: 1}
+  m_Color: {r: 1, g: 0.34259552, b: 0.2688679, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -542,10 +542,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 7
+  m_SortingOrder: 40
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.4811321, g: 0.061946016, b: 0.015886446, a: 1}
+  m_Color: {r: 1, g: 0.34259552, b: 0.2688679, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -788,10 +788,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 7
+  m_SortingOrder: 40
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 0.4811321, g: 0.061946016, b: 0.015886446, a: 1}
+  m_Color: {r: 1, g: 0.34259552, b: 0.2688679, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -950,6 +950,7 @@ GameObject:
   - component: {fileID: 7402948227832054284}
   - component: {fileID: 1409126831885824140}
   - component: {fileID: 4668398771796576261}
+  - component: {fileID: 24521260830321913}
   m_Layer: 0
   m_Name: P1HeartBoss
   m_TagString: Untagged
@@ -1106,6 +1107,28 @@ MonoBehaviour:
   - {fileID: 305961722441918133}
   - {fileID: 27772546601801100}
   - {fileID: 1072823917593641678}
+--- !u!114 &24521260830321913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8450166740244825023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0a5b0125f3f644eaee340536f61347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemyHitFlashOnDamage
+  _enemy: {fileID: 15815210036830812}
+  _renderers:
+  - {fileID: 2333952126385465865}
+  - {fileID: 3175571784739450902}
+  - {fileID: 8066645052236355602}
+  - {fileID: 6196591650272283700}
+  - {fileID: 5875645752142499880}
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _flashBlend: 0.816
+  _flashDuration: 0.04
 --- !u!1 &8804956713068024260
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,10 +1239,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 7
+  m_SortingOrder: 40
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.4811321, g: 0.061946016, b: 0.015886446, a: 1}
+  m_Color: {r: 1, g: 0.34259552, b: 0.2688679, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

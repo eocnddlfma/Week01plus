@@ -79,10 +79,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 7
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.4811321, g: 0.061946016, b: 0.015886446, a: 1}
+  m_Color: {r: 1, g: 0.34259552, b: 0.2688679, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -170,10 +170,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 7
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.4811321, g: 0.061946016, b: 0.015886446, a: 1}
+  m_Color: {r: 1, g: 0.34259552, b: 0.2688679, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -261,10 +261,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 7
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.4811321, g: 0.061946016, b: 0.015886446, a: 1}
+  m_Color: {r: 1, g: 0.34259552, b: 0.2688679, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -352,10 +352,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 7
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.4811321, g: 0.061946016, b: 0.015886446, a: 1}
+  m_Color: {r: 1, g: 0.34259552, b: 0.2688679, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -443,10 +443,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 7
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 0.4811321, g: 0.061946016, b: 0.015886446, a: 1}
+  m_Color: {r: 1, g: 0.34259552, b: 0.2688679, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -473,6 +473,7 @@ GameObject:
   - component: {fileID: 7900008186490780577}
   - component: {fileID: 6316680995062518849}
   - component: {fileID: 2902948011076229518}
+  - component: {fileID: 5917702990860939499}
   m_Layer: 6
   m_Name: P2HeartBoss
   m_TagString: Untagged
@@ -590,8 +591,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76d1f5a216eaf14a85a282b725472a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SSH.Boss.SSH_BossPhase2
-  _hp: 10000
-  _maxHp: 10000
+  _hp: 5000
+  _maxHp: 5000
   _isDead: 0
   _target: {fileID: 0}
   _moveSpeed: 0
@@ -714,6 +715,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SSH.Boss.SSH_BossSkillPhase2Sweep
   _so: {fileID: 11400000, guid: 5cf626a5e44b2d944bd95ad1fe049868, type: 2}
+--- !u!114 &5917702990860939499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7746333867296196548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0a5b0125f3f644eaee340536f61347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemyHitFlashOnDamage
+  _enemy: {fileID: 0}
+  _renderers:
+  - {fileID: 6816355155357938804}
+  - {fileID: 3047419248549220929}
+  - {fileID: 4195684020092702018}
+  - {fileID: 2896458732734144331}
+  - {fileID: 1910550290345215143}
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _flashBlend: 1
+  _flashDuration: 0.04
 --- !u!1 &8379792824142010488
 GameObject:
   m_ObjectHideFlags: 0

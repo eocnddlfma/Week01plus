@@ -259,7 +259,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1340
   m_TargetDisplay: 0
 --- !u!224 &49112617
 RectTransform:
@@ -1910,6 +1910,11 @@ MonoBehaviour:
   _endImpactMoveDistance: 1
   _endImpactZoomOffset: -1
   _endImpactDuration: 0.14
+  _damagedShakeAmplitude: 0.22
+  _damagedShakeSpeed: 70
+  _damagedShakeDuration: 0.18
+  _damagedKickDistance: 0.18
+  _useDamageKickBack: 1
   sizeOffset: 0
   positionOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &1448733733 stripped
