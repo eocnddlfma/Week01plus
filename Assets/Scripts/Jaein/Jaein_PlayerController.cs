@@ -236,11 +236,16 @@ public class Jaein_PlayerController : Jaein_PlayerBase
                 float chargeTime = _currentChargeTimer - _chargeThreshold;
                 _chargePercent = Mathf.Clamp01(chargeTime / (_maxChargeTime - _chargeThreshold));
 
-                // 비주얼 처리 파트
-                if (CurrentWeaponTransform != null)
+                float multiplier = Mathf.Lerp(_minChargeScale, _maxChargeScale, _chargePercent);
+
+                if (_boxWeaponTransform != null)
                 {
-                    float multiplier = Mathf.Lerp(_minChargeScale, _maxChargeScale, _chargePercent);
-                    CurrentWeaponTransform.localScale = InitialScale * multiplier;
+                    _boxWeaponTransform.localScale = _initialBoxScale * multiplier;
+                }
+
+                if (_colliderMode == ColliderMode.Polygon && _polygonWeaponTransform != null)
+                {
+                    _polygonWeaponTransform.localScale = _initialPolygonScale * multiplier;
                 }
 
                 if (_pivotAnimator != null)
@@ -294,7 +299,8 @@ public class Jaein_PlayerController : Jaein_PlayerBase
 
         ToggleWeaponCollider(false);
 
-        if (CurrentWeaponTransform != null) CurrentWeaponTransform.localScale = InitialScale;
+        if (_boxWeaponTransform != null) _boxWeaponTransform.localScale = _initialBoxScale;
+        if (_polygonWeaponTransform != null) _polygonWeaponTransform.localScale = _initialPolygonScale;
 
         ResetCurrentWeaponCharge();
 
@@ -318,7 +324,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
             _polygonChargeInfo.ResetCharge();
     }
 
-    // 공격 시 박스 or 폴리곤 콜라이더 토글
+    // 박스 or 폴리곤 콜라이더 토글
     private void ToggleWeaponCollider(bool isEnable)
     {
         DisableAllWeaponColliders();

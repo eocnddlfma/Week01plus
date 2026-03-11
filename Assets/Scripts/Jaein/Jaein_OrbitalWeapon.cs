@@ -365,10 +365,17 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
         // 구 충돌시 총알 지우는 코드 if (other.TryGetComponent<fbdfbd_EnemyProjectile>(out _)) Destroy(other.gameObject);
 
+        var enemy = other.gameObject.GetComponent<fbdfbd_EnemyBase>();
+
+        if (enemy != null)
         {
-            Destroy(other.gameObject);
+            if (_state == BallState.Orbit) return;
+
+            enemy.TakeDamage(100);
+            return; 
         }
     }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
