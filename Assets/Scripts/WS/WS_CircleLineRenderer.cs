@@ -44,4 +44,11 @@ public class WS_CircleLineRenderer : MonoBehaviour
             _lineRenderer.SetPosition(i, new Vector3(x, y, 0f));
         }
     }
+
+    public void SetCircle(float radius, int segments)
+    {
+        _radius = radius;
+        _segments = Mathf.Max(3, segments);
+        DrawCircle();
+    }
 }
