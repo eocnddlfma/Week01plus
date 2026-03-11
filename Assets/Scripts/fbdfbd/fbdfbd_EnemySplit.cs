@@ -36,8 +36,6 @@ public class fbdfbd_EnemySplit : fbdfbd_EnemyBase
             {
                 dmg.TakeDamage(_damage);
             }
-
-            Debug.Log($"Melee {_targetMask}, 타격 {i}");
         }
     }
 
@@ -91,10 +89,9 @@ public class fbdfbd_EnemySplit : fbdfbd_EnemyBase
         if (spawnPos == null)
             return;
 
-        GameObject clone = Instantiate(
-            _splitEnemyClonePrefab,
-            spawnPos.position,
-            spawnPos.rotation);
+        Transform container = transform.parent;
+        GameObject clone = Instantiate(_splitEnemyClonePrefab, spawnPos.position, spawnPos.rotation, container);
+
 
         if (clone.TryGetComponent(out fbdfbd_EnemySplitClone splitClone))
         {

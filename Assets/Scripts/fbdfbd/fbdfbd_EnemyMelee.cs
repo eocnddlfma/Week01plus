@@ -24,7 +24,6 @@ public class fbdfbd_EnemyMelee : fbdfbd_EnemyBase
             {
                 dmg.TakeDamage(_damage);
             }
-            Debug.Log($"Melee {_targetMask}, 타격 {i}");
         }
     }
 }

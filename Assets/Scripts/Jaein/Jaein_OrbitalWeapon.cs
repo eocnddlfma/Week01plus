@@ -49,6 +49,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private bool _drawOrbitGizmo = true;
+    [SerializeField] private float _stateGizmoRadius = 0.5f;
 
     private Jaein_PlayerController _playerController;
 
@@ -185,7 +186,6 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         return distanceToOrbit <= _rejoinDistanceToOrbit && vel.magnitude <= _rejoinVelocityLimit * 1.5f;
     }
 
-    // ���� �߻�
     public void Launch(float chargePercent= 0.0f)
     {
         if (_center == null) return;
@@ -229,7 +229,6 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         _state = BallState.Orbit;
     }
 
-    // Orbit ���°� �ƴ� ���� �ܺ� �ӵ��� �߰� (�߷� �� �ܺ� ȿ����)
     public void AddVelocity(Vector2 delta)
     {
         if (_state == BallState.Orbit) return;
@@ -341,7 +340,6 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         {
             if (_state != BallState.Launched)
             {
-                // ���⿡�� ���� ������ �о��
                 float chargePercent = 0f;
                 var chargeInfo = other.GetComponent<Jaein_WeaponChargeInfo>();
                 if (chargeInfo != null)
@@ -359,20 +357,41 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if (!_drawOrbitGizmo || _center == null) return;
+        if (!_drawOrbitGizmo) return;
 
-        Gizmos.color = Color.red;
-        const int segmentCount = 96;
-        Vector3 prev = _center.position + Vector3.right * _orbitRadius;
-
-        for (int i = 1; i <= segmentCount; i++)
+        // 궤도 그리기
+        if (_center != null)
         {
-            float t = i / (float)segmentCount;
-            float angle = t * Mathf.PI * 2.0f;
-            Vector3 next = _center.position + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0.0f) * _orbitRadius;
-            Gizmos.DrawLine(prev, next);
-            prev = next;
+            Gizmos.color = Color.red;
+            const int segmentCount = 96;
+            Vector3 prev = _center.position + Vector3.right * _orbitRadius;
+
+            for (int i = 1; i <= segmentCount; i++)
+            {
+                float t = i / (float)segmentCount;
+                float angle = t * Mathf.PI * 2.0f;
+                Vector3 next = _center.position + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0.0f) * _orbitRadius;
+                Gizmos.DrawLine(prev, next);
+                prev = next;
+            }
         }
+
+        // 상태에 따라 기즈모 색상 변경 및 원 그리기
+        switch (_state)
+        {
+            case BallState.Orbit:
+                Gizmos.color = Color.red; // 궤도 상태: 빨간색
+                break;
+            case BallState.Launched:
+                Gizmos.color = Color.yellow; // 발사 상태: 노란색
+                break;
+            case BallState.Returning:
+                Gizmos.color = Color.green; // 복귀 상태: 녹색
+                break;
+        }
+
+        // 공 외부에 원을 그립니다.
+        Gizmos.DrawWireSphere(transform.position, _stateGizmoRadius);
     }
 #endif
 }
