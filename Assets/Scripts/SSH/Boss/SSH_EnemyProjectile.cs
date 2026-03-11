@@ -6,6 +6,7 @@ public class SSH_EnemyProjectile : MonoBehaviour
     [SerializeField]private int _damage;
     [SerializeField] private float _speed;
     [SerializeField] private float LifeTime = 4f;
+    [SerializeField] private int usage = 1;
 
     private Rigidbody2D _rb;
     private float _spawnTime;
@@ -52,6 +53,7 @@ public class SSH_EnemyProjectile : MonoBehaviour
             Debug.Log($"Boss 투사체 타격, 데미지: {_damage}");
         }
 
-        Destroy(gameObject);
+        usage--;
+        if (usage <= 0) Destroy(gameObject);
     }
 }

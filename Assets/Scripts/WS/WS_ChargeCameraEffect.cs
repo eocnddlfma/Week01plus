@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 public class WS_ChargeCameraEffect : MonoBehaviour
 {
@@ -43,6 +44,9 @@ public class WS_ChargeCameraEffect : MonoBehaviour
     private float _baseSize;
     private float _endShakeTimer;
     private float _endImpactTimer;
+
+    public float sizeOffset = 0;
+    public Vector3 positionOffset = Vector3.zero;
 
     private float _chargeNoiseTime;
     private float _endNoiseTime;
@@ -94,8 +98,8 @@ public class WS_ChargeCameraEffect : MonoBehaviour
         if (_targetCamera == null)
             return;
 
-        Vector3 targetBasePos = _basePosition;
-        float targetSize = _baseSize;
+        Vector3 targetBasePos = _basePosition + positionOffset;
+        float targetSize = _baseSize + sizeOffset;
 
         if (_isCharging && _player != null)
         {
@@ -171,9 +175,33 @@ public class WS_ChargeCameraEffect : MonoBehaviour
         _targetCamera.orthographicSize = _currentSize;
     }
 
+    /// <summary>
+    /// positionOffset을 DOTween으로 보간
+    /// </summary>
+    public void TweenToPositionOffset(Vector3 offset, float duration)
+    {
+        DOTween.To(() => positionOffset, x => positionOffset = x, offset, duration)
+               .SetEase(Ease.OutCubic);
+    }
+
     public void SetBaseSize(float size)
     {
         _baseSize = size;
+    }
+
+    public void SetSizeOffset(float offset)
+    {
+        sizeOffset = offset;
+    }
+
+    /// <summary>
+    /// targetSize까지 sizeOffset을 DOTween으로 보간
+    /// </summary>
+    public void TweenToSize(float targetSize, float duration)
+    {
+        float targetOffset = targetSize - _baseSize;
+        DOTween.To(() => sizeOffset, x => sizeOffset = x, targetOffset, duration)
+               .SetEase(Ease.OutCubic);
     }
 
     public void BeginCharge()

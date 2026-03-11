@@ -29,7 +29,7 @@ namespace SSH.Boss
 
                     yield return new WaitForSeconds(phase.spawnDelay);
                 }
-
+                
                 yield return new WaitForSeconds(_so.StepDelay);
             }
 

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SSH_SOBossSkillDodgeball
   _skillName: 
   _skillNumber: 101
-  _skillCooldown: 32
-  _skillCastTime: 32
+  _skillCooldown: 31
+  _skillCastTime: 31
   _skillRepeatCount: 0
   _bossSkillParticle: {fileID: 0}
   _patternPrefab: {fileID: 5809113855475138189, guid: c9fd2e4832fb52742a1366c3a31d4a35, type: 3}
@@ -27,6 +27,6 @@ MonoBehaviour:
   _burstRadius: 14
   _rotCount: 45
   _rotDelay: 0.25
-  _rotLaps: 2.2
-  _rotSpawnCount: 25
-  _rotSpeed: 150
+  _rotLaps: 2.1
+  _rotSpawnCount: 15
+  _rotSpeed: 200

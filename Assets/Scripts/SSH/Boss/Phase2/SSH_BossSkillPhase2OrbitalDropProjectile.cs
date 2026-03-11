@@ -15,7 +15,10 @@ public class SSH_BossSkillPhase2OrbitalDropProjectile : Jaein_OrbitalWeapon
     [SerializeField] private float     _batReturnSpeed = 125f;
 
     private Transform _bossTransform;
-    private bool      _batHit = false;
+    private bool      _batHit    = false;
+    private float     _spawnTime = -1f;
+
+    [SerializeField] private float _spawnGrace = 0.5f;  // 생성 직후 무적 시간
 
     // base.Awake()는 private → Unity가 둘 다 호출, Init()에서 _center 덮어씀
     protected override void Awake() 
@@ -43,13 +46,13 @@ public class SSH_BossSkillPhase2OrbitalDropProjectile : Jaein_OrbitalWeapon
         _returnTimeElapsed = 0f;
         _batHit            = false;
 
-        // 타이머 없이 처음부터 Returning 상태로 플레이어에게 날아감
-        _state = BallState.Returning;
+        _state     = BallState.Returning;
+        _spawnTime = Time.time;
     }
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        // 배트(Weapon 태그) → 보스 방향 직선 발사
+        // 배트(Weapon 태그) → 보스 방향 직선 발사 (무적 시간 무관하게 항상 처리)
         if (other.CompareTag("Weapon") && !_batHit)
         {
             Debug.Log($"[OrbitalDrop] 배트 충돌 | bossTransform={_bossTransform} | state={_state}");
@@ -72,6 +75,9 @@ public class SSH_BossSkillPhase2OrbitalDropProjectile : Jaein_OrbitalWeapon
         }
 
         Debug.Log($"[OrbitalDrop] 충돌 | tag={other.tag} | batHit={_batHit} | layer={other.gameObject.layer}");
+
+        // 생성 직후 무적 시간 (플레이어 피격만 방어)
+        if (_spawnTime >= 0f && Time.time - _spawnTime < _spawnGrace) return;
 
         if (!_batHit)
         {

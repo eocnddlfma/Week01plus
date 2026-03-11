@@ -8,6 +8,8 @@ public class SSH_SplitOrbitalWeapon : Jaein_OrbitalWeapon
     [SerializeField] private LayerMask _enemyLayer;
 
     private bool _isClone = false;
+    private float _spawnTime = -1f;
+    private const float _spawnGrace = 0.1f;
 
     // Instantiate 직후 Start() 실행 전에 호출해 클론을 초기화
     public void InitAsClone(Vector2 velocity, float stateTimer)
@@ -17,6 +19,7 @@ public class SSH_SplitOrbitalWeapon : Jaein_OrbitalWeapon
         _velocity = velocity;
         _stateTimer = stateTimer;
         _returnTimeElapsed = 0f;
+        _spawnTime = Time.time;
     }
 
     protected override void Start()
@@ -47,6 +50,9 @@ public class SSH_SplitOrbitalWeapon : Jaein_OrbitalWeapon
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
+        if (_isClone && _spawnTime >= 0f && Time.time - _spawnTime < _spawnGrace)
+            return;
+
         base.OnTriggerEnter2D(other);
 
         if (_state != BallState.Orbit

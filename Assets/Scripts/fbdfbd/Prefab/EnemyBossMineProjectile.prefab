@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3957031141241515337}
   - component: {fileID: 5184056009651690481}
   - component: {fileID: 4752453250131162497}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: EnemyBossMineProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,6 +184,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5725971990342620163}
     m_Modifications:
+    - target: {fileID: 732126920238445726, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 1470878046072542513, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
       propertyPath: m_Name
       value: EnemyBossMineProjectile
@@ -191,6 +195,10 @@ PrefabInstance:
     - target: {fileID: 1470878046072542513, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2064509538878258708, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2066225291962563385, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
       propertyPath: m_LocalPosition.x

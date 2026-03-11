@@ -227,6 +227,7 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
         IsCastingSkill = true;
         OnBeforeCast(skillIndex, slot);
 
+        Debug.Log($"[Boss] 스킬 시작 | index={skillIndex} | 스킬명={data.SkillName} | logic={logic.GetType().Name} | CastTime={data.SkillCastTime} | RepeatCount={data.SkillRepeatCount} | Cooldown={data.SkillCooldown}");
         logic.Enter();
 
         float castTime = Mathf.Max(0f, data.SkillCastTime);
@@ -243,6 +244,7 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
         logic.Exit();
         _nextSkillReadyTimes[skillIndex] = Time.time + Mathf.Max(0f, data.SkillCooldown);
 
+        Debug.Log($"[Boss] 스킬 종료 | index={skillIndex} | 스킬명={data.SkillName}");
         OnAfterCast(skillIndex, slot);
         IsCastingSkill = false;
     }

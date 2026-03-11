@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 namespace SSH.Boss
 {
     public class SSH_BossPhase2 : fbdfbd_EnemyBossBase
     {
+        [Header("Camera")]
+        [SerializeField] private float _targetCameraSize    = 35f;
+        [SerializeField] private float _cameraYOffset       = 5f;
+        [SerializeField] private float _cameraTweenDuration = 1.2f;
+
         [Header("Orbit")]
         [SerializeField] private Vector3 _orbitCenter = Vector3.zero;
         [SerializeField] private float   _orbitRadius = 20f;
@@ -23,7 +29,26 @@ namespace SSH.Boss
             base.Awake();
             _currentAngle = _startAngle;
             UpdateOrbitPosition();
+            SetupCamera();
             StartCoroutine(OrbitLoop());
+        }
+
+        private void SetupCamera()
+        {
+            Camera cam = Camera.main;
+            if (cam == null) return;
+
+            WS_ChargeCameraEffect effect = cam.GetComponent<WS_ChargeCameraEffect>();
+            if (effect != null)
+            {
+                effect.TweenToSize(_targetCameraSize, _cameraTweenDuration);
+                effect.TweenToPositionOffset(new Vector3(0f, _cameraYOffset, 0f), _cameraTweenDuration);
+            }
+            else
+            {
+                cam.DOOrthoSize(_targetCameraSize, _cameraTweenDuration).SetEase(Ease.OutCubic);
+                cam.transform.DOMoveY(cam.transform.position.y + _cameraYOffset, _cameraTweenDuration).SetEase(Ease.OutCubic);
+            }
         }
 
         private IEnumerator OrbitLoop()

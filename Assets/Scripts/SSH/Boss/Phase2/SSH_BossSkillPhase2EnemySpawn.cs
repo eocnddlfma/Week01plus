@@ -22,8 +22,13 @@ namespace SSH.Boss
                 Vector3    pos    = transform.position + new Vector3(offset.x, offset.y, 0f);
 
                 GameObject enemy = Instantiate(prefab, pos, Quaternion.identity);
-                if (_boss?.Target != null)
-                    enemy.GetComponent<fbdfbd_EnemyBase>()?.SetTarget(_boss.Target);
+
+                fbdfbd_EnemyBase enemyBase = enemy.GetComponent<fbdfbd_EnemyBase>();
+                if (enemyBase != null)
+                {
+                    if (_boss?.Target != null) enemyBase.SetTarget(_boss.Target);
+                    enemyBase.UnregisterFromEnemyCount();
+                }
 
                 yield return new WaitForSeconds(_so.SpawnDelay);
             }
