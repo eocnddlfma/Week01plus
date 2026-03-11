@@ -26,7 +26,6 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     // TODO: 차지 시 콜라이더의 크기를 변경하는 로직 진행 중
     [SerializeField] private Transform _boxWeaponTransform;
     [SerializeField] private Transform _polygonWeaponTransform;
-    [SerializeField] private Transform _weaponTransform;
 
     public Vector2 FacingDirection => _playerBody != null ? (Vector2)_playerBody.right : Vector2.right;
 
@@ -94,7 +93,6 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         if (_weaponPolygonCollider != null)
             _polygonChargeInfo = _weaponPolygonCollider.GetComponent<Jaein_WeaponChargeInfo>();
 
-        if (_weaponTransform != null) _initialScale = _weaponTransform.localScale;
         if (_boxWeaponTransform != null) _initialBoxScale = _boxWeaponTransform.localScale;
         if (_polygonWeaponTransform != null) _initialPolygonScale = _polygonWeaponTransform.localScale;
 
@@ -257,36 +255,8 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         {
             // Debug.Log("차지 유무: " + _isCharging + ", 차지 퍼센트: " + _chargePercent);
             ExecuteAttack(_chargePercent);
+            cameraEffect.EndCharge(_chargePercent);
             _currentChargeTimer += Time.deltaTime;
-            float chargePercent = Mathf.Clamp01(_currentChargeTimer / _maxChargeTime);
-
-            if (_weaponTransform != null)
-            {
-                float multiplier = Mathf.Lerp(_minChargeScale, _maxChargeScale, chargePercent);
-                _weaponTransform.localScale = _initialScale * multiplier;
-            }
-
-            if (_currentChargeTimer >= _maxChargeTime)
-            {
-                if (_pivotAnimator != null && !_pivotAnimator.GetBool(_fullChargeBoolName))
-                {
-                    _pivotAnimator.SetBool(_fullChargeBoolName, true);
-                }
-            }
-
-            if (Mouse.current.leftButton.wasReleasedThisFrame)
-            {
-                _isCharging = false;
-                cameraEffect.EndCharge(chargePercent);
-
-                if (_pivotAnimator != null)
-                {
-                    _pivotAnimator.SetBool(_chargeBoolName, false);
-                    _pivotAnimator.SetBool(_fullChargeBoolName, false);
-                }
-
-                StartCoroutine(AttackRoutine(chargePercent));
-            }
         }
     }
 
