@@ -28,6 +28,7 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
     private Vector2 _currentVelocity;
     private Vector2 _personalOffset;
     private float _noiseSeed;
+    private bool _isEnemyCountRegistered;
 
     public Transform Target => _target;
 
@@ -36,6 +37,7 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
 
     // Range Enemy에서 사용
     protected Vector2 LastDir { get; private set; } = Vector2.down;
+    protected virtual bool ShouldTrackEnemyCount => true;
 
     protected void InitDistanceTolerance()
     {
@@ -55,7 +57,11 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
 
         ScheduleNextAttack();
 
-        // Ryeol_GameManager.Instance.RegisterEnemy();
+        if (ShouldTrackEnemyCount && Ryeol_GameManager.Instance != null)
+        {
+            Ryeol_GameManager.Instance.RegisterEnemy();
+            _isEnemyCountRegistered = true;
+        }
     }
 
     protected virtual void Update()
@@ -218,19 +224,30 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
     {
         Rb.linearVelocity = Vector2.zero;
 
-        Ryeol_GameManager.Instance.UnregisterEnemy();
-
-        Debug.Log($"{gameObject.name} 죽었습니다");
+        if (_isEnemyCountRegistered && Ryeol_GameManager.Instance != null)
+        {
+            Ryeol_GameManager.Instance.UnregisterEnemy();
+            _isEnemyCountRegistered = false;
+        }
 
         Destroy(gameObject);
         Ryeol_GameManager.Instance.AddScore(100);
     }
 
-    private void ScheduleNextAttack()
+    protected void ScheduleNextAttack()
     {
         float min = Mathf.Max(0f, _attackIntervalMin);
         float max = Mathf.Max(min, _attackIntervalMax);
         _nextAttackTime = Time.time + Random.Range(min, max);
+    }
+
+    protected bool CanAttackToTarget()
+    {
+        if (_isDead || _target == null)
+            return false;
+
+        float distanceToTarget = Vector2.Distance(Rb.position, _target.position);
+        return CanAttack(distanceToTarget);
     }
 
     public override void TakeDamage(int damage)

@@ -38,7 +38,7 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
     // 기본 FixedUpdate는 타겟 추적 및 이동처리 
     protected override void FixedUpdate()
     {
-        if (_stopMoveWhileCasting)
+        if (_stopMoveWhileCasting && IsCastingSkill)
         {
             Rb.linearVelocity = Vector2.zero;
             return;

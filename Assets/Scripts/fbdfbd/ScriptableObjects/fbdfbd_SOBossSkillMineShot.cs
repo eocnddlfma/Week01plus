@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class fbdfbd_BossSkillTripleShot : MonoBehaviour
+public class fbdfbd_SOBossSkillMineShot : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
