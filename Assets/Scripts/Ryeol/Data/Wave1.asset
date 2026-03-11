@@ -15,10 +15,6 @@ MonoBehaviour:
   id: 1
   enemyPrefabs:
   - {fileID: 7644190236014916701, guid: 06c81189e55b04e489fb46c3966ed6ce, type: 3}
-  - {fileID: 7644190236014916701, guid: 06c81189e55b04e489fb46c3966ed6ce, type: 3}
-  - {fileID: 7644190236014916701, guid: 06c81189e55b04e489fb46c3966ed6ce, type: 3}
-  - {fileID: 7644190236014916701, guid: 06c81189e55b04e489fb46c3966ed6ce, type: 3}
-  - {fileID: 7644190236014916701, guid: 06c81189e55b04e489fb46c3966ed6ce, type: 3}
   minSpawnInterval: 0.5
   maxSpawnInterval: 2
   isBoss: 0

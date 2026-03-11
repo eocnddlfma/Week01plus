@@ -8,7 +8,7 @@ public class WS_SatelliteCollider : MonoBehaviour
         if (enemy == null)
             return;
 
-        enemy.TakeDamage(100);
+        enemy.TakeDamage(1);
     }
 }
 

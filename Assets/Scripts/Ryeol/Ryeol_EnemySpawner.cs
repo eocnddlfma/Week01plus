@@ -24,6 +24,7 @@ public class Ryeol_EnemySpawner : MonoBehaviour
 
     // 보스 웨이브 클리어 관련 이벤트
     public event Action OnBossCleared;
+    public event Action<bool> OnWaveClear; //보스인지 아닌지, true = 보스 웨이브
 
     private void Start()
     {
@@ -109,9 +110,17 @@ public class Ryeol_EnemySpawner : MonoBehaviour
 
         // 다음 웨이브가 보스 웨이브일 때만 잡몹 제거
         if (_currentWaveData.isBoss)
+        {
             ClearEnemies();
+            OnWaveClear?.Invoke(true);
+        }
+        else
+        {
+            OnWaveClear?.Invoke(false);
+        }
 
         _spawnIndex = 0;
+        _currentWaveKilledCount = 0;
         _isChangingWave = false;
     }
 

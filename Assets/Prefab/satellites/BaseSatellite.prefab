@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 272624102836432597}
   - component: {fileID: 4072783867583131104}
   - component: {fileID: 2109295878170795223}
-  - component: {fileID: 7745236138732633945}
   m_Layer: 0
   m_Name: BaseSatellite
   m_TagString: Untagged
@@ -134,7 +133,6 @@ MonoBehaviour:
   _orbitRadius: 2
   _orbitAngularSpeed: 180
   _startAngle: 0
-  _testHitKey: 32
   _launchSpeed: 14
   _launchSpeedOffset: 2
   _launchDuration: 0.35
@@ -152,6 +150,7 @@ MonoBehaviour:
   _rejoinBrakeDamping: 1
   _snapDuration: 2.1
   _drawOrbitGizmo: 1
+  _stateGizmoRadius: 0.5
 --- !u!58 &4072783867583131104
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -215,15 +214,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &7745236138732633945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2994604641803959309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0952987e977f8947b08694e0d5c81c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WS_SatelliteCollider

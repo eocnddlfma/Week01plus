@@ -47,6 +47,11 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [Header("Snap To Orbit")]
     [SerializeField] private float _snapDuration = 0.3f;
 
+    [Header("Damage Settings")]
+    [SerializeField] private int _baseDamage = 2;
+    [SerializeField] private int _maxChargeDamage = 20;
+    [SerializeField] private float _varianceRange = 0.1f;
+
     [Header("Debug")]
     [SerializeField] private bool _drawOrbitGizmo = true;
     [SerializeField] private float _stateGizmoRadius = 0.5f;
@@ -62,6 +67,9 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     private float _snapTimer;
     private float _snapStartRadius;
     private BallState _prevState = BallState.Orbit;
+
+    // 발사 시 저장된 차지 퍼센트 (Orbit 복귀 시 초기화)
+    private float _chargePercent = 0f;
 
     protected virtual void Awake()
     {
@@ -239,6 +247,9 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         _snapTimer = _snapDuration;
         _velocity = Vector2.zero;
         _state = BallState.Orbit;
+
+        // Orbit 복귀 시 차지 퍼센트 초기화
+        _chargePercent = 0f;
     }
 
     public void AddVelocity(Vector2 delta)
@@ -348,27 +359,50 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
+        // Weapon과 충돌 시 차지 퍼센트 저장 및 발사
         if (other.CompareTag("Weapon"))
         {
             if (_state != BallState.Launched)
             {
-                float chargePercent = 0f;
                 var chargeInfo = other.GetComponent<Jaein_WeaponChargeInfo>();
-                if (chargeInfo != null)
-                {
-                    chargePercent = chargeInfo.ChargePercent;
-                }
-                
-                //Debug.Log($"Hit! State: {_state}, ChargePercent: {chargePercent * 100}%");
-                Launch(chargePercent);
+                _chargePercent = chargeInfo != null ? chargeInfo.ChargePercent : 0f;
+
+                //Debug.Log($"Hit! State: {_state}, ChargePercent: {_storedChargePercent * 100}%");
+                Launch(_chargePercent);
 
                 //김우성 추가
-                other.gameObject.GetComponentInChildren<WS_EffectParticle>().Play(chargePercent);
+                other.gameObject.GetComponentInChildren<WS_EffectParticle>().Play(_chargePercent);
             }
+            return;
         }
 
         // 구 충돌시 총알 지우는 코드 if (other.TryGetComponent<fbdfbd_EnemyProjectile>(out _)) Destroy(other.gameObject);
+
+        // 적과 충돌 시 저장된 차지 퍼센트로 데미지 계산
+        var enemy = other.gameObject.GetComponent<fbdfbd_EnemyBase>();
+
+        if (enemy != null)
+        {
+            if (_state == BallState.Orbit) return;
+
+            int finalDamage = CalculateDamage(_chargePercent);
+
+            enemy.TakeDamage(finalDamage);
+
+            return; 
+        }
     }
+
+    private int CalculateDamage(float chargePercent)
+    {
+        float rawDamage = Mathf.Lerp(_baseDamage, _maxChargeDamage, chargePercent);
+        float variance = rawDamage * _varianceRange;
+
+        float finalDamage = Random.Range(rawDamage - variance, rawDamage + variance);
+
+        return Mathf.Max(1, Mathf.RoundToInt(finalDamage));
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

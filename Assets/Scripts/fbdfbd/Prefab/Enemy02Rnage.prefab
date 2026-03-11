@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 3019070082271856630}
   - component: {fileID: 2730655439801448259}
   - component: {fileID: 2788247114755044957}
+  - component: {fileID: -2805689494284076805}
   m_Layer: 6
   m_Name: Enemy02Rnage
   m_TagString: Untagged
@@ -138,10 +139,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b89084b94bd84a7439a7e518b7a848c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_Enemy_Range
-  _target: {fileID: 0}
   _hp: 1
   _maxHp: 1
   _isDead: 0
+  _target: {fileID: 0}
   _moveSpeed: 2
   _stopDistance: 5
   _moveLerpSpeed: 8
@@ -241,3 +242,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-2805689494284076805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6089281691577615938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a928313e23bc74585aa4de86b6393b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ContactDamageDealer
+  damage: 1
+  tickInterval: 0.5
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 128

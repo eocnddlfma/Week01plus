@@ -48,8 +48,7 @@ public class fbdfbd_EnemyProjectile : MonoBehaviour
         if ((_targetMask.value & (1 << other.gameObject.layer)) == 0) return;
 
 
-        Jaein_ObjectBase dmg = other.GetComponent<Jaein_ObjectBase>();
-        if (dmg != null)
+        if (other.TryGetComponent(out Jaein_ObjectBase dmg))
         {
             dmg.TakeDamage(_damage);
         }

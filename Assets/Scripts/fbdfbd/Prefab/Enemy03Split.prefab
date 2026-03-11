@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 3982382992531157386}
   - component: {fileID: 5443724284950349790}
   - component: {fileID: 3950494758380515708}
+  - component: {fileID: 7709796234970130291}
   m_Layer: 6
   m_Name: Enemy03Split
   m_TagString: Untagged
@@ -309,8 +310,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e07c878c7b788514993caf68cc4d966c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemySplit
-  _hp: 0
-  _maxHp: 0
+  _hp: 1
+  _maxHp: 1
   _isDead: 0
   _target: {fileID: 0}
   _moveSpeed: 1
@@ -342,6 +343,23 @@ MonoBehaviour:
   - {fileID: 2073888437754286051}
   _splitInterval: 0.5
   _splitCycleInterval: 2
+--- !u!114 &7709796234970130291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7644190236014916701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a928313e23bc74585aa4de86b6393b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ContactDamageDealer
+  damage: 1
+  tickInterval: 0.5
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &8290461832455394934
 GameObject:
   m_ObjectHideFlags: 0

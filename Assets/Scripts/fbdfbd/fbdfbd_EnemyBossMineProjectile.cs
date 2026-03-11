@@ -179,11 +179,10 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
         if (delta.sqrMagnitude > radius * radius)
             return;
 
-        Debug.Log("Mine explosion hit target in range.");
-
         Jaein_ObjectBase damageable = _target.GetComponent<Jaein_ObjectBase>();
         if (damageable != null)
         {
+            Debug.Log("Mine explosion hit target in range.");
             damageable.TakeDamage(_damage);
         }
     }
