@@ -59,20 +59,13 @@ public class Ryeol_GameManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
-    }
 
-    private void Start()
-    {
-
+        Instance = this;
     }
 
     #region 게임 상태

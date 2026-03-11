@@ -11,7 +11,7 @@ public class Ryeol_UI_Lives : MonoBehaviour
 
     [SerializeField] private Jaein_PlayerBase _player;
 
-    private List<Image> _lifeImages = new List<Image>(); // 연출을 위해 트래킹
+    private List<Image> _lifeImages; // 연출을 위해 트래킹
 
     private int _currentHp = 5;
 
@@ -21,13 +21,13 @@ public class Ryeol_UI_Lives : MonoBehaviour
     private void Start()
     {
         Ryeol_GameManager.Instance.OnStateChanged += HandleStateChanged;
-        //Jaein_PlayerBase.OnDamaged += TakeDamage;
+        _player.OnDamaged += TakeDamage;
     }
 
     private void OnDestroy()
     {
         Ryeol_GameManager.Instance.OnStateChanged -= HandleStateChanged;
-        //Jaein_PlayerBase.OnDamaged -= TakeDamage;
+        _player.OnDamaged -= TakeDamage;
     }
 
     void HandleStateChanged(Ryeol_GameManager.GameState state)
@@ -38,6 +38,8 @@ public class Ryeol_UI_Lives : MonoBehaviour
 
     void SpawnLives(int count)
     {
+        _lifeImages = new();
+
         for (int i = 0; i < count; i++)
         {
             var obj = Instantiate(_lifePrefab, _livesContainer);
@@ -85,10 +87,5 @@ public class Ryeol_UI_Lives : MonoBehaviour
         }
 
         #endregion
-
-
     }
-
-
-
 }

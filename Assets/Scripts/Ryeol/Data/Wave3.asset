@@ -10,15 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afd842d64226f5941808b2e929ea36d4, type: 3}
-  m_Name: Wave1
+  m_Name: Wave3
   m_EditorClassIdentifier: Assembly-CSharp::Ryeol_WaveData
-  id: 2
+  id: 3
   enemyPrefabs:
-  - {fileID: 7644190236014916701, guid: 06c81189e55b04e489fb46c3966ed6ce, type: 3}
-  - {fileID: 7644190236014916701, guid: 06c81189e55b04e489fb46c3966ed6ce, type: 3}
-  - {fileID: 7644190236014916701, guid: 06c81189e55b04e489fb46c3966ed6ce, type: 3}
-  - {fileID: 7644190236014916701, guid: 06c81189e55b04e489fb46c3966ed6ce, type: 3}
-  - {fileID: 7644190236014916701, guid: 06c81189e55b04e489fb46c3966ed6ce, type: 3}
+  - {fileID: 4100931100401140479, guid: 6a7ac9444c936c14487ab3d48624d4c2, type: 3}
   minSpawnInterval: 0.5
   maxSpawnInterval: 2
-  isBoss: 0
+  isBoss: 1
