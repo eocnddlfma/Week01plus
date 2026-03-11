@@ -303,7 +303,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &149778099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1919,6 +1919,10 @@ PrefabInstance:
       propertyPath: cameraEffect
       value: 
       objectReference: {fileID: 1354891392}
+    - target: {fileID: 4212091938099793405, guid: 7130806abd294b04984566b1918595a2, type: 3}
+      propertyPath: _maxChargeScale
+      value: 1.35
+      objectReference: {fileID: 0}
     - target: {fileID: 8329097453726498947, guid: 7130806abd294b04984566b1918595a2, type: 3}
       propertyPath: m_Name
       value: Player 1
@@ -2023,18 +2027,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &2039698050352777916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6826353833007729128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0952987e977f8947b08694e0d5c81c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WS_SatelliteCollider
 --- !u!4 &2915721794623183746
 Transform:
   m_ObjectHideFlags: 0
@@ -2789,7 +2781,6 @@ GameObject:
   - component: {fileID: 8429159087609928496}
   - component: {fileID: 5744203833559701509}
   - component: {fileID: 7671693701682850098}
-  - component: {fileID: 2039698050352777916}
   - component: {fileID: 8429159087609928497}
   m_Layer: 0
   m_Name: NormalSatellite Variant
@@ -2797,7 +2788,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!50 &7671693701682850098
 Rigidbody2D:
   serializedVersion: 5
