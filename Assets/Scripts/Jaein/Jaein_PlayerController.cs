@@ -74,8 +74,6 @@ public class Jaein_PlayerController : Jaein_PlayerBase
                 _weaponChargeInfo = _weaponCollider.gameObject.AddComponent<Jaein_WeaponChargeInfo>();
             }
         }
-
-        _isDead = false;
     }
 
     void Update()
@@ -274,5 +272,14 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         }
 
         _isAttacking = false;
+    }
+
+    // Test: 적 투사체와 충돌 시 투사체 제거
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.TryGetComponent<fbdfbd_EnemyProjectile>(out _))
+        {
+            Destroy(other.gameObject);
+        }
     }
 }
