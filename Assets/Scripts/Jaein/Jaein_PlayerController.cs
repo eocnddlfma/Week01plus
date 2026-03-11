@@ -72,6 +72,9 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     private bool _isCharging = false;
     private float _chargePercent;
 
+    [Header("Camera Effect by WooSung")]
+    [SerializeField] private WS_ChargeCameraEffect cameraEffect;
+
     protected override void Awake()
     {
         base.Awake();
@@ -241,6 +244,8 @@ public class Jaein_PlayerController : Jaein_PlayerBase
                 {
                     _pivotAnimator.SetBool(_fullChargeBoolName, _chargePercent >= 1f);
                 }
+
+                cameraEffect.BeginCharge();
             }
         }
 
@@ -249,6 +254,42 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         {
             // Debug.Log("차지 유무: " + _isCharging + ", 차지 퍼센트: " + _chargePercent);
             ExecuteAttack(_chargePercent);
+            _currentChargeTimer += Time.deltaTime;
+            float chargePercent = Mathf.Clamp01(_currentChargeTimer / _maxChargeTime);
+
+            if (_weaponTransform != null)
+            {
+                float multiplier = Mathf.Lerp(_minChargeScale, _maxChargeScale, chargePercent);
+                _weaponTransform.localScale = _initialWeaponScale * multiplier;
+            }
+
+            if (_currentChargeTimer >= _maxChargeTime)
+            {
+                if (_pivotAnimator != null && !_pivotAnimator.GetBool(_fullChargeBoolName))
+                {
+                    _pivotAnimator.SetBool(_fullChargeBoolName, true);
+                }
+            }
+
+            if (Mouse.current.leftButton.wasReleasedThisFrame)
+            {
+                _isCharging = false;
+                cameraEffect.EndCharge(chargePercent);
+
+                if (_pivotAnimator != null)
+                {
+                    _pivotAnimator.SetBool(_chargeBoolName, false);
+                    _pivotAnimator.SetBool(_fullChargeBoolName, false);
+                }
+
+                // 무기에 차지 퍼센트 정보 설정 (위성이 충돌 시 이 값을 읽음)
+                if (_weaponChargeInfo != null)
+                {
+                    _weaponChargeInfo.SetChargePercent(chargePercent);
+                }
+
+                StartCoroutine(AttackRoutine(chargePercent));
+            }
         }
     }
 

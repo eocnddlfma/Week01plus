@@ -59,7 +59,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _GridColor: {r: 0.7239676, g: 0.81631494, b: 0.8207547, a: 0.24705882}
+    - _GridColor: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 0.039215688}
     - _Tilling: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

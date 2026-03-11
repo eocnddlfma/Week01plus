@@ -24,5 +24,9 @@ public class WS_MainGameFlowController : MonoBehaviour
         {
             _ringAnimation.Play();
         });
+        DOVirtual.DelayedCall(3.0f, () =>
+        {
+            Ryeol_GameManager.Instance.StartGame();
+        });
     }
 }

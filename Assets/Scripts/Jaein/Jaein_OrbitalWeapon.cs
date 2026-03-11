@@ -189,6 +189,14 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     public void Launch(float chargePercent= 0.0f)
     {
         if (_center == null) return;
+        
+        if(chargePercent == 1.0f)
+        {
+            //김우성 추가
+            var controller = GetComponent<WS_HitStopController>();
+            if (controller != null)
+                controller.TryPlay(0.1f);
+        }
 
         Vector2 facingDir = _playerController != null
             ? _playerController.FacingDirection
@@ -337,9 +345,12 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
                 {
                     chargePercent = chargeInfo.ChargePercent;
                 }
-
+                
                 //Debug.Log($"Hit! State: {_state}, ChargePercent: {chargePercent * 100}%");
                 Launch(chargePercent);
+
+                //김우성 추가
+                other.gameObject.GetComponentInChildren<WS_EffectParticle>().Play(chargePercent);
             }
         }
 
