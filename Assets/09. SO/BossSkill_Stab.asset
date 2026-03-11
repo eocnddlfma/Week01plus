@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8f1ad661c963824282778f72e92e6a8, type: 3}
+  m_Name: BossSkill_Stab
+  m_EditorClassIdentifier: Assembly-CSharp::SSH_SOBossSkillStab
+  _skillName: 
+  _skillNumber: 103
+  _skillCooldown: 50
+  _skillCastTime: 50
+  _skillRepeatCount: 0
+  _bossSkillParticle: {fileID: 0}
+  _weaponPrefab: {fileID: 6786342706268129414, guid: 9c7e141d8971519438a26ab09a3dfa65, type: 3}
+  _weaponOffset: {x: 0, y: -4, z: 0}
+  _damage: 10
+  _targetMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _warningDuration: 1.2
+  _warningPrefab: {fileID: 6806057993752959667, guid: a85c1f51512bf3640a9322748448db5b, type: 3}
+  _moveDuration: 1
+  _waitAtPoint: 1.5
+  _steps:
+  - swing: 0
+    thrustCount: 1
+    thrustDist: 25
+    thrustDuration: 1
+    thrustReturn: 0.4
+    swingAngle: 180
+    swingDuration: 0.4
+  - swing: 0
+    thrustCount: 1
+    thrustDist: 25
+    thrustDuration: 1
+    thrustReturn: 0.4
+    swingAngle: 180
+    swingDuration: 0.4
+  - swing: 0
+    thrustCount: 1
+    thrustDist: 25
+    thrustDuration: 1
+    thrustReturn: 0.4
+    swingAngle: 180
+    swingDuration: 0.4
+  - swing: 0
+    thrustCount: 1
+    thrustDist: 25
+    thrustDuration: 1
+    thrustReturn: 0.4
+    swingAngle: 180
+    swingDuration: 0.4
+  - swing: 0
+    thrustCount: 1
+    thrustDist: 25
+    thrustDuration: 1
+    thrustReturn: 0.4
+    swingAngle: 180
+    swingDuration: 0.4
+  - swing: 1
+    thrustCount: 1
+    thrustDist: 25
+    thrustDuration: 1
+    thrustReturn: 0.4
+    swingAngle: 180
+    swingDuration: 0.4
+  - swing: 1
+    thrustCount: 1
+    thrustDist: 25
+    thrustDuration: 1
+    thrustReturn: 0.4
+    swingAngle: 180
+    swingDuration: 0.4
+  - swing: 1
+    thrustCount: 1
+    thrustDist: 25
+    thrustDuration: 1
+    thrustReturn: 0.4
+    swingAngle: 180
+    swingDuration: 0.4
+  - swing: 1
+    thrustCount: 1
+    thrustDist: 25
+    thrustDuration: 1
+    thrustReturn: 0.4
+    swingAngle: 180
+    swingDuration: 0.4

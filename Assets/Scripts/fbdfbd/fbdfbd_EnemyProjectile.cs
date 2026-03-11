@@ -52,11 +52,7 @@ public class fbdfbd_EnemyProjectile : MonoBehaviour
         if (dmg != null)
         {
             dmg.TakeDamage(_damage);
-            Debug.Log($"Range 투사체 타격, 데미지: {_damage}");
         }
-
-
-
 
         Destroy(gameObject);
     }

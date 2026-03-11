@@ -1,0 +1,57 @@
+using UnityEngine;
+
+public class SSH_EnemyProjectile : MonoBehaviour
+{
+
+    [SerializeField]private int _damage;
+    [SerializeField] private float _speed;
+    [SerializeField] private float LifeTime = 4f;
+
+    private Rigidbody2D _rb;
+    private float _spawnTime;
+    private LayerMask _targetMask;
+    private GameObject _owner;
+
+    private void Awake()
+    {
+        if (_rb == null) _rb = GetComponent<Rigidbody2D>();
+        if (_rb == null) _rb = gameObject.AddComponent<Rigidbody2D>();
+
+        _rb.gravityScale = 0f;
+        _rb.bodyType = RigidbodyType2D.Kinematic;
+    }
+
+    public void Init(int damage, float speed, LayerMask targetMask, GameObject owner)
+    {
+        this._damage = damage;
+        this._speed = speed;
+        this._targetMask = targetMask;
+        this._owner = owner;
+        _spawnTime = Time.time;
+    }
+
+    private void FixedUpdate()
+    {
+        _rb.position += (Vector2)(-transform.up) * _speed * Time.fixedDeltaTime;
+
+        if (Time.time - _spawnTime >= LifeTime)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other == null || other.gameObject == _owner) return;
+        if ((_targetMask.value & (1 << other.gameObject.layer)) == 0) return;
+
+        Jaein_ObjectBase dmg = other.GetComponent<Jaein_ObjectBase>();
+        if (dmg != null)
+        {
+            dmg.TakeDamage(_damage);
+            Debug.Log($"Boss 투사체 타격, 데미지: {_damage}");
+        }
+
+        Destroy(gameObject);
+    }
+}
