@@ -143,7 +143,7 @@ MonoBehaviour:
   _maxHp: 100
   _isDead: 0
   _target: {fileID: 0}
-  _moveSpeed: 2
+  _moveSpeed: 4
   _stopDistance: 1.2
   _moveLerpSpeed: 8
   _enemyLayerMask:

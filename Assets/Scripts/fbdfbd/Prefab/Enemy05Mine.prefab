@@ -113,8 +113,8 @@ MonoBehaviour:
   _maxHp: 0
   _isDead: 0
   _target: {fileID: 0}
-  _moveSpeed: 2
-  _stopDistance: 8
+  _moveSpeed: 4
+  _stopDistance: 15
   _moveLerpSpeed: 8
   _enemyLayerMask:
     serializedVersion: 2
@@ -126,11 +126,11 @@ MonoBehaviour:
   _noiseSpeed: 1.2
   _attackIntervalMin: 2
   _attackIntervalMax: 4
-  _attackRange: 6
+  _attackRange: 15
   _shotPoint: {fileID: 6604724356901735230}
   _mineProjectilePrefab: {fileID: 4752453250131162497, guid: 304e73bfc89b3b94481486bdd3fe5b5b, type: 3}
   _damage: 1
-  _projectileSpeed: 6
+  _projectileSpeed: 10
   _deceleration: 5
   _stopSpeedThreshold: 0.1
   _blinkDuration: 0.8

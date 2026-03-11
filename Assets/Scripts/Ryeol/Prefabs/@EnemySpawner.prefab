@@ -45,6 +45,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ryeol_EnemySpawner
   _waveDatas:
-  - {fileID: 11400000, guid: e9b5303e6ead4394c924f4933f5fdb79, type: 2}
-  - {fileID: 11400000, guid: 1071c5b204bef9145ae65ff8de4964b6, type: 2}
-  spawnRadius: 10
+  - {fileID: 11400000, guid: 28184b9eae9f21c408654493f97be499, type: 2}
+  - {fileID: 11400000, guid: e1fa14a0681ae0a4d9eb1abe0e5f8752, type: 2}
+  - {fileID: 11400000, guid: 8ed023fb158c15d4295a600b1e088047, type: 2}
+  - {fileID: 11400000, guid: ef9c3e5323b40a840b3506b5b5e20d43, type: 2}
+  - {fileID: 11400000, guid: 7a6b020e278d34a439faddb54f8a7e73, type: 2}
+  - {fileID: 11400000, guid: 90f890fdfd11aad4792b2fe4619fd665, type: 2}
+  - {fileID: 11400000, guid: cb63d125103f8534d9471d6742056bcf, type: 2}
+  spawnRadius: 20
+  _player: {fileID: 0}
+  _changeWaveThreshold: 0.6
