@@ -134,10 +134,11 @@ GameObject:
   m_Component:
   - component: {fileID: 352688669487197460}
   - component: {fileID: 3112461835921422827}
+  - component: {fileID: 3950494758380515708}
+  - component: {fileID: 1953790235574256340}
+  - component: {fileID: 7709796234970130291}
   - component: {fileID: 3982382992531157386}
   - component: {fileID: 5443724284950349790}
-  - component: {fileID: 3950494758380515708}
-  - component: {fileID: 7709796234970130291}
   m_Layer: 6
   m_Name: Enemy03Split
   m_TagString: Untagged
@@ -225,6 +226,83 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &3950494758380515708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7644190236014916701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07c878c7b788514993caf68cc4d966c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemySplit
+  _hp: 0
+  _maxHp: 0
+  _isDead: 0
+  _target: {fileID: 0}
+  _moveSpeed: 1
+  _stopDistance: 1.2
+  _moveLerpSpeed: 8
+  _enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _separationRadius: 0.7
+  _separationWeight: 1
+  _targetOffsetRadius: 0.5
+  _noiseWeight: 0.08
+  _noiseSpeed: 1.2
+  _attackIntervalMin: 1
+  _attackIntervalMax: 2
+  _targetMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _splitEnemyClonePrefab: {fileID: 4524417098228817228, guid: 4404e8b3d3cfd444d8173146aa05c1f5, type: 3}
+  _splitEnemyCloneCount: 4
+  _spawnPosList:
+  - {fileID: 3894411072440672146}
+  - {fileID: 5046435270279670553}
+  - {fileID: 4982165573915402968}
+  - {fileID: 6917395011236676552}
+  - {fileID: 6270880269005899680}
+  - {fileID: 2073888437754286051}
+  _splitInterval: 0.5
+  _splitCycleInterval: 2
+--- !u!114 &1953790235574256340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7644190236014916701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0a5b0125f3f644eaee340536f61347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemyHitFlashOnDamage
+  _enemy: {fileID: 3950494758380515708}
+  _renderers: []
+  _flashColor: {r: 0.6528301, g: 0.26707608, b: 0.2500462, a: 1}
+  _flashBlend: 1
+  _flashDuration: 0.1
+--- !u!114 &7709796234970130291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7644190236014916701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a928313e23bc74585aa4de86b6393b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ContactDamageDealer
+  damage: 1
+  tickInterval: 0.5
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!50 &3982382992531157386
 Rigidbody2D:
   serializedVersion: 5
@@ -298,68 +376,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &3950494758380515708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7644190236014916701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e07c878c7b788514993caf68cc4d966c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemySplit
-  _hp: 0
-  _maxHp: 0
-  _isDead: 0
-  _target: {fileID: 0}
-  _moveSpeed: 1
-  _stopDistance: 1.2
-  _moveLerpSpeed: 8
-  _enemyLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  _separationRadius: 0.7
-  _separationWeight: 1
-  _targetOffsetRadius: 0.5
-  _noiseWeight: 0.08
-  _noiseSpeed: 1.2
-  _attackIntervalMin: 1
-  _attackIntervalMax: 2
-  _attackRange: 1.2
-  _damage: 1
-  _targetMask:
-    serializedVersion: 2
-    m_Bits: 128
-  _splitEnemyClonePrefab: {fileID: 4524417098228817228, guid: 4404e8b3d3cfd444d8173146aa05c1f5, type: 3}
-  _splitEnemyCloneCount: 4
-  _spawnPosList:
-  - {fileID: 3894411072440672146}
-  - {fileID: 5046435270279670553}
-  - {fileID: 4982165573915402968}
-  - {fileID: 6917395011236676552}
-  - {fileID: 6270880269005899680}
-  - {fileID: 2073888437754286051}
-  _splitInterval: 0.5
-  _splitCycleInterval: 2
---- !u!114 &7709796234970130291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7644190236014916701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57a928313e23bc74585aa4de86b6393b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ContactDamageDealer
-  damage: 1
-  tickInterval: 0.5
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1 &8290461832455394934
 GameObject:
   m_ObjectHideFlags: 0
