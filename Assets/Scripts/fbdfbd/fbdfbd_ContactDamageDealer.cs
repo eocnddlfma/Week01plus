@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ContactDamageDealer : MonoBehaviour
+public class fbdfbd_ContactDamageDealer : MonoBehaviour
 {
     [SerializeField] private int damage = 1;
     [SerializeField] private float tickInterval = 0.5f;

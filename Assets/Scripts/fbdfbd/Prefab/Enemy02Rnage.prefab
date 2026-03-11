@@ -42,9 +42,10 @@ GameObject:
   - component: {fileID: 8813687486447124345}
   - component: {fileID: 3560440512140725681}
   - component: {fileID: 3019070082271856630}
+  - component: {fileID: 3406883839866746514}
+  - component: {fileID: -2805689494284076805}
   - component: {fileID: 2730655439801448259}
   - component: {fileID: 2788247114755044957}
-  - component: {fileID: -2805689494284076805}
   m_Layer: 6
   m_Name: Enemy02Rnage
   m_TagString: Untagged
@@ -165,6 +166,40 @@ MonoBehaviour:
   _targetMask:
     serializedVersion: 2
     m_Bits: 128
+--- !u!114 &3406883839866746514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6089281691577615938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0a5b0125f3f644eaee340536f61347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemyHitFlashOnDamage
+  _enemy: {fileID: 3019070082271856630}
+  _renderers: []
+  _flashColor: {r: 0.19446772, g: 0.7207546, b: 0.5851958, a: 1}
+  _flashBlend: 1
+  _flashDuration: 0.1
+--- !u!114 &-2805689494284076805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6089281691577615938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a928313e23bc74585aa4de86b6393b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ContactDamageDealer
+  damage: 1
+  tickInterval: 0.5
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!60 &2730655439801448259
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -242,20 +277,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-2805689494284076805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6089281691577615938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57a928313e23bc74585aa4de86b6393b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ContactDamageDealer
-  damage: 1
-  tickInterval: 0.5
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 128

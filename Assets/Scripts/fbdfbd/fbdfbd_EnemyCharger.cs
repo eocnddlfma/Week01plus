@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class fbdfbd_EnemyCharger : fbdfbd_EnemyBase
@@ -25,10 +26,22 @@ public class fbdfbd_EnemyCharger : fbdfbd_EnemyBase
     [Min(0f)][SerializeField] private float _chargeCooldownMin = 1.2f;
     [Min(0f)][SerializeField] private float _chargeCooldownMax = 2f;
 
+    [Header("Windup Visual")]
+    [SerializeField] private SpriteRenderer[] _windupRenderers;
+    [SerializeField] private fbdfbd_EnemyHitFlashOnDamage _hitFlash;
+    [SerializeField] private Color _windupColor = Color.yellow;
+    [SerializeField, Range(0f, 1f)] private float _windupBlend = 1f;
+    [SerializeField] private AnimationCurve _windupCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+    [SerializeField, Min(0f)] private float _windupReturnDuration = 0.1f;
+
     private MoveState _state = MoveState.Approach;
     private float _stateEndTime;
     private float _nextChargeTime;
     private Vector2 _chargeDir = Vector2.down;
+
+    private Color[] _windupBaseColors;
+    private Coroutine _windupRestoreRoutine;
+    private float _windupStartTime;
 
     protected override bool CanAttack(float distanceToTarget) => false;
     protected override void DoAttack() { }
@@ -36,7 +49,20 @@ public class fbdfbd_EnemyCharger : fbdfbd_EnemyBase
     protected override void Awake()
     {
         base.Awake();
+        if (_hitFlash == null) _hitFlash = GetComponent<fbdfbd_EnemyHitFlashOnDamage>();
+        InitWindupVisual();
         ScheduleNextCharge();
+    }
+
+    private void OnDisable()
+    {
+        if (_windupRestoreRoutine != null)
+        {
+            StopCoroutine(_windupRestoreRoutine);
+            _windupRestoreRoutine = null;
+        }
+
+        RestoreWindupVisualImmediate();
     }
 
     protected override void FixedUpdate()
@@ -91,6 +117,7 @@ public class fbdfbd_EnemyCharger : fbdfbd_EnemyBase
     private void UpdateWindup()
     {
         Rb.linearVelocity = Vector2.zero;
+        UpdateWindupVisual();
 
         if (Time.time >= _stateEndTime)
         {
@@ -121,8 +148,15 @@ public class fbdfbd_EnemyCharger : fbdfbd_EnemyBase
 
     private void EnterWindup()
     {
+        if (_windupRestoreRoutine != null)
+        {
+            StopCoroutine(_windupRestoreRoutine);
+            _windupRestoreRoutine = null;
+        }
+
         _state = MoveState.Windup;
         _stateEndTime = Time.time + _windupDuration;
+        _windupStartTime = Time.time;
         Rb.linearVelocity = Vector2.zero;
     }
 
@@ -136,6 +170,7 @@ public class fbdfbd_EnemyCharger : fbdfbd_EnemyBase
 
         _state = MoveState.Charge;
         _stateEndTime = Time.time + _chargeDuration;
+        BeginRestoreWindupVisual();
     }
 
     private void EnterRecover()
@@ -150,5 +185,90 @@ public class fbdfbd_EnemyCharger : fbdfbd_EnemyBase
         float min = Mathf.Max(0f, _chargeCooldownMin);
         float max = Mathf.Max(min, _chargeCooldownMax);
         _nextChargeTime = Time.time + Random.Range(min, max);
+    }
+
+    private void InitWindupVisual()
+    {
+        if (_windupRenderers == null || _windupRenderers.Length == 0)
+            _windupRenderers = GetComponentsInChildren<SpriteRenderer>(true);
+
+        _windupBaseColors = new Color[_windupRenderers.Length];
+        for (int i = 0; i < _windupRenderers.Length; i++)
+            _windupBaseColors[i] = _windupRenderers[i].color;
+
+        RestoreWindupVisualImmediate();
+    }
+
+    private void UpdateWindupVisual()
+    {
+        if (_hitFlash != null && _hitFlash.IsFlashing)
+            return;
+
+        if (_windupRenderers == null || _windupRenderers.Length == 0)
+            return;
+
+        float t = _windupDuration <= 0f
+            ? 1f
+            : Mathf.Clamp01((Time.time - _windupStartTime) / _windupDuration);
+
+        float curveValue = _windupCurve != null ? _windupCurve.Evaluate(t) : t;
+        float weight = Mathf.Clamp01(curveValue) * Mathf.Clamp01(_windupBlend);
+
+        for (int i = 0; i < _windupRenderers.Length; i++)
+            _windupRenderers[i].color = Color.Lerp(_windupBaseColors[i], _windupColor, weight);
+    }
+
+    private void BeginRestoreWindupVisual()
+    {
+        if (_windupRestoreRoutine != null)
+            StopCoroutine(_windupRestoreRoutine);
+
+        if (_windupReturnDuration <= 0f)
+        {
+            RestoreWindupVisualImmediate();
+            _windupRestoreRoutine = null;
+            return;
+        }
+
+        _windupRestoreRoutine = StartCoroutine(RestoreWindupVisualRoutine());
+    }
+
+    private IEnumerator RestoreWindupVisualRoutine()
+    {
+        int count = _windupRenderers != null ? _windupRenderers.Length : 0;
+        if (count == 0)
+        {
+            _windupRestoreRoutine = null;
+            yield break;
+        }
+
+        Color[] startColors = new Color[count];
+        for (int i = 0; i < count; i++)
+            startColors[i] = _windupRenderers[i].color;
+
+        float elapsed = 0f;
+        while (elapsed < _windupReturnDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / _windupReturnDuration);
+
+            for (int i = 0; i < count; i++)
+                _windupRenderers[i].color = Color.Lerp(startColors[i], _windupBaseColors[i], t);
+
+            yield return null;
+        }
+
+        RestoreWindupVisualImmediate();
+        _windupRestoreRoutine = null;
+    }
+
+    private void RestoreWindupVisualImmediate()
+    {
+        if (_windupRenderers == null || _windupBaseColors == null)
+            return;
+
+        int count = Mathf.Min(_windupRenderers.Length, _windupBaseColors.Length);
+        for (int i = 0; i < count; i++)
+            _windupRenderers[i].color = _windupBaseColors[i];
     }
 }

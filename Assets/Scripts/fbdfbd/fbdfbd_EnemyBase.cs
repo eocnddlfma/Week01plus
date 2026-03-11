@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
@@ -31,6 +33,7 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
     private bool _isEnemyCountRegistered;
 
     public Transform Target => _target;
+    public event Action<int> OnDamaged;
 
     private Vector2 _externalVelocity;
     public void AddExternalVelocity(Vector2 vel) => _externalVelocity += vel;
@@ -262,7 +265,10 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
             _hp = 0;
             _isDead = true;
             OnDeath();
+            return;
         }
+
+        OnDamaged?.Invoke(damage);
     }
 
     /// <summary>
