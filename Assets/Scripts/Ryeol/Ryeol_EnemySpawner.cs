@@ -110,6 +110,7 @@ public class Ryeol_EnemySpawner : MonoBehaviour
             ClearEnemies();
 
         _spawnIndex = 0;
+        _currentWaveKilledCount = 0;
         _isChangingWave = false;
     }
 
