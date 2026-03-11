@@ -15,8 +15,9 @@ GameObject:
   - component: {fileID: 6982060583871270879}
   - component: {fileID: 9169955409725018282}
   - component: {fileID: 1793484267582750980}
-  - component: {fileID: 6497988637766978753}
   - component: {fileID: -9075918780172689420}
+  - component: {fileID: 2926822264457102946}
+  - component: {fileID: 6497988637766978753}
   m_Layer: 0
   m_Name: EnemyBoss1
   m_TagString: Untagged
@@ -87,10 +88,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: -2135585597343286014, guid: 5aa8b770bc43046bc8d993d0d5b7f4a5, type: 3}
+  m_Color: {r: 1, g: 0.603697, b: 0.26981127, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -207,6 +208,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_BossSkillMineShot
   _data: {fileID: 11400000, guid: ab04c2cb17e4a4947a95adf33f9f286f, type: 2}
   _firePoint: {fileID: 8666943300646799534}
+--- !u!114 &-9075918780172689420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601661822854439945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a928313e23bc74585aa4de86b6393b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ContactDamageDealer
+  damage: 1
+  tickInterval: 0.5
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!114 &2926822264457102946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601661822854439945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0a5b0125f3f644eaee340536f61347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemyHitFlashOnDamage
+  _enemy: {fileID: 3607666763050075587}
+  _renderers: []
+  _flashColor: {r: 0.6377357, g: 0.21057305, b: 0.21057305, a: 1}
+  _flashBlend: 1
+  _flashDuration: 0.1
 --- !u!58 &6497988637766978753
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -243,23 +278,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &-9075918780172689420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 601661822854439945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57a928313e23bc74585aa4de86b6393b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ContactDamageDealer
-  damage: 1
-  tickInterval: 0.5
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1 &677748802798618871
 GameObject:
   m_ObjectHideFlags: 0

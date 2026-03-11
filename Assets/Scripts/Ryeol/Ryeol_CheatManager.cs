@@ -4,8 +4,6 @@ public class Ryeol_CheatManager : MonoBehaviour
 {
     [SerializeField] private int _cheatScore = 500;
 
-    [SerializeField] private Jaein_PlayerBase _player;
-    [SerializeField] private Ryeol_UI_Lives _ui_lives;
 
     void Update()
     {
@@ -39,15 +37,16 @@ public class Ryeol_CheatManager : MonoBehaviour
             Debug.Log($"[Cheat] 적 수 -1 / 현재 적 수: {Ryeol_GameManager.Instance.EnemyCount}");
         }
 
-        // 플레이어 1 체력 깎기
+        // 게임 오버
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            _player.TakeDamage(1);
+            Ryeol_GameManager.Instance.GameOver();
+        }
 
-            int currentHp = _player.Hp;
-            _ui_lives.TakeDamage(currentHp);
-
-            Debug.Log($"[Cheat] HP -1 / 현재 HP: {_player.Hp}");
+        // 게임 클리어
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            Ryeol_GameManager.Instance.GameClear();
         }
     }
 }

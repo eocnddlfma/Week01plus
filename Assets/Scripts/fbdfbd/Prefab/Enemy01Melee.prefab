@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 6589821736081033760}
   - component: {fileID: 1414166037066353909}
   - component: {fileID: 25957428285945982}
+  - component: {fileID: 5897181862367962974}
+  - component: {fileID: 4680116884689315695}
   - component: {fileID: 1350870756940331031}
   - component: {fileID: 8576393412488235236}
-  - component: {fileID: 4680116884689315695}
   m_Layer: 6
   m_Name: Enemy01Melee
   m_TagString: Untagged
@@ -124,9 +125,38 @@ MonoBehaviour:
   _noiseSpeed: 1.2
   _attackIntervalMin: 1
   _attackIntervalMax: 2
-  _attackRange: 1.2
-  _damage: 1
-  _targetMask:
+--- !u!114 &5897181862367962974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100931100401140479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0a5b0125f3f644eaee340536f61347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemyHitFlashOnDamage
+  _enemy: {fileID: 25957428285945982}
+  _renderers: []
+  _flashColor: {r: 1, g: 0, b: 0, a: 1}
+  _flashBlend: 1
+  _flashDuration: 0.1
+--- !u!114 &4680116884689315695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4100931100401140479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a928313e23bc74585aa4de86b6393b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ContactDamageDealer
+  damage: 1
+  tickInterval: 0.5
+  targetMask:
     serializedVersion: 2
     m_Bits: 128
 --- !u!60 &1350870756940331031
@@ -206,20 +236,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &4680116884689315695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4100931100401140479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57a928313e23bc74585aa4de86b6393b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ContactDamageDealer
-  damage: 1
-  tickInterval: 0.5
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 128

@@ -5,8 +5,6 @@ using UnityEngine;
 public class fbdfbd_EnemySplit : fbdfbd_EnemyBase
 {
     [Header("Split")]
-    [Min(0.1f)][SerializeField] private float _attackRange = 1.2f;
-    [Min(1)][SerializeField] private int _damage = 1;
     [SerializeField] private LayerMask _targetMask;
     [SerializeField] private GameObject _splitEnemyClonePrefab;
     [Min(1)][SerializeField] private int _splitEnemyCloneCount = 4;
