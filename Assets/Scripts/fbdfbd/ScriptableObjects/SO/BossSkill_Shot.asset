@@ -17,7 +17,7 @@ MonoBehaviour:
   _skillCooldown: 5
   _skillCastTime: 0.5
   _skillRepeatCount: 5
-  _bossSkillParticle: {fileID: 0}
+  _bossSkillParticle: {fileID: 732126920238445726, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
   _projectilePrefab: {fileID: 4870169749638757217, guid: 852135b2ddcd11c45a62f11c6d8f3196, type: 3}
   _damage: 1
   _projectileSpeed: 8

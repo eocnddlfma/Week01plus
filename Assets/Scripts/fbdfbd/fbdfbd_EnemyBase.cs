@@ -229,7 +229,7 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
             Ryeol_GameManager.Instance.UnregisterEnemy();
             _isEnemyCountRegistered = false;
         }
-
+        WS_DamageTextManager.I.Show(100, transform.position);
         Destroy(gameObject);
         Ryeol_GameManager.Instance.AddScore(100);
     }

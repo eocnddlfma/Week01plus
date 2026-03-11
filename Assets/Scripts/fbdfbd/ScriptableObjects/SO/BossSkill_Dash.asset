@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_SOBossSkillDash
   _skillName: Dash
   _skillNumber: 1
-  _skillCooldown: 5
+  _skillCooldown: 2.5
   _skillCastTime: 0.5
   _skillRepeatCount: 0
   _bossSkillParticle: {fileID: 0}
