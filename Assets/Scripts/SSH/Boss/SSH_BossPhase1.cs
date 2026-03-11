@@ -21,8 +21,8 @@ namespace SSH.Boss
 
         private GameObject   _wall;
         private SSH_Switch[] _spawnedSwitches;
-        private bool _dodgeballUsed = false;
-        private bool _rainUsed      = false;
+        [SerializeField] private bool _dodgeballUsed = false;
+        [SerializeField] private bool _rainUsed      = false;
 
         protected override void Awake()
         {
