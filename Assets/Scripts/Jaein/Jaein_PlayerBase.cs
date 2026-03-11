@@ -97,4 +97,9 @@ public class Jaein_PlayerBase : Jaein_ObjectBase
 
         _isInvincible = false;
     }
+
+    public void Heal(int heal)
+    {
+        _hp = Math.Clamp(_hp + heal, 1, MaxHp);
+    }
 }

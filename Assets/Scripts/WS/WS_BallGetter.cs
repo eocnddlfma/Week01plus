@@ -31,6 +31,9 @@ public class WS_BallGetter : MonoBehaviour
 
     private void GetBall(bool isBoss)
     {
+        //TODO: 지워야 할 로직
+        //_player.GetComponent<Jaein_PlayerController>().Heal(1);
+
         if (_ballLists == null || _ballLists.Length == 0)
         {
             Debug.LogWarning("BallGetter: _ballLists is empty.");

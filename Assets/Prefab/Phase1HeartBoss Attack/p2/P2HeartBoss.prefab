@@ -591,8 +591,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76d1f5a216eaf14a85a282b725472a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SSH.Boss.SSH_BossPhase2
-  _hp: 5000
-  _maxHp: 5000
+  _hp: 500
+  _maxHp: 500
   _isDead: 0
   _target: {fileID: 0}
   _moveSpeed: 0
@@ -635,7 +635,7 @@ MonoBehaviour:
   _orbitRadius: 24
   _orbitSpeed: 25
   _startAngle: 90
-  _orbitSpeedMaxMultiplier: 2
+  _orbitSpeedMaxMultiplier: 3
 --- !u!114 &7946383437749075836
 MonoBehaviour:
   m_ObjectHideFlags: 0
