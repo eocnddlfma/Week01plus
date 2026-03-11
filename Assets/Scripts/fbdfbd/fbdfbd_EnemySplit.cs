@@ -19,25 +19,9 @@ public class fbdfbd_EnemySplit : fbdfbd_EnemyBase
     private Coroutine _splitRoutine;
     private bool _isSplitting = false;
 
-    protected override bool CanAttack(float distanceToTarget)
-    {
-        return distanceToTarget <= _attackRange;
-    }
+    protected override bool CanAttack(float distanceToTarget) => false;
 
-    protected override void DoAttack()
-    {
-        Vector2 origin = Rb.position;
-        Collider2D[] hits = Physics2D.OverlapCircleAll(origin, _attackRange, _targetMask);
-
-        for (int i = 0; i < hits.Length; i++)
-        {
-            Jaein_ObjectBase dmg = hits[i].GetComponent<Jaein_ObjectBase>();
-            if (dmg != null)
-            {
-                dmg.TakeDamage(_damage);
-            }
-        }
-    }
+    protected override void DoAttack() { }
 
     protected override void FixedUpdate()
     {

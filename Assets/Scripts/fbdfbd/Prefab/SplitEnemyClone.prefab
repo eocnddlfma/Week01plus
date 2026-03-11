@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9005280427900690394}
   - component: {fileID: -6282746041138209427}
   - component: {fileID: 4553827256844854827}
+  - component: {fileID: 6856408041355781383}
   m_Layer: 6
   m_Name: SplitEnemyClone
   m_TagString: Untagged
@@ -186,8 +187,20 @@ MonoBehaviour:
   _noiseSpeed: 1.2
   _attackIntervalMin: 0
   _attackIntervalMax: 0
-  _attackRange: 1
-  _damage: 1
-  _targetMask:
+--- !u!114 &6856408041355781383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4524417098228817228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a928313e23bc74585aa4de86b6393b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ContactDamageDealer
+  damage: 1
+  tickInterval: 0.5
+  targetMask:
     serializedVersion: 2
     m_Bits: 128
