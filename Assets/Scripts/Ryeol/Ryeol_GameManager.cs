@@ -111,10 +111,11 @@ public class Ryeol_GameManager : MonoBehaviour
         _currentEnemyCount++;
     }
 
-    public void UnregisterEnemy()
+    public void UnregisterEnemy(bool countAsKill = true)
     {
         _currentEnemyCount--;
-        OnEnemyUnregistered?.Invoke();
+        if (countAsKill)
+            OnEnemyUnregistered?.Invoke();
     }
 
     #endregion

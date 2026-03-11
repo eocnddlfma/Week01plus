@@ -473,7 +473,7 @@ GameObject:
   - component: {fileID: 7900008186490780577}
   - component: {fileID: 6316680995062518849}
   - component: {fileID: 2902948011076229518}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: P2HeartBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -599,7 +599,7 @@ MonoBehaviour:
   _moveLerpSpeed: 0
   _enemyLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _separationRadius: 0.7
   _separationWeight: 1
   _targetOffsetRadius: 0.5
@@ -627,6 +627,9 @@ MonoBehaviour:
   - _skillData: {fileID: 11400000, guid: 5cf626a5e44b2d944bd95ad1fe049868, type: 2}
     _skillLogic: {fileID: 2902948011076229518}
     _weight: 1
+  _targetCameraSize: 27
+  _cameraYOffset: 0
+  _cameraTweenDuration: 1.2
   _orbitCenter: {x: 0, y: 0, z: 0}
   _orbitRadius: 24
   _orbitSpeed: 25

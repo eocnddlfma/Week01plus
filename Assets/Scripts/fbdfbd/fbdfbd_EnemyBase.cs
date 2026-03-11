@@ -260,7 +260,7 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
 
         _hp -= damage;
         WS_DamageTextManager.I.Show(damage, transform.position);
-        Debug.Log(name + "의 현재 적 체력: " + _hp);
+        Debug.Log(name + "의 현재 적 체력: " + _hp + " (데미지=" + damage + ")\n" + new System.Diagnostics.StackTrace(1, false).ToString());
         if (_hp <= 0)
         {
             _hp = 0;
@@ -278,6 +278,15 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
     public virtual void SetTarget(Transform player)
     {
         _target = player;
+    }
+
+    public void UnregisterFromEnemyCount()
+    {
+        if (_isEnemyCountRegistered && Ryeol_GameManager.Instance != null)
+        {
+            Ryeol_GameManager.Instance.UnregisterEnemy(countAsKill: false);
+            _isEnemyCountRegistered = false;
+        }
     }
 
 #if UNITY_EDITOR

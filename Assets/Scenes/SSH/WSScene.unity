@@ -1910,6 +1910,8 @@ MonoBehaviour:
   _endImpactMoveDistance: 1
   _endImpactZoomOffset: -1
   _endImpactDuration: 0.14
+  sizeOffset: 0
+  positionOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &1448733733 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3585550976496479544, guid: f61a40a1d9768b748bb82b6e2a0ea181, type: 3}
@@ -2587,7 +2589,7 @@ PrefabInstance:
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: '_waveDatas.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: b52c9576077f16f4c8c5d95a0f26c9a1, type: 2}
+      objectReference: {fileID: 11400000, guid: 5582a7a882c08be4385c5a6c00f2d1fa, type: 2}
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: '_waveDatas.Array.data[1]'
       value: 

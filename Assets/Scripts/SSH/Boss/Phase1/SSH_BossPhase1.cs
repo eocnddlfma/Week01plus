@@ -41,8 +41,18 @@ namespace SSH.Boss
         {
             Camera cam = Camera.main;
             if (cam == null) return;
-            cam.DOOrthoSize(_targetCameraSize, _cameraTweenDuration).SetEase(Ease.OutCubic);
-            cam.transform.DOMoveY(cam.transform.position.y + _cameraYOffset, _cameraTweenDuration).SetEase(Ease.OutCubic);
+
+            WS_ChargeCameraEffect effect = cam.GetComponent<WS_ChargeCameraEffect>();
+            if (effect != null)
+            {
+                effect.TweenToSize(_targetCameraSize, _cameraTweenDuration);
+                effect.TweenToPositionOffset(new Vector3(0f, _cameraYOffset, 0f), _cameraTweenDuration);
+            }
+            else
+            {
+                cam.DOOrthoSize(_targetCameraSize, _cameraTweenDuration).SetEase(Ease.OutCubic);
+                cam.transform.DOMoveY(cam.transform.position.y + _cameraYOffset, _cameraTweenDuration).SetEase(Ease.OutCubic);
+            }
         }
 
         #region Switches

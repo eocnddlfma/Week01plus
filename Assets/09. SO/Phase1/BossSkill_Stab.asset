@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SSH_SOBossSkillStab
   _skillName: 
   _skillNumber: 103
-  _skillCooldown: 50
-  _skillCastTime: 50
+  _skillCooldown: 29
+  _skillCastTime: 29
   _skillRepeatCount: 0
   _bossSkillParticle: {fileID: 0}
   _weaponPrefab: {fileID: 6786342706268129414, guid: 9c7e141d8971519438a26ab09a3dfa65, type: 3}
@@ -52,7 +52,7 @@ MonoBehaviour:
     swingAngle: 180
     swingDuration: 0.4
     swingWarningCount: 5
-  - swing: 0
+  - swing: 1
     thrustCount: 1
     thrustDist: 50
     thrustDuration: 0.5

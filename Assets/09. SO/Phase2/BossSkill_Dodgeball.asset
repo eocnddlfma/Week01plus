@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SSH_SOBossSkillDodgeball
   _skillName: 
   _skillNumber: 0
-  _skillCooldown: 12
+  _skillCooldown: 2
   _skillCastTime: 0
-  _skillRepeatCount: 0
+  _skillRepeatCount: 2
   _bossSkillParticle: {fileID: 0}
-  _patternPrefab: {fileID: 0}
+  _patternPrefab: {fileID: 5809113855475138189, guid: c9fd2e4832fb52742a1366c3a31d4a35, type: 3}
   _stepDelay: 1.7
   _lineOffset: 9
   _warningDuration: 1

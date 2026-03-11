@@ -151,9 +151,9 @@ namespace SSH.Boss
                 if (this == null) yield break;
                 elapsed += Time.deltaTime;
                 float t     = Mathf.Clamp01(elapsed / duration);
-                float eased = t < 0.5f                           // InOutQuart: 시작·끝 느리고 중반 빠름
-                            ? 8f * t * t * t * t
-                            : 1f - Mathf.Pow(-2f * t + 2f, 4f) / 2f;
+                float eased = t < 0.5f                           // InOutQuint: 시작·끝 매우 느리고 중반 급가속
+                            ? 16f * t * t * t * t * t
+                            : 1f - Mathf.Pow(-2f * t + 2f, 5f) / 2f;
 
                 float angleDeg = Mathf.Lerp(startAngleDeg, endAngleDeg, eased);
                 float rad      = angleDeg * Mathf.Deg2Rad;

@@ -12,7 +12,8 @@ namespace SSH.Boss
         {
             if (_so?.PatternPrefab == null) { _patternFinished = true; yield break; }
 
-            GameObject obj     = Instantiate(_so.PatternPrefab, Vector3.zero, Quaternion.Euler(0f, 0f, 90f));
+            float randomZ = Random.Range(0f, 90f);  // 90° ~ 180° = 기존 90°에서 반시계 0~90° 추가
+            GameObject obj     = Instantiate(_so.PatternPrefab, Vector3.zero, Quaternion.Euler(0f, 0f, randomZ));
             SSH_ProjectileSpawner spawner = obj.GetComponentInChildren<SSH_ProjectileSpawner>();
             if (spawner != null)
             {
