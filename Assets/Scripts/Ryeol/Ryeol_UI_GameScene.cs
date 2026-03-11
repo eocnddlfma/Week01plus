@@ -17,6 +17,8 @@ public class Ryeol_UI_GameScene : MonoBehaviour
     // 연출
     [SerializeField] private CanvasGroup _gameEndPanel;
     [SerializeField] private RectTransform _panelRect;
+    [SerializeField] private CanvasGroup _buttonsGroup;
+    [SerializeField] private RectTransform[] _buttonRects;  // Restart, Quit 순서대로 연결
 
 
     private void Start()
@@ -65,12 +67,10 @@ public class Ryeol_UI_GameScene : MonoBehaviour
                 HidePanel();
                 break;
             case GameState.GameOver:
-                _gameEndText.text = "Game Over";
-                ShowPanel();
+                ShowGameOver();
                 break;
             case GameState.GameClear:
-                _gameEndText.text = "Game Clear";
-                ShowPanel();
+                ShowGameClear();
                 break;
         }
     }
@@ -81,20 +81,95 @@ public class Ryeol_UI_GameScene : MonoBehaviour
         _gameEndPanel.alpha = 0f;
         _gameEndPanel.interactable = false;
         _gameEndPanel.blocksRaycasts = false;
+
+        _panelRect.anchoredPosition = Vector2.zero;
+        _buttonsGroup.alpha = 0f;
+
     }
 
-    private void ShowPanel()
+    private void ShowGameOver()
     {
-        _gameEndPanel.alpha = 1.0f;
         _gameEndPanel.interactable = true;
         _gameEndPanel.blocksRaycasts = true;
 
+        _gameEndText.text = "Game Over";
+
+        // 시작 위치 초기화
+        _panelRect.anchoredPosition = new Vector2(0f, 80f);  // 위에서 시작
+        _gameEndText.transform.localScale = Vector3.one;
+
         var seq = DOTween.Sequence();
-        seq.Append(_gameEndPanel.DOFade(1f, 0.5f).SetEase(Ease.OutCubic));
-        seq.Join(_panelRect.DOLocalMoveY(0f, 0.5f).From(30f).SetEase(Ease.OutCubic));
-        //seq.Append(_gameEndText.transform.DOPunchScale(Vector3.one * 0.15f, 0.4f, 5, 0.3f));
-        seq.Append(_gameEndText.transform.DOScale(1f, 0.15f).From(1.4f).SetEase(Ease.OutExpo));
+
+        // 1) 패널 페이드인 + 위에서 아래로
+        seq.Append(_gameEndPanel.DOFade(1f, 0.4f).SetEase(Ease.OutCubic));
+        seq.Join(_panelRect.DOAnchorPosY(0f, 0.5f).SetEase(Ease.OutCubic));
+
+        float originalY = _gameEndText.transform.localPosition.y;  // 원래 위치 저장
+
+        // 2) 텍스트 오버슈트 후 쿵 — 원래 위치로 착지
+        seq.Append(_gameEndText.transform.DOLocalMoveY(originalY, 0.3f)
+                                         .From(originalY + 40f)  // 원래 위치보다 20 위에서 시작
+                                         .SetEase(Ease.OutBounce));
+
+        // 3) 착지 후 패널 흔들림 (무게감)
+        seq.Append(_panelRect.DOShakePosition(0.3f, new Vector3(0f, 6f, 0f), vibrato: 8, randomness: 0f));
+
+        seq.AppendCallback(ShowButtons);
     }
+
+    private void ShowGameClear()
+    {
+        _gameEndPanel.interactable = true;
+        _gameEndPanel.blocksRaycasts = true;
+
+        _gameEndText.text = "Game Clear";
+
+        _panelRect.anchoredPosition = Vector2.zero;
+        _gameEndText.transform.localScale = Vector3.one;
+        _gameEndText.transform.localRotation = Quaternion.identity;
+
+        var seq = DOTween.Sequence();
+
+        // 1) 패널 페이드인
+        seq.Append(_gameEndPanel.DOFade(1f, 0.2f).SetEase(Ease.OutCubic));
+
+        // 2) 도장 꽝 — 크게 시작해서 빡 제자리로 + 살짝 회전
+        seq.Append(_gameEndText.transform.DOScale(1f, 0.2f).From(2.5f).SetEase(Ease.OutExpo));
+        seq.Join(_gameEndText.transform.DOLocalRotate(Vector3.zero, 0.2f).From(new Vector3(0f, 0f, -8f)).SetEase(Ease.OutExpo));
+
+        // 3) 도장 찍힌 후 미세하게 흔들리며 안착
+        seq.Append(_gameEndText.transform.DOPunchScale(Vector3.one * 0.08f, 0.3f, 4, 0.3f));
+
+        seq.AppendCallback(ShowButtons);
+    }
+
+    private void ShowButtons()
+    {
+        _buttonsGroup.alpha = 0f;
+
+        var seq = DOTween.Sequence();
+        seq.Append(_buttonsGroup.DOFade(1f, 0.2f));
+
+        for (int i = 0; i < _buttonRects.Length; i++)
+        {
+            int index = i;
+            float originalY = _buttonRects[index].localPosition.y;
+            float originalX = _buttonRects[index].localPosition.x;  // X 저장
+
+            seq.Append(
+                _buttonRects[index].DOLocalMoveY(originalY, 0.25f)
+                                   .From(originalY - 20f)
+                                   .SetEase(Ease.OutCubic)
+                                   .OnUpdate(() => {
+                                       // X는 항상 고정
+                                       var pos = _buttonRects[index].localPosition;
+                                       pos.x = originalX;
+                                       _buttonRects[index].localPosition = pos;
+                                   })
+            );
+        }
+    }
+
     #endregion
 
     public void OnRestartButtonClicked()
