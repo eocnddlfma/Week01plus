@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8193263865222556553}
   - component: {fileID: 2616731974234151581}
   m_Layer: 0
-  m_Name: EnemyBossParticle
+  m_Name: ParticleEnemyBossMineProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
