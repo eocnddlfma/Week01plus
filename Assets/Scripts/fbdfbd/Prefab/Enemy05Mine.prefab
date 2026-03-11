@@ -109,8 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91432713f433ac54ea1346498cb5e57b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemyMine
-  _hp: 0
-  _maxHp: 0
+  _hp: 30
+  _maxHp: 30
   _isDead: 0
   _target: {fileID: 0}
   _moveSpeed: 4
