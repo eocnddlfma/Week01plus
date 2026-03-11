@@ -9,7 +9,7 @@ public class SSH_EnemyProjectile : MonoBehaviour
 
     private Rigidbody2D _rb;
     private float _spawnTime;
-    private LayerMask _targetMask;
+    [SerializeField] private LayerMask _targetMask;
     private GameObject _owner;
 
     private void Awake()

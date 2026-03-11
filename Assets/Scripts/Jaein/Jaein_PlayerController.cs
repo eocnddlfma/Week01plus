@@ -391,9 +391,10 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<fbdfbd_EnemyProjectile>(out _))
-        {
             Destroy(other.gameObject);
-        }
+
+        if (other.TryGetComponent<SSH_EnemyProjectile>(out _))
+            Destroy(other.gameObject);
     }
 
     private Vector2 GetClampedPosition(Vector2 targetPosition)

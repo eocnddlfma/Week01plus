@@ -109,6 +109,9 @@ MonoBehaviour:
   _damage: 1
   _speed: 25
   LifeTime: 10
+  _targetMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!50 &5693004277259029675
 Rigidbody2D:
   serializedVersion: 5

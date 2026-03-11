@@ -45,11 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SSH_ProjectileSpawner
   _projectilePrefab: {fileID: 705963780439117018, guid: 00a59d9b038bdb0459dd6d4bde5df1ab, type: 3}
-  _damage: 10
+  _damage: 1
   _speed: 100
   _targetMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   _count: 100
   _rangeWidth: 8
   _rangeHeight: 50

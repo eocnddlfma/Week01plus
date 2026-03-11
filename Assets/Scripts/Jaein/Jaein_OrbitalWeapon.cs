@@ -75,14 +75,14 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     {
         _playerController = FindAnyObjectByType<Jaein_PlayerController>();
         _center = _playerController.transform;
-        if( _playerController = null) print("따라갈 대상 못찾음");
+        if (_playerController == null) print("따라갈 대상 못찾음");
     }
 
     protected virtual void Start()
     {
         _playerController = FindAnyObjectByType<Jaein_PlayerController>();
         _center = _playerController.transform;
-        if (_playerController = null) print("따라갈 대상 못찾음");
+        if (_playerController == null) print("따라갈 대상 못찾음");
         _angleDeg = _startAngle;
         Vector2 radialDir = GetRadialDirection(_angleDeg);
         transform.position = (Vector2)_center.position + radialDir * _orbitRadius;
