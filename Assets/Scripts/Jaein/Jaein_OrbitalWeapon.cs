@@ -236,6 +236,14 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         _velocity += delta;
     }
 
+    public void ReflectVelocity(Vector2 normal)
+    {
+        if (_state == BallState.Orbit) return;
+        _velocity  = Vector2.Reflect(_velocity, normal.normalized);
+        _state     = BallState.Launched;
+        _stateTimer = _launchDuration;
+    }
+
     public Vector2[] SimulateTrajectory(int maxSteps, float simDt)
     {
         if (_center == null) return System.Array.Empty<Vector2>();

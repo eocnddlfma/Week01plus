@@ -1,19 +1,26 @@
 using UnityEngine;
+using SSH.Boss;
 
 public class SSH_Switch : MonoBehaviour
 {
-    [SerializeField] private SSH_SwitchManager _manager;
-
     [Header("Visuals")]
-    [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Color _offColor = Color.gray;
     [SerializeField] private Color _onColor  = Color.yellow;
 
     public bool IsOn { get; private set; } = false;
 
+    private SSH_BossPhase1 _boss;
+    private SpriteRenderer _spriteRenderer;
+
+    public void SetBoss(SSH_BossPhase1 boss) { _boss = boss; }
+
     private void Awake()
     {
-        if (_spriteRenderer == null) _spriteRenderer = GetComponent<SpriteRenderer>();
+        foreach (Transform child in transform)
+        {
+            _spriteRenderer = child.GetComponent<SpriteRenderer>();
+            if (_spriteRenderer != null) break;
+        }
         UpdateVisual();
     }
 
@@ -24,7 +31,7 @@ public class SSH_Switch : MonoBehaviour
 
         IsOn = true;
         UpdateVisual();
-        _manager?.OnSwitchActivated();
+        _boss?.OnSwitchActivated();
     }
 
     private void UpdateVisual()
