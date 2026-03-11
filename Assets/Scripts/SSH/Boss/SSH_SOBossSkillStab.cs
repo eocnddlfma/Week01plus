@@ -6,13 +6,14 @@ public class SSH_SOBossSkillStab : fbdfbd_SOBossSkillBase
     [System.Serializable]
     public class StabStep
     {
-        public bool  swing          = false;
-        public int   thrustCount    = 1;
-        public float thrustDist     = 3f;
-        public float thrustDuration = 0.15f;
-        public float thrustReturn   = 0.1f;
-        public float swingAngle     = 180f;
-        public float swingDuration  = 0.4f;
+        public bool  swing              = false;
+        public int   thrustCount        = 1;
+        public float thrustDist         = 3f;
+        public float thrustDuration     = 0.15f;
+        public float thrustReturn       = 0.1f;
+        public float swingAngle         = 180f;
+        public float swingDuration      = 0.4f;
+        public int   swingWarningCount  = 5;
     }
 
     [Header("Weapon")]

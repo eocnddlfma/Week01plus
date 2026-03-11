@@ -41,6 +41,13 @@ namespace SSH.Boss
             }
         }
 
+        private void OnDestroy()
+        {
+            transform.DOKill();
+            foreach (SpriteRenderer sr in _renderers)
+                if (sr) sr.DOKill();
+        }
+
         public void Open()
         {
             if (_isOpening) return;
@@ -51,10 +58,11 @@ namespace SSH.Boss
 
             transform.DOKill();
             transform.DOMoveY(transform.position.y + _moveUpAmount, _openDuration)
-                     .SetEase(Ease.InCubic);
+                     .SetEase(Ease.InCubic)
+                     .SetLink(gameObject);
 
             foreach (SpriteRenderer sr in _renderers)
-                sr.DOFade(0f, _openDuration).SetEase(Ease.InCubic);
+                sr.DOFade(0f, _openDuration).SetEase(Ease.InCubic).SetLink(gameObject);
 
             Destroy(gameObject, _openDuration);
         }

@@ -11,10 +11,18 @@ namespace SSH.Boss
 
         private SSH_BossPhase1 _boss;
         private bool           _patternFinished = false;
+        private Vector3[]      _cachedPositions;
 
         private void Awake()
         {
             _boss = GetComponent<SSH_BossPhase1>();
+
+            if (_movePoints != null)
+            {
+                _cachedPositions = new Vector3[_movePoints.Length];
+                for (int i = 0; i < _movePoints.Length; i++)
+                    _cachedPositions[i] = _movePoints[i] != null ? _movePoints[i].position : Vector3.zero;
+            }
         }
 
         IEnumerator Pattern()
@@ -41,12 +49,12 @@ namespace SSH.Boss
             SSH_SOBossSkillStab.StabStep[] steps = _so.Steps;
             var defaultStep = new SSH_SOBossSkillStab.StabStep { swing = false, thrustCount = 1 };
 
-            for (int i = 0; i < _movePoints.Length; i++)
+            int pointCount = _cachedPositions != null ? _cachedPositions.Length : 0;
+            for (int i = 0; i < pointCount; i++)
             {
-                if (_movePoints[i] == null) continue;
-
-                // 보스 순간이동
-                transform.position = _movePoints[i].position;
+                // 보스 순간이동 후 무기 방향 갱신
+                transform.position = _cachedPositions[i];
+                stab?.UpdateFacing();
 
                 // 매 이동 후 무조건 찌르기 (스텝에 swing=true면 휘두르기도 포함)
                 if (stab != null)

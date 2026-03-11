@@ -6,6 +6,9 @@ namespace SSH.Boss
 {
     public class SSH_BossPhase1 : fbdfbd_EnemyBossBase
     {
+        [Header("Spawn")]
+        [SerializeField] private Vector3 _startPosition;
+
         [Header("Camera")]
         [SerializeField] private float _targetCameraSize   = 35f;
         [SerializeField] private float _cameraYOffset      = 5f;
@@ -28,6 +31,7 @@ namespace SSH.Boss
         protected override void Awake()
         {
             base.Awake();
+            transform.position = _startPosition;
             SetupCamera();
             SpawnWall();
             SpawnSwitches();
@@ -100,11 +104,6 @@ namespace SSH.Boss
             int rainIdx  = FindSkillIndexByLogic<SSH_BossSkillPhase1Rain>();
             int stabIdx  = FindSkillIndexByLogic<SSH_BossSkillPhase1Stab>();
 
-            Debug.Log($"[Phase1] dodge={dodgeIdx} rain={rainIdx} stab={stabIdx} | " +
-                      $"dodgeUsed={_dodgeballUsed} rainUsed={_rainUsed} allSwitch={IsSwitchAllEnabled} forceSwitch={_forceAllSwitches} | " +
-                      $"canStab={CanActivateStab()} | " +
-                      $"dodgeReady={IsSkillReady(dodgeIdx)} rainReady={IsSkillReady(rainIdx)} stabReady={IsSkillReady(stabIdx)}");
-
             // 조건 충족 시 stab 우선
             if (IsSkillReady(stabIdx) && CanActivateStab()) return stabIdx;
 
@@ -120,6 +119,7 @@ namespace SSH.Boss
         {
             if (slot.SkillLogic is SSH_BossSkillPhase1Dodgeball) _dodgeballUsed = true;
             if (slot.SkillLogic is SSH_BossSkillPhase1Rain)      _rainUsed      = true;
+            if (slot.SkillLogic is SSH_BossSkillPhase1Stab)      TakeDamage(99999);
         }
     }
 }

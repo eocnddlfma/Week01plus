@@ -24,71 +24,79 @@ MonoBehaviour:
   _targetMask:
     serializedVersion: 2
     m_Bits: 0
-  _warningDuration: 1.2
+  _warningDuration: 0.8
   _warningPrefab: {fileID: 6806057993752959667, guid: a85c1f51512bf3640a9322748448db5b, type: 3}
-  _moveDuration: 1
-  _waitAtPoint: 1.5
+  _waitAtPoint: 0.5
   _steps:
   - swing: 0
     thrustCount: 1
-    thrustDist: 25
-    thrustDuration: 1
+    thrustDist: 50
+    thrustDuration: 0.5
     thrustReturn: 0.4
     swingAngle: 180
     swingDuration: 0.4
-  - swing: 0
-    thrustCount: 1
-    thrustDist: 25
-    thrustDuration: 1
-    thrustReturn: 0.4
-    swingAngle: 180
-    swingDuration: 0.4
-  - swing: 0
-    thrustCount: 1
-    thrustDist: 25
-    thrustDuration: 1
-    thrustReturn: 0.4
-    swingAngle: 180
-    swingDuration: 0.4
-  - swing: 0
-    thrustCount: 1
-    thrustDist: 25
-    thrustDuration: 1
-    thrustReturn: 0.4
-    swingAngle: 180
-    swingDuration: 0.4
-  - swing: 0
-    thrustCount: 1
-    thrustDist: 25
-    thrustDuration: 1
-    thrustReturn: 0.4
-    swingAngle: 180
-    swingDuration: 0.4
+    swingWarningCount: 5
   - swing: 1
     thrustCount: 1
-    thrustDist: 25
-    thrustDuration: 1
+    thrustDist: 50
+    thrustDuration: 0.5
+    thrustReturn: 0.4
+    swingAngle: 180
+    swingDuration: 0.2
+    swingWarningCount: 5
+  - swing: 0
+    thrustCount: 1
+    thrustDist: 50
+    thrustDuration: 0.5
     thrustReturn: 0.4
     swingAngle: 180
     swingDuration: 0.4
+    swingWarningCount: 5
+  - swing: 0
+    thrustCount: 1
+    thrustDist: 50
+    thrustDuration: 0.5
+    thrustReturn: 0.4
+    swingAngle: 180
+    swingDuration: 0.4
+    swingWarningCount: 5
+  - swing: 0
+    thrustCount: 1
+    thrustDist: 50
+    thrustDuration: 0.5
+    thrustReturn: 0.4
+    swingAngle: 180
+    swingDuration: 0.4
+    swingWarningCount: 5
   - swing: 1
     thrustCount: 1
-    thrustDist: 25
-    thrustDuration: 1
+    thrustDist: 50
+    thrustDuration: 0.5
     thrustReturn: 0.4
     swingAngle: 180
-    swingDuration: 0.4
+    swingDuration: 1
+    swingWarningCount: 5
   - swing: 1
     thrustCount: 1
-    thrustDist: 25
-    thrustDuration: 1
+    thrustDist: 50
+    thrustDuration: 0.68
     thrustReturn: 0.4
-    swingAngle: 180
-    swingDuration: 0.4
+    swingAngle: 200
+    swingDuration: 1
+    swingWarningCount: 7
   - swing: 1
     thrustCount: 1
-    thrustDist: 25
+    thrustDist: 50
+    thrustDuration: 0.82
+    thrustReturn: 0.4
+    swingAngle: 240
+    swingDuration: 1
+    swingWarningCount: 8
+  - swing: 1
+    thrustCount: 1
+    thrustDist: 50
     thrustDuration: 1
     thrustReturn: 0.4
-    swingAngle: 180
-    swingDuration: 0.4
+    swingAngle: 270
+    swingDuration: 1
+    swingWarningCount: 9

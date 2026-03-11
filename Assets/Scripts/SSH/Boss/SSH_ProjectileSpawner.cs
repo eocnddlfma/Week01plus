@@ -22,6 +22,7 @@ public class SSH_ProjectileSpawner : MonoBehaviour
 
     public void SetCount(int count)                { _count = count; }
     public void SetSpeed(float speed)              { _speed = speed; }
+    public void SetDamage(int damage)              { _damage = damage; }
     public void SetWarningDuration(float duration) { _warningDuration = duration; }
     public void SetBlinkInterval(float interval)   { _blinkInterval = interval; }
 
