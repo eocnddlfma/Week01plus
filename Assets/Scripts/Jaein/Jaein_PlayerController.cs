@@ -26,6 +26,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     // TODO: 차지 시 콜라이더의 크기를 변경하는 로직 진행 중
     [SerializeField] private Transform _boxWeaponTransform;
     [SerializeField] private Transform _polygonWeaponTransform;
+    [SerializeField] private Transform _weaponTransform;
 
     public Vector2 FacingDirection => _playerBody != null ? (Vector2)_playerBody.right : Vector2.right;
 
@@ -54,6 +55,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     private Vector2 _inputVec;
     private Camera _mainCamera;
 
+    private Vector3 _initialScale;
     private Vector3 _initialBoxScale;
     private Vector3 _initialPolygonScale;
 
@@ -92,6 +94,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         if (_weaponPolygonCollider != null)
             _polygonChargeInfo = _weaponPolygonCollider.GetComponent<Jaein_WeaponChargeInfo>();
 
+        if (_weaponTransform != null) _initialScale = _weaponTransform.localScale;
         if (_boxWeaponTransform != null) _initialBoxScale = _boxWeaponTransform.localScale;
         if (_polygonWeaponTransform != null) _initialPolygonScale = _polygonWeaponTransform.localScale;
 
@@ -260,7 +263,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
             if (_weaponTransform != null)
             {
                 float multiplier = Mathf.Lerp(_minChargeScale, _maxChargeScale, chargePercent);
-                _weaponTransform.localScale = _initialWeaponScale * multiplier;
+                _weaponTransform.localScale = _initialScale * multiplier;
             }
 
             if (_currentChargeTimer >= _maxChargeTime)
@@ -280,12 +283,6 @@ public class Jaein_PlayerController : Jaein_PlayerBase
                 {
                     _pivotAnimator.SetBool(_chargeBoolName, false);
                     _pivotAnimator.SetBool(_fullChargeBoolName, false);
-                }
-
-                // 무기에 차지 퍼센트 정보 설정 (위성이 충돌 시 이 값을 읽음)
-                if (_weaponChargeInfo != null)
-                {
-                    _weaponChargeInfo.SetChargePercent(chargePercent);
                 }
 
                 StartCoroutine(AttackRoutine(chargePercent));
