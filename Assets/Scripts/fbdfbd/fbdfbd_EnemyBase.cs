@@ -229,7 +229,7 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
             Ryeol_GameManager.Instance.UnregisterEnemy();
             _isEnemyCountRegistered = false;
         }
-        WS_DamageTextManager.I.Show(100, transform.position);
+        
         Destroy(gameObject);
         Ryeol_GameManager.Instance.AddScore(100);
     }
@@ -256,7 +256,7 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
             return;
 
         _hp -= damage;
-
+        WS_DamageTextManager.I.Show(damage, transform.position);
         if (_hp <= 0)
         {
             _hp = 0;

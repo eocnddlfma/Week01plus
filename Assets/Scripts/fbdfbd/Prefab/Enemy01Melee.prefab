@@ -106,10 +106,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbad097d948bb8e4a828c1f4c2a91286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_Enemy_Melee
-  _target: {fileID: 0}
-  _hp: 1
+  _hp: 5
   _maxHp: 1
   _isDead: 0
+  _target: {fileID: 0}
   _moveSpeed: 2
   _stopDistance: 0.5
   _moveLerpSpeed: 8

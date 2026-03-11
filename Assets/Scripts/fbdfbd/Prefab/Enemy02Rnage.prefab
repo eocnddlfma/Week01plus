@@ -138,10 +138,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b89084b94bd84a7439a7e518b7a848c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_Enemy_Range
-  _target: {fileID: 0}
-  _hp: 1
+  _hp: 2
   _maxHp: 1
   _isDead: 0
+  _target: {fileID: 0}
   _moveSpeed: 2
   _stopDistance: 5
   _moveLerpSpeed: 8
