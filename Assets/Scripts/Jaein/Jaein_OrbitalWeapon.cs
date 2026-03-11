@@ -207,7 +207,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
             //김우성 추가
             var controller = GetComponent<WS_HitStopController>();
             if (controller != null)
-                controller.TryPlay(0.1f);
+                controller.TryPlay(0.05f);
         }
 
         Vector2 facingDir = _playerController != null
@@ -387,7 +387,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
             int finalDamage = CalculateDamage(_chargePercent);
 
-            enemy.TakeDamage(finalDamage);
+            enemy.TakeDamage(finalDamage, _chargePercent >= 0.999f);
 
             return; 
         }

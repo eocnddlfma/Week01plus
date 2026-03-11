@@ -19,6 +19,6 @@ public abstract class Jaein_ObjectBase : MonoBehaviour
         Rb.gravityScale = 0;
     }
 
-    public abstract void TakeDamage(int damage);
+    public abstract void TakeDamage(int damage, bool isCharge = false);
     protected abstract void OnDeath();
 }

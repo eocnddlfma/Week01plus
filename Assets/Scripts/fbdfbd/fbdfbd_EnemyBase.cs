@@ -253,13 +253,13 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
         return CanAttack(distanceToTarget);
     }
 
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, bool isCharge = false)
     {
         if (_isDead)
             return;
 
         _hp -= damage;
-        WS_DamageTextManager.I.Show(damage, transform.position);
+        WS_DamageTextManager.I.Show(damage, transform.position, isCharge);
         Debug.Log(name + "의 현재 적 체력: " + _hp);
         if (_hp <= 0)
         {

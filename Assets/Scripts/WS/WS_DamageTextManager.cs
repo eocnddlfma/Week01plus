@@ -20,7 +20,7 @@ public class WS_DamageTextManager : MonoBehaviour
         I = this;
     }
 
-    public void Show(int damage, Vector3 worldPosition)
+    public void Show(int damage, Vector3 worldPosition, bool isCharge = false)
     {
         if (_canvas == null)
         {
@@ -51,6 +51,6 @@ public class WS_DamageTextManager : MonoBehaviour
         if (success == false)
             return;
 
-        _pool.Show(damage, localPoint);
+        _pool.Show(damage, localPoint, isCharge);
     }
 }
