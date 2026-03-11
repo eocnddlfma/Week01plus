@@ -54,8 +54,8 @@ MonoBehaviour:
   _rangeWidth: 8
   _rangeHeight: 50
   _warningPrefab: {fileID: 6806057993752959667, guid: a85c1f51512bf3640a9322748448db5b, type: 3}
-  _warningDuration: 1
-  _blinkInterval: 0.15
+  _warningDuration: 1.2
+  _blinkInterval: 0.25
 --- !u!1 &5809113855475138189
 GameObject:
   m_ObjectHideFlags: 0

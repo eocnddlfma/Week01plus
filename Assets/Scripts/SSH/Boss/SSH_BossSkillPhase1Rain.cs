@@ -24,7 +24,7 @@ namespace SSH.Boss
                                                  Quaternion.identity);
                     obj.transform.localScale = phase.scale;
 
-                    ssh_EnemyProjectile proj = obj.GetComponent<ssh_EnemyProjectile>();
+                    SSH_EnemyProjectile proj = obj.GetComponent<SSH_EnemyProjectile>();
                     if (proj != null) proj.Init(_so.Damage, phase.speed, _so.TargetMask, gameObject);
 
                     yield return new WaitForSeconds(phase.spawnDelay);

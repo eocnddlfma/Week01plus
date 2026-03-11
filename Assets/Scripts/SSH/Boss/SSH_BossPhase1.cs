@@ -21,8 +21,9 @@ namespace SSH.Boss
 
         private GameObject   _wall;
         private SSH_Switch[] _spawnedSwitches;
-        [SerializeField] private bool _dodgeballUsed = false;
-        [SerializeField] private bool _rainUsed      = false;
+        [SerializeField] private bool _dodgeballUsed    = false;
+        [SerializeField] private bool _rainUsed         = false;
+        [SerializeField] private bool _forceAllSwitches = false;
 
         protected override void Awake()
         {
@@ -63,7 +64,7 @@ namespace SSH.Boss
             }
         }
 
-        public bool AllSwitchesOn
+        public bool IsSwitchAllEnabled
         {
             get
             {
@@ -76,20 +77,22 @@ namespace SSH.Boss
 
         public void OnSwitchActivated()
         {
-            if (!AllSwitchesOn) return;
+            if (!IsSwitchAllEnabled) return;
             if (_wall != null) _wall.GetComponent<SSH_Wall>()?.Open();
         }
 
         public void ClearSwitches()
         {
-            if (_spawnedSwitches == null) return;
-            foreach (SSH_Switch sw in _spawnedSwitches)
-                if (sw != null) Destroy(sw.gameObject);
+            if (_spawnedSwitches != null)
+                foreach (SSH_Switch sw in _spawnedSwitches)
+                    if (sw != null) Destroy(sw.gameObject);
+
+            if (_wall != null) _wall.GetComponent<SSH_Wall>()?.Open();
         }
 
         #endregion
 
-        private bool CanActivateStab() => _dodgeballUsed && _rainUsed && AllSwitchesOn;
+        private bool CanActivateStab() => _dodgeballUsed && _rainUsed && (IsSwitchAllEnabled || _forceAllSwitches);
 
         protected override int PickReadySkillIndex()
         {
@@ -97,10 +100,17 @@ namespace SSH.Boss
             int rainIdx  = FindSkillIndexByLogic<SSH_BossSkillPhase1Rain>();
             int stabIdx  = FindSkillIndexByLogic<SSH_BossSkillPhase1Stab>();
 
+            Debug.Log($"[Phase1] dodge={dodgeIdx} rain={rainIdx} stab={stabIdx} | " +
+                      $"dodgeUsed={_dodgeballUsed} rainUsed={_rainUsed} allSwitch={IsSwitchAllEnabled} forceSwitch={_forceAllSwitches} | " +
+                      $"canStab={CanActivateStab()} | " +
+                      $"dodgeReady={IsSkillReady(dodgeIdx)} rainReady={IsSkillReady(rainIdx)} stabReady={IsSkillReady(stabIdx)}");
+
+            // 조건 충족 시 stab 우선
+            if (IsSkillReady(stabIdx) && CanActivateStab()) return stabIdx;
+
             var valid = new List<int>();
             if (IsSkillReady(dodgeIdx)) valid.Add(dodgeIdx);
             if (IsSkillReady(rainIdx))  valid.Add(rainIdx);
-            if (IsSkillReady(stabIdx) && CanActivateStab()) valid.Add(stabIdx);
 
             if (valid.Count == 0) return -1;
             return valid[Random.Range(0, valid.Count)];

@@ -13,25 +13,25 @@ MonoBehaviour:
   m_Name: BossSkill_Rain
   m_EditorClassIdentifier: Assembly-CSharp::SSH_SOBossSkillRain
   _skillName: 
-  _skillNumber: 0
-  _skillCooldown: 0
-  _skillCastTime: 0
+  _skillNumber: 102
+  _skillCooldown: 32
+  _skillCastTime: 32
   _skillRepeatCount: 0
   _bossSkillParticle: {fileID: 0}
-  _projectilePrefab: {fileID: 0}
-  _spawnY: 15
-  _rangeWidth: 30
-  _stepDelay: 1
+  _projectilePrefab: {fileID: 705963780439117018, guid: 00a59d9b038bdb0459dd6d4bde5df1ab, type: 3}
+  _spawnY: 30
+  _rangeWidth: 46
+  _stepDelay: 4
   _damage: 10
   _targetMask:
     serializedVersion: 2
     m_Bits: 0
   _phases:
-  - count: 5
-    spawnDelay: 0.6
-    speed: 4
-    scale: {x: 0.5, y: 0.5, z: 0.5}
-  - count: 7
-    spawnDelay: 0.4
+  - count: 250
+    spawnDelay: 0.04
     speed: 7
-    scale: {x: 0.8, y: 0.8, z: 0.8}
+    scale: {x: 0.35, y: 0.35, z: 0.35}
+  - count: 50
+    spawnDelay: 0.1
+    speed: 30
+    scale: {x: 1, y: 1, z: 1}

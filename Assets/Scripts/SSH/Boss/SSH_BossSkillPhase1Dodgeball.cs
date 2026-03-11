@@ -12,42 +12,53 @@ namespace SSH.Boss
 
         private bool _patternFinished = false;
 
+        private GameObject SpawnPattern(Vector3 pos, Quaternion rot)
+        {
+            GameObject obj = Instantiate(_so.PatternPrefab, pos, rot);
+            SSH_ProjectileSpawner spawner = obj.GetComponentInChildren<SSH_ProjectileSpawner>();
+            if (spawner != null)
+            {
+                spawner.SetWarningDuration(_so.WarningDuration);
+                spawner.SetBlinkInterval(_so.BlinkInterval);
+            }
+            return obj;
+        }
+
         IEnumerator Pattern()
         {
-            GameObject pat = _so.PatternPrefab;
-            float line     = _so.LineOffset;
-            float step     = _so.StepDelay;
+            float line = _so.LineOffset;
+            float step = _so.StepDelay;
 
             // Step 1: 가로 라인 어택 1개
-            Instantiate(pat, Vector3.zero,          Quaternion.Euler(0f, 0f, 90f));
+            SpawnPattern(Vector3.zero,          Quaternion.Euler(0f, 0f, 90f));
             yield return new WaitForSeconds(step);
 
             // Step 2: 세로 라인 어택 좌우 2개
-            Instantiate(pat, Vector3.left  * line,  Quaternion.identity);
-            Instantiate(pat, Vector3.right * line,  Quaternion.identity);
+            SpawnPattern(Vector3.left  * line,  Quaternion.identity);
+            SpawnPattern(Vector3.right * line,  Quaternion.identity);
             yield return new WaitForSeconds(step);
 
             // Step 3: 가로 라인 상하 (lineOffset) + 세로 라인 좌우 (lineOffset*2)
-            Instantiate(pat, Vector3.up    * line,       Quaternion.Euler(0f, 0f, 90f));
-            Instantiate(pat, Vector3.down  * line,       Quaternion.Euler(0f, 0f, 90f));
-            Instantiate(pat, Vector3.left  * line * 2f,  Quaternion.identity);
-            Instantiate(pat, Vector3.right * line * 2f,  Quaternion.identity);
+            SpawnPattern(Vector3.up    * line,       Quaternion.Euler(0f, 0f, 90f));
+            SpawnPattern(Vector3.down  * line,       Quaternion.Euler(0f, 0f, 90f));
+            SpawnPattern(Vector3.left  * line * 2f,  Quaternion.identity);
+            SpawnPattern(Vector3.right * line * 2f,  Quaternion.identity);
             yield return new WaitForSeconds(step);
 
             // Step 4: 대각선 (0) + 가로 라인 상하 (lineOffset*2)
-            Instantiate(pat, Vector3.zero,              Quaternion.Euler(0f, 0f,  45f));
-            Instantiate(pat, Vector3.zero,              Quaternion.Euler(0f, 0f, -45f));
-            Instantiate(pat, Vector3.up   * line * 2f,  Quaternion.Euler(0f, 0f, 90f));
-            Instantiate(pat, Vector3.down * line * 2f,  Quaternion.Euler(0f, 0f, 90f));
+            SpawnPattern(Vector3.zero,              Quaternion.Euler(0f, 0f,  45f));
+            SpawnPattern(Vector3.zero,              Quaternion.Euler(0f, 0f, -45f));
+            SpawnPattern(Vector3.up   * line * 2f,  Quaternion.Euler(0f, 0f, 90f));
+            SpawnPattern(Vector3.down * line * 2f,  Quaternion.Euler(0f, 0f, 90f));
             yield return new WaitForSeconds(step);
 
             // Step 5: 십자 (0) + 세로 (lineOffset) + 가로 (lineOffset*2)
-            Instantiate(pat, Vector3.zero,              Quaternion.Euler(0f, 0f, 90f));
-            Instantiate(pat, Vector3.zero,              Quaternion.identity);
-            Instantiate(pat, Vector3.left  * line,      Quaternion.identity);
-            Instantiate(pat, Vector3.right * line,      Quaternion.identity);
-            Instantiate(pat, Vector3.up    * line * 2f, Quaternion.Euler(0f, 0f, 90f));
-            Instantiate(pat, Vector3.down  * line * 2f, Quaternion.Euler(0f, 0f, 90f));
+            SpawnPattern(Vector3.zero,              Quaternion.Euler(0f, 0f, 90f));
+            SpawnPattern(Vector3.zero,              Quaternion.identity);
+            SpawnPattern(Vector3.left  * line,      Quaternion.identity);
+            SpawnPattern(Vector3.right * line,      Quaternion.identity);
+            SpawnPattern(Vector3.up    * line * 2f, Quaternion.Euler(0f, 0f, 90f));
+            SpawnPattern(Vector3.down  * line * 2f, Quaternion.Euler(0f, 0f, 90f));
             yield return new WaitForSeconds(step);
 
             // Step 6: 원형 버스트
@@ -56,7 +67,7 @@ namespace SSH.Boss
             {
                 float rad   = angleStep * i * Mathf.Deg2Rad;
                 Vector3 pos = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * _so.BurstRadius;
-                Instantiate(pat, pos, Quaternion.Euler(0f, 0f, angleStep * i));
+                SpawnPattern(pos, Quaternion.Euler(0f, 0f, angleStep * i));
             }
             yield return new WaitForSeconds(step);
 
@@ -64,7 +75,7 @@ namespace SSH.Boss
             float rotAngleStep = (360f * _so.RotLaps) / Mathf.Max(1, _so.RotCount);
             for (int i = 0; i < _so.RotCount; i++)
             {
-                GameObject obj = Instantiate(pat, Vector3.zero, Quaternion.Euler(0f, 0f, rotAngleStep * i));
+                GameObject obj = SpawnPattern(Vector3.zero, Quaternion.Euler(0f, 0f, rotAngleStep * i));
                 SSH_ProjectileSpawner spawner = obj.GetComponentInChildren<SSH_ProjectileSpawner>();
                 if (spawner != null)
                 {

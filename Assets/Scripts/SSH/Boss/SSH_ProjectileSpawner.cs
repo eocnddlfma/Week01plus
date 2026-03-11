@@ -20,8 +20,10 @@ public class SSH_ProjectileSpawner : MonoBehaviour
     [SerializeField] private float _warningDuration = 2f;
     [SerializeField] private float _blinkInterval = 0.2f;
 
-    public void SetCount(int count)   { _count = count; }
-    public void SetSpeed(float speed) { _speed = speed; }
+    public void SetCount(int count)                { _count = count; }
+    public void SetSpeed(float speed)              { _speed = speed; }
+    public void SetWarningDuration(float duration) { _warningDuration = duration; }
+    public void SetBlinkInterval(float interval)   { _blinkInterval = interval; }
 
     private void Start()
     {
@@ -72,7 +74,7 @@ public class SSH_ProjectileSpawner : MonoBehaviour
         foreach (Vector3 pos in positions)
         {
             GameObject obj = Instantiate(_projectilePrefab, pos, transform.rotation, transform);
-            ssh_EnemyProjectile proj = obj.GetComponent<ssh_EnemyProjectile>();
+            SSH_EnemyProjectile proj = obj.GetComponent<SSH_EnemyProjectile>();
             if (proj != null)
             {
                 proj.Init(_damage, _speed, _targetMask, gameObject);

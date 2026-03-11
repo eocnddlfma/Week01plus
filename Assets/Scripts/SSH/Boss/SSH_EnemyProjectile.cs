@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ssh_EnemyProjectile : MonoBehaviour
+public class SSH_EnemyProjectile : MonoBehaviour
 {
 
     [SerializeField]private int _damage;

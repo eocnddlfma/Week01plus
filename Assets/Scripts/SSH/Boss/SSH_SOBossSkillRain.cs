@@ -16,17 +16,17 @@ public class SSH_SOBossSkillRain : fbdfbd_SOBossSkillBase
     [SerializeField] private GameObject _projectilePrefab;
 
     [Header("Rain Settings")]
-    [SerializeField] private float     _spawnY     = 15f;
-    [SerializeField] private float     _rangeWidth = 30f;
-    [SerializeField] private float     _stepDelay  = 1f;
+    [SerializeField] private float     _spawnY     = 30f;
+    [SerializeField] private float     _rangeWidth = 46f;
+    [SerializeField] private float     _stepDelay  = 3f;
     [SerializeField] private int       _damage     = 10;
     [SerializeField] private LayerMask _targetMask;
 
     [Header("Phases")]
     [SerializeField] private RainPhase[] _phases = new RainPhase[]
     {
-        new RainPhase { count = 5,  spawnDelay = 0.6f, speed = 4f,  scale = new Vector3(0.5f, 0.5f, 0.5f) },
-        new RainPhase { count = 7,  spawnDelay = 0.4f, speed = 7f,  scale = new Vector3(0.8f, 0.8f, 0.8f) },
+        new RainPhase { count = 250, spawnDelay = 0.03f, speed = 7f,  scale = new Vector3(0.25f, 0.25f, 0.25f) },
+        new RainPhase { count = 50,  spawnDelay = 0.1f,  speed = 30f, scale = new Vector3(1f, 1f, 1f) },
     };
 
     public GameObject  ProjectilePrefab => _projectilePrefab;
