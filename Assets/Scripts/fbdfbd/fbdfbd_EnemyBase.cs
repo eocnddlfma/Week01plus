@@ -55,7 +55,7 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
 
         ScheduleNextAttack();
 
-        // Ryeol_GameManager.Instance.RegisterEnemy();
+        Ryeol_GameManager.Instance.RegisterEnemy();
     }
 
     protected virtual void Update()
@@ -239,7 +239,7 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
             return;
 
         _hp -= damage;
-
+        WS_DamageTextManager.I.Show(damage, transform.position);
         if (_hp <= 0)
         {
             _hp = 0;
