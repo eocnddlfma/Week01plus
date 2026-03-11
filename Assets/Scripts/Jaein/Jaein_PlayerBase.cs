@@ -34,7 +34,7 @@ public class Jaein_PlayerBase : Jaein_ObjectBase
         }
         else
         {
-            StartCoroutine(InvincibleRoutine());
+            StartCoroutine(InvincibleRoutine(true));
         }
     }
     protected override void OnDeath()
@@ -49,32 +49,43 @@ public class Jaein_PlayerBase : Jaein_ObjectBase
         }
     }
 
-    private IEnumerator InvincibleRoutine()
+    // PlayerController에서 대쉬 시 무적 코루틴 호출
+    protected IEnumerator InvincibleRoutine(bool isHit)
     {
         _isInvincible = true;
-        // Debug.Log("[Player] 무적 상태");
-        // 피격 시 깜빡임 효과 (투명도 조절)
-        float elapsed = 0f;
-        while (elapsed < _invincibleDuration)
+
+        if (isHit)
         {
+            // [피격 시] 깜빡임 효과 수행
+            float elapsed = 0f;
+            while (elapsed < _invincibleDuration)
+            {
+                if (_spriteRenderer != null)
+                {
+                    Color c = _spriteRenderer.color;
+                    // 투명도를 0.2f와 1f 사이에서 토글
+                    c.a = (c.a == 1f) ? 0.2f : 1f;
+                    _spriteRenderer.color = c;
+                }
+
+                yield return new WaitForSeconds(_flashInterval);
+                elapsed += _flashInterval;
+            }
+
+            // 루프 종료 후 불투명도 원상복구
             if (_spriteRenderer != null)
             {
-                Color c = _spriteRenderer.color;
-                c.a = (c.a == 1f) ? 0.2f : 1f; // 켰다 껐다 반복
-                _spriteRenderer.color = c;
+                Color finalColor = _spriteRenderer.color;
+                finalColor.a = 1f;
+                _spriteRenderer.color = finalColor;
             }
-            yield return new WaitForSeconds(_flashInterval);
-            elapsed += _flashInterval;
+        }
+        else
+        {
+            // [피격 아님] 깜빡임 없이 시간만 대기 (예: 아이템 획득 무적 등)
+            yield return new WaitForSeconds(_invincibleDuration);
         }
 
-        // 복구
-        if (_spriteRenderer != null)
-        {
-            Color finalColor = _spriteRenderer.color;
-            finalColor.a = 1f;
-            _spriteRenderer.color = finalColor;
-        }
         _isInvincible = false;
-        // Debug.Log("[Player] 무적 해제");
     }
 }

@@ -161,6 +161,8 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         _isDashing = true;
         _lastDashTime = Time.time;
 
+        StartCoroutine(InvincibleRoutine(false));
+
         float originalDrag = Rb.linearDamping;
         Rb.linearDamping = 0;
         Rb.linearVelocity = dir.normalized * _dashSpeed;
