@@ -129,7 +129,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 25957428285945982, guid: 6a7ac9444c936c14487ab3d48624d4c2, type: 3}
       propertyPath: _damage
-      value: 35
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 25957428285945982, guid: 6a7ac9444c936c14487ab3d48624d4c2, type: 3}
       propertyPath: _target
@@ -196,9 +196,61 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2032965441347854127, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2032965441347854127, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2032965441347854127, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2032965441347854127, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2032965441347854127, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
+      value: 2.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2032965441347854127, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2032965441347854127, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2032965441347854127, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
+      value: 2.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2032965441347854127, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
+      value: -1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2032965441347854127, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[4].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2032965441347854127, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[4].y
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2032965441347854127, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[5].y
+      value: -3
+      objectReference: {fileID: 0}
     - target: {fileID: 2410002324554901620, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
       propertyPath: _maxHp
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3823724453817044436, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4147227020839708858, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -240,15 +292,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5122006537585194595, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9040083616060214802, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
       propertyPath: _maxHp
-      value: 100
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9040083616060214802, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: _colliderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9040083616060214802, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      propertyPath: _attackDuration
+      value: 0.25
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2410002324554901620, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2584675832226779014, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1278206344}
   m_SourcePrefab: {fileID: 100100000, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
 --- !u!4 &706502093 stripped
 Transform:
@@ -265,7 +332,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 25957428285945982, guid: 6a7ac9444c936c14487ab3d48624d4c2, type: 3}
       propertyPath: _damage
-      value: 35
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 25957428285945982, guid: 6a7ac9444c936c14487ab3d48624d4c2, type: 3}
       propertyPath: _target
@@ -381,6 +448,23 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c4ce838484585643a57452629955997, type: 3}
+--- !u!1 &1278206341 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2584675832226779014, guid: a269ea36e7704df45b5631c3d0ad17c3, type: 3}
+  m_PrefabInstance: {fileID: 438124467}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1278206344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278206341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88d40a589e48212489a654ab9d10eb76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Jaein_WeaponChargeInfo
 --- !u!1 &1354891387
 GameObject:
   m_ObjectHideFlags: 0

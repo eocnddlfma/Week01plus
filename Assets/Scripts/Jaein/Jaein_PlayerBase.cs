@@ -52,7 +52,7 @@ public class Jaein_PlayerBase : Jaein_ObjectBase
     private IEnumerator InvincibleRoutine()
     {
         _isInvincible = true;
-        Debug.Log("[Player] 무적 상태");
+        // Debug.Log("[Player] 무적 상태");
         // 피격 시 깜빡임 효과 (투명도 조절)
         float elapsed = 0f;
         while (elapsed < _invincibleDuration)
@@ -75,6 +75,6 @@ public class Jaein_PlayerBase : Jaein_ObjectBase
             _spriteRenderer.color = finalColor;
         }
         _isInvincible = false;
-        Debug.Log("[Player] 무적 해제");
+        // Debug.Log("[Player] 무적 해제");
     }
 }
