@@ -26,7 +26,7 @@ public class SSH_ProjectileSpawner : MonoBehaviour
     private void Start()
     {
         StartCoroutine(WarningThenSpawn());
-        Destroy(gameObject, 5f);
+        Destroy(transform.parent != null ? transform.parent.gameObject : gameObject, 8f);
     }
 
     private IEnumerator WarningThenSpawn()

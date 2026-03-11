@@ -108,7 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ssh_EnemyProjectile
   _damage: 1
   _speed: 25
-  LifeTime: 4
+  LifeTime: 10
 --- !u!50 &5693004277259029675
 Rigidbody2D:
   serializedVersion: 5

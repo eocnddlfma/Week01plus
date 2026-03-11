@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c64b675eb5c46294d9198519f3860176, type: 3}
-  m_Name: HeartBossSkillDodgeball
+  m_Name: HeartBossSkillRain
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_SOBossSkillBase
-  _skillName: DodgeBall
-  _skillNumber: 101
-  _skillCooldown: 30
-  _skillCastTime: 30
+  _skillName: Rain
+  _skillNumber: 102
+  _skillCooldown: 45
+  _skillCastTime: 45
   _skillRepeatCount: 0
   _bossSkillParticle: {fileID: 0}

@@ -221,6 +221,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &330703256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 330703257}
+  m_Layer: 0
+  m_Name: SwitchSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &330703257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330703256}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -36.05, y: -15.61, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1353642277}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &393299034
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -339,6 +370,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &625430074
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 625430075}
+  m_Layer: 0
+  m_Name: SwitchSpawnPoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &625430075
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625430074}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -35.24, y: -39.79, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1353642277}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &795038336
 PrefabInstance:
@@ -515,6 +577,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1212542638
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1212542639}
+  m_Layer: 0
+  m_Name: SwitchSpawnPoint (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1212542639
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212542638}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 34.39, y: -43.85, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1353642277}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1353642273
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,6 +620,7 @@ GameObject:
   - component: {fileID: 1353642276}
   - component: {fileID: 1353642275}
   - component: {fileID: 1353642278}
+  - component: {fileID: 1353642279}
   m_Layer: 0
   m_Name: TestBoss
   m_TagString: Untagged
@@ -550,7 +644,7 @@ MonoBehaviour:
   _maxHp: 2000
   _isDead: 0
   _target: {fileID: 208966898812818936}
-  _moveSpeed: 2
+  _moveSpeed: 0
   _stopDistance: 1.2
   _moveLerpSpeed: 8
   _enemyLayerMask:
@@ -568,6 +662,15 @@ MonoBehaviour:
   - _skillData: {fileID: 11400000, guid: 7fa3004cdeddea04092810dc5d0fbf96, type: 2}
     _skillLogic: {fileID: 1353642278}
     _weight: 1
+  - _skillData: {fileID: 11400000, guid: 7fa3004cdeddea04092810dc5d0fbf96, type: 2}
+    _skillLogic: {fileID: 1353642279}
+    _weight: 9
+  _switchManager: {fileID: 0}
+  _targetCameraSize: 10
+  _cameraYOffset: 3
+  _cameraTweenDuration: 1.2
+  _switchPrefab: {fileID: 0}
+  _switchSpawnPoints: []
 --- !u!50 &1353642276
 Rigidbody2D:
   serializedVersion: 5
@@ -604,11 +707,15 @@ Transform:
   m_GameObject: {fileID: 1353642273}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.76479, y: 7.21199, z: 0}
+  m_LocalPosition: {x: -0.2, y: 28.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1415257560}
+  - {fileID: 330703257}
+  - {fileID: 625430075}
+  - {fileID: 1681889998}
+  - {fileID: 1212542639}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1353642278
@@ -624,16 +731,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SSH.Boss.SSH_BossSkillPhase1Dodgeball
   DodgeballPattern: {fileID: 5809113855475138189, guid: c9fd2e4832fb52742a1366c3a31d4a35, type: 3}
-  _stepDelay: 2
+  _stepDelay: 1.7
   _lineOffset: 9
-  _burstCount: 8
-  _burstRadius: 12
-  _rotCount: 60
+  _burstCount: 16
+  _burstRadius: 14
+  _rotCount: 45
   _rotDelay: 0.25
-  _rotLaps: 3
+  _rotLaps: 2.2
   _rotSpawnCount: 25
-  _rotSpeed: 200
+  _rotSpeed: 150
   _gizmoLineLength: 8
+--- !u!114 &1353642279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353642273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ad83d10e5f71c47b1cd58121848a7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SSH.Boss.SSH_BossSkillPhase1Rain
+  _projectilePrefab: {fileID: 705963780439117018, guid: 00a59d9b038bdb0459dd6d4bde5df1ab, type: 3}
+  _spawnY: 30
+  _rangeWidth: 46
+  _stepDelay: 3
+  _damage: 10
+  _targetMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _phases:
+  - count: 250
+    spawnDelay: 0.03
+    speed: 7
+    scale: {x: 0.25, y: 0.25, z: 0.25}
+  - count: 50
+    spawnDelay: 0.1
+    speed: 30
+    scale: {x: 1, y: 1, z: 1}
+  _gizmoDropLength: 54.29
 --- !u!1 &1354891387
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,7 +833,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 24
+  orthographic size: 35
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -721,7 +858,7 @@ Transform:
   m_GameObject: {fileID: 1354891387}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -862,6 +999,37 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1681889997
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1681889998}
+  m_Layer: 0
+  m_Name: SwitchSpawnPoint (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1681889998
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681889997}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 34.02, y: -11.9, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1353642277}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1771677979
 GameObject:
   m_ObjectHideFlags: 0

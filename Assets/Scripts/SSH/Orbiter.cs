@@ -5,16 +5,10 @@ using UnityEngine.InputSystem;
 public class Orbiter : MonoBehaviour
 {
     /// <summary>
-    /// 공 회전하는 스크립트임
-    /// 일단 테스트를 위해 뉴인풋의 스페이스로 발사하게 만들어놨는데,
-    /// 나중에 이거 게임에 쓰실거면 
-    /// 함수로 바꾼다음에 
-    /// 공 여러개 순서대로 할거면 스택같은걸로 쓰거나
-    /// 충돌시 발사하는 식으로 바꾸는걸 추천함
-    /// 260310 신상현 작성 
+    /// obsolete : 이 스크립트는 더 이상 사용되지 않습니다. 대신 Jaein_OrbitalWeapon를 사용해주세요.
     /// </summary>
 
- 
+
     [Header("Orbit")]
     [Tooltip("공전의 중심 Transform")]
     public Transform center;
