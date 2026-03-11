@@ -138,8 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d110683b4d9df234db2e0c830e7ff453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemyBossBase
-  _hp: 1000
-  _maxHp: 1000
+  _hp: 10
+  _maxHp: 10
   _isDead: 0
   _target: {fileID: 0}
   _moveSpeed: 2

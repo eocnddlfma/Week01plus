@@ -51,6 +51,12 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     [SerializeField] private string _chargeBoolName = "IsCharging";
     [SerializeField] private string _fullChargeBoolName = "IsFullCharged";
 
+    [Header("Boundary Settings")]
+    [SerializeField] private Vector2 _boundaryCenter = Vector2.zero;
+    [SerializeField] private float _boundaryRadius = 24f;
+    [SerializeField] private bool _useBoundary = true;
+    [SerializeField] private float _boundarySkin = 0.05f;
+
     private Vector2 _inputVec;
     private Camera _mainCamera;
 
@@ -126,6 +132,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         if (_isDead || _isDashing) return;
 
         Move();
+        ClampInsideBoundary();
     }
 
     private void HandleInput()
@@ -161,24 +168,64 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         _isDashing = true;
         _lastDashTime = Time.time;
 
+        StartCoroutine(InvincibleRoutine(false));
+
+        dir = dir.normalized;
+
         float originalDrag = Rb.linearDamping;
-        Rb.linearDamping = 0;
-        Rb.linearVelocity = dir.normalized * _dashSpeed;
+        Rb.linearDamping = 0f;
 
-        yield return new WaitForSeconds(_dashDuration);
+        float desiredDashDistance = _dashSpeed * _dashDuration;
+        float allowedDashDistance = GetMaxDashDistanceInBoundary(Rb.position, dir, desiredDashDistance);
 
+        if (allowedDashDistance <= 0.001f)
+        {
+            Rb.linearVelocity = Vector2.zero;
+            Rb.linearDamping = originalDrag;
+            _isDashing = false;
+            yield break;
+        }
+
+        float actualDashDuration = allowedDashDistance / _dashSpeed;
+        Rb.linearVelocity = dir * _dashSpeed;
+
+        yield return new WaitForSeconds(actualDashDuration);
+
+        Rb.linearVelocity = Vector2.zero;
         Rb.linearDamping = originalDrag;
+
+        ClampInsideBoundary();
 
         _isDashing = false;
     }
 
     private void Move()
     {
-        if (Rb != null)
+        if (Rb == null)
+            return;
+
+        float speed = _isCharging ? _moveSpeed * 0.5f : _moveSpeed;
+        Vector2 desiredVelocity = _inputVec * speed;
+
+        if (_useBoundary && desiredVelocity.sqrMagnitude > 0.0001f)
         {
-            float speed = _isCharging ? _moveSpeed * 0.5f : _moveSpeed; // 차지 중에는 이동 속도 감소
-            Rb.linearVelocity = _inputVec * speed;
+            Vector2 currentPos = Rb.position;
+            Vector2 toPlayer = currentPos - _boundaryCenter;
+            float maxRadius = Mathf.Max(0f, _boundaryRadius - _boundarySkin);
+
+            if (toPlayer.sqrMagnitude >= maxRadius * maxRadius)
+            {
+                Vector2 normal = toPlayer.normalized;
+                float outwardDot = Vector2.Dot(desiredVelocity, normal);
+
+                if (outwardDot > 0f)
+                {
+                    desiredVelocity -= normal * outwardDot;
+                }
+            }
         }
+
+        Rb.linearVelocity = desiredVelocity;
     }
 
     private void RotateTowardsMouse()
@@ -234,11 +281,16 @@ public class Jaein_PlayerController : Jaein_PlayerBase
                 float chargeTime = _currentChargeTimer - _chargeThreshold;
                 _chargePercent = Mathf.Clamp01(chargeTime / (_maxChargeTime - _chargeThreshold));
 
-                // 비주얼 처리 파트
-                if (CurrentWeaponTransform != null)
+                float multiplier = Mathf.Lerp(_minChargeScale, _maxChargeScale, _chargePercent);
+
+                if (_boxWeaponTransform != null)
                 {
-                    float multiplier = Mathf.Lerp(_minChargeScale, _maxChargeScale, _chargePercent);
-                    CurrentWeaponTransform.localScale = InitialScale * multiplier;
+                    _boxWeaponTransform.localScale = _initialBoxScale * multiplier;
+                }
+
+                if (_colliderMode == ColliderMode.Polygon && _polygonWeaponTransform != null)
+                {
+                    _polygonWeaponTransform.localScale = _initialPolygonScale * multiplier;
                 }
 
                 if (_pivotAnimator != null)
@@ -292,7 +344,8 @@ public class Jaein_PlayerController : Jaein_PlayerBase
 
         ToggleWeaponCollider(false);
 
-        if (CurrentWeaponTransform != null) CurrentWeaponTransform.localScale = InitialScale;
+        if (_boxWeaponTransform != null) _boxWeaponTransform.localScale = _initialBoxScale;
+        if (_polygonWeaponTransform != null) _polygonWeaponTransform.localScale = _initialPolygonScale;
 
         ResetCurrentWeaponCharge();
 
@@ -316,7 +369,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
             _polygonChargeInfo.ResetCharge();
     }
 
-    // 공격 시 박스 or 폴리곤 콜라이더 토글
+    // 박스 or 폴리곤 콜라이더 토글
     private void ToggleWeaponCollider(bool isEnable)
     {
         DisableAllWeaponColliders();
@@ -341,5 +394,77 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         {
             Destroy(other.gameObject);
         }
+    }
+
+    private Vector2 GetClampedPosition(Vector2 targetPosition)
+    {
+        if (!_useBoundary)
+            return targetPosition;
+
+        Vector2 toTarget = targetPosition - _boundaryCenter;
+        float maxRadius = Mathf.Max(0f, _boundaryRadius - _boundarySkin);
+
+        if (toTarget.sqrMagnitude <= maxRadius * maxRadius)
+            return targetPosition;
+
+        return _boundaryCenter + toTarget.normalized * maxRadius;
+    }
+
+    private void ClampInsideBoundary()
+    {
+        if (!_useBoundary || Rb == null)
+            return;
+
+        Vector2 currentPos = Rb.position;
+        Vector2 clampedPos = GetClampedPosition(currentPos);
+
+        if ((currentPos - clampedPos).sqrMagnitude > 0.000001f)
+        {
+            Vector2 normal = (currentPos - _boundaryCenter).normalized;
+
+            Rb.position = clampedPos;
+
+            float outwardSpeed = Vector2.Dot(Rb.linearVelocity, normal);
+            if (outwardSpeed > 0f)
+            {
+                Rb.linearVelocity -= normal * outwardSpeed;
+            }
+        }
+    }
+
+    private float GetMaxDashDistanceInBoundary(Vector2 startPos, Vector2 dashDir, float desiredDistance)
+    {
+        if (!_useBoundary)
+            return desiredDistance;
+
+        dashDir = dashDir.normalized;
+        Vector2 oc = startPos - _boundaryCenter;
+        float radius = Mathf.Max(0f, _boundaryRadius - _boundarySkin);
+
+        float a = Vector2.Dot(dashDir, dashDir);
+        float b = 2f * Vector2.Dot(oc, dashDir);
+        float c = Vector2.Dot(oc, oc) - radius * radius;
+
+        float discriminant = b * b - 4f * a * c;
+
+        if (discriminant < 0f)
+            return 0f;
+
+        float sqrtD = Mathf.Sqrt(discriminant);
+        float t1 = (-b - sqrtD) / (2f * a);
+        float t2 = (-b + sqrtD) / (2f * a);
+
+        float maxT = Mathf.Max(t1, t2);
+
+        if (maxT < 0f)
+            return 0f;
+
+        return Mathf.Min(desiredDistance, maxT);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(new Vector3(_boundaryCenter.x, _boundaryCenter.y, 0f), _boundaryRadius);
     }
 }
