@@ -8,10 +8,8 @@ public class Ryeol_EnemySpawner : MonoBehaviour
     [SerializeField] private List<Ryeol_WaveData> _waveDatas;
 
     [SerializeField] private float spawnRadius = 10f; // 플레이어에게서 해당 수치만큼 떨어진 곳에서 스폰.
-
+    
     [SerializeField] private GameObject _player;
-
-    [SerializeField] private Transform _bossSpawnPoint; // 보스 스폰 위치 (미설정 시 Vector3.zero)
 
     [SerializeField] private float _changeWaveThreshold = 0.8f; // 웨이브 바뀌는 정도 (해당 Wave에 스폰된 적의 몇 퍼를 죽여야 넘어가는지)
 
@@ -103,6 +101,7 @@ public class Ryeol_EnemySpawner : MonoBehaviour
             Debug.Log("All waves cleared!");
             Ryeol_GameManager.Instance.GameClear();
 
+
             return;
         }
 
@@ -132,19 +131,13 @@ public class Ryeol_EnemySpawner : MonoBehaviour
         GameObject enemyPrefab = _currentWaveData.enemyPrefabs[_spawnIndex];
         _spawnIndex++;
 
-        Vector3 spawnPosition;
-        if (_currentWaveData.isBoss)
-        {
-            spawnPosition = _bossSpawnPoint != null ? _bossSpawnPoint.position : Vector3.zero;
-        }
-        else
-        {
-            Vector2 randomCircle = UnityEngine.Random.insideUnitCircle.normalized * spawnRadius;
-            spawnPosition = _player.transform.position + new Vector3(randomCircle.x, randomCircle.y, 0);
-        }
+        // 플레이어 주변 랜덤 위치 계산
+        Vector2 randomCircle = UnityEngine.Random.insideUnitCircle.normalized * spawnRadius;
+        Vector3 spawnPosition = _player.transform.position + new Vector3(randomCircle.x, randomCircle.y, 0);
 
+        // 적 생성
         GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-        enemy.GetComponent<fbdfbd_EnemyBase>().SetTarget(_player.transform);
+        enemy.GetComponent<fbdfbd_EnemyBase>().SetTarget(_player.transform); // 적 타겟 주입
         enemy.transform.SetParent(_enemyContainer);
     }
 

@@ -70,7 +70,8 @@ namespace SSH.Boss
                 yield return new WaitForSeconds(_so.WaitAtPoint);
             }
 
-            if (stab != null) Destroy(stab.gameObject);
+            if (stab != null)
+                Destroy(stab.gameObject);
             _patternFinished = true;
         }
 

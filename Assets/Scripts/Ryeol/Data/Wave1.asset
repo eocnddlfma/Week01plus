@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ryeol_WaveData
   id: 1
   enemyPrefabs:
-  - {fileID: 7644190236014916701, guid: 06c81189e55b04e489fb46c3966ed6ce, type: 3}
+  - {fileID: 601661822854439945, guid: 4017ce193d3a7cc42b1bb5d2a0b08024, type: 3}
   minSpawnInterval: 0.5
   maxSpawnInterval: 2
   isBoss: 0

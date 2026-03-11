@@ -119,7 +119,8 @@ namespace SSH.Boss
         {
             if (slot.SkillLogic is SSH_BossSkillPhase1Dodgeball) _dodgeballUsed = true;
             if (slot.SkillLogic is SSH_BossSkillPhase1Rain)      _rainUsed      = true;
-            if (slot.SkillLogic is SSH_BossSkillPhase1Stab)      TakeDamage(99999);
+            if (slot.SkillLogic is SSH_BossSkillPhase1Stab)
+                TakeDamage(99999);
         }
     }
 }

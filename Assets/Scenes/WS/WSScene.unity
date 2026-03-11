@@ -259,7 +259,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!224 &49112617
 RectTransform:
@@ -356,6 +356,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1024770465}
     - target: {fileID: 8363133618212120858, guid: 19135ef9b3efffb4b945dda1a121657b, type: 3}
+      propertyPath: _buttonsGroup
+      value: 
+      objectReference: {fileID: 1872710616}
+    - target: {fileID: 8363133618212120858, guid: 19135ef9b3efffb4b945dda1a121657b, type: 3}
       propertyPath: _gameEndPanel
       value: 
       objectReference: {fileID: 1471921960}
@@ -363,6 +367,18 @@ PrefabInstance:
       propertyPath: _restartButton
       value: 
       objectReference: {fileID: 1448733733}
+    - target: {fileID: 8363133618212120858, guid: 19135ef9b3efffb4b945dda1a121657b, type: 3}
+      propertyPath: _buttonRects.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8363133618212120858, guid: 19135ef9b3efffb4b945dda1a121657b, type: 3}
+      propertyPath: '_buttonRects.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1854027453}
+    - target: {fileID: 8363133618212120858, guid: 19135ef9b3efffb4b945dda1a121657b, type: 3}
+      propertyPath: '_buttonRects.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1551867503}
     - target: {fileID: 8840134469100404290, guid: 19135ef9b3efffb4b945dda1a121657b, type: 3}
       propertyPath: m_Name
       value: '@UI_GameScene'
@@ -1758,10 +1774,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameEndPanel2
       objectReference: {fileID: 0}
-    - target: {fileID: 456166339699623209, guid: f61a40a1d9768b748bb82b6e2a0ea181, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1823020617649631845, guid: f61a40a1d9768b748bb82b6e2a0ea181, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1852,7 +1864,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2851983529396018359, guid: f61a40a1d9768b748bb82b6e2a0ea181, type: 3}
       propertyPath: m_BlocksRaycasts
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1971,6 +1983,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f328d23df1bc290479abadec85c4307a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_CircleLineRenderer
+--- !u!224 &1551867503 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4402583752294694056, guid: f61a40a1d9768b748bb82b6e2a0ea181, type: 3}
+  m_PrefabInstance: {fileID: 1471921958}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1598831030
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2020,12 +2037,44 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4212091938099793405, guid: 7130806abd294b04984566b1918595a2, type: 3}
+      propertyPath: _hp
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212091938099793405, guid: 7130806abd294b04984566b1918595a2, type: 3}
+      propertyPath: _maxHp
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212091938099793405, guid: 7130806abd294b04984566b1918595a2, type: 3}
+      propertyPath: _moveSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212091938099793405, guid: 7130806abd294b04984566b1918595a2, type: 3}
       propertyPath: cameraEffect
       value: 
       objectReference: {fileID: 1354891392}
     - target: {fileID: 4212091938099793405, guid: 7130806abd294b04984566b1918595a2, type: 3}
       propertyPath: _boundarySkin
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212091938099793405, guid: 7130806abd294b04984566b1918595a2, type: 3}
+      propertyPath: _dashCooldown
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212091938099793405, guid: 7130806abd294b04984566b1918595a2, type: 3}
+      propertyPath: _dashDuration
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212091938099793405, guid: 7130806abd294b04984566b1918595a2, type: 3}
+      propertyPath: _rotationSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212091938099793405, guid: 7130806abd294b04984566b1918595a2, type: 3}
+      propertyPath: _attackCooldown
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4212091938099793405, guid: 7130806abd294b04984566b1918595a2, type: 3}
+      propertyPath: _attackDuration
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4212091938099793405, guid: 7130806abd294b04984566b1918595a2, type: 3}
       propertyPath: _boundaryRadius
@@ -2107,8 +2156,8 @@ MonoBehaviour:
     radius: 14
     segments: 12
   _endStep:
-    radius: 24
-    segments: 24
+    radius: 35
+    segments: 32
   _firstDuration: 1
   _secondDuration: 1
   _thirdDuration: 1
@@ -2154,6 +2203,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+--- !u!224 &1854027453 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7530054021412096348, guid: f61a40a1d9768b748bb82b6e2a0ea181, type: 3}
+  m_PrefabInstance: {fileID: 1471921958}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1868900725 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1591229871138227928, guid: d41b613715ad9cc4eb127408fdde5683, type: 3}
@@ -2193,15 +2247,15 @@ PrefabInstance:
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: '_waveDatas.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: e9b5303e6ead4394c924f4933f5fdb79, type: 2}
+      objectReference: {fileID: 11400000, guid: b52c9576077f16f4c8c5d95a0f26c9a1, type: 2}
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: '_waveDatas.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: 02945f4f429c96547aaec876a4b7f1e6, type: 2}
+      objectReference: {fileID: 11400000, guid: 5582a7a882c08be4385c5a6c00f2d1fa, type: 2}
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: '_waveDatas.Array.data[2]'
       value: 
-      objectReference: {fileID: 11400000, guid: 02945f4f429c96547aaec876a4b7f1e6, type: 2}
+      objectReference: {fileID: 11400000, guid: 5582a7a882c08be4385c5a6c00f2d1fa, type: 2}
     - target: {fileID: 4007090818301135136, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2266,6 +2320,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61b7e0306c1b38c4c8a5ab542936de86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ryeol_EnemySpawner
+--- !u!225 &1872710616 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 8395517237898378552, guid: f61a40a1d9768b748bb82b6e2a0ea181, type: 3}
+  m_PrefabInstance: {fileID: 1471921958}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1991526692 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6899022428739043964, guid: 0f3d1a72db76f7947ba2a4bc24b9924c, type: 3}
@@ -3214,6 +3273,9 @@ MonoBehaviour:
   _rejoinVelocityLimit: 8
   _rejoinBrakeDamping: 1
   _snapDuration: 2.1
+  _baseDamage: 2
+  _maxChargeDamage: 20
+  _varianceRange: 0.1
   _drawOrbitGizmo: 1
   _stateGizmoRadius: 0.5
 --- !u!114 &8429159087609928497
