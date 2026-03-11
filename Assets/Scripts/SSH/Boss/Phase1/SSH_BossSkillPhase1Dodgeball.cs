@@ -61,6 +61,33 @@ namespace SSH.Boss
             SpawnPattern(Vector3.down  * line * 2f, Quaternion.Euler(0f, 0f, 90f));
             yield return new WaitForSeconds(step);
 
+            // Step 5.5: 세로 라인 6개를 1,3,5 → 2,4,6 번갈아 3회
+            {
+                Vector3[] altPos =
+                {
+                    Vector3.right * (-line * 2.5f), // 1번
+                    Vector3.right * (-line * 1.5f), // 2번
+                    Vector3.right * (-line * 0.5f), // 3번
+                    Vector3.right * ( line * 0.5f), // 4번
+                    Vector3.right * ( line * 1.5f), // 5번
+                    Vector3.right * ( line * 2.5f), // 6번
+                };
+
+                for (int r = 0; r < 3; r++)
+                {
+                    SpawnPattern(altPos[0], Quaternion.identity);
+                    SpawnPattern(altPos[2], Quaternion.identity);
+                    SpawnPattern(altPos[4], Quaternion.identity);
+                    yield return new WaitForSeconds(step * 0.7f);
+
+                    SpawnPattern(altPos[1], Quaternion.identity);
+                    SpawnPattern(altPos[3], Quaternion.identity);
+                    SpawnPattern(altPos[5], Quaternion.identity);
+                    yield return new WaitForSeconds(step * 0.7f);
+                }
+                yield return new WaitForSeconds(step);
+            }
+
             // Step 6: 원형 버스트
             float angleStep = 360f / Mathf.Max(1, _so.BurstCount);
             for (int i = 0; i < _so.BurstCount; i++)
@@ -149,6 +176,14 @@ namespace SSH.Boss
             Gizmos.DrawWireCube(Vector3.right * line,    lineV);
             Gizmos.DrawWireCube(Vector3.up    * line * 2f, lineH);
             Gizmos.DrawWireCube(Vector3.down  * line * 2f, lineH);
+
+            // Step 5.5: 홀짝 번갈아 세로 라인 6개
+            Gizmos.color = new Color(0.5f, 1f, 0.5f);
+            for (int i = 0; i < 6; i++)
+            {
+                float x = (i - 2.5f) * line;
+                Gizmos.DrawWireCube(Vector3.right * x, lineV);
+            }
 
             // Step 6: 원형 버스트
             Gizmos.color = Color.magenta;
