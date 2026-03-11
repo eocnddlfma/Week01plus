@@ -14,16 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_SOBossSkillMineShot
   _skillName: MineShot
   _skillNumber: 3
-  _skillCooldown: 5
-  _skillCastTime: 1
+  _skillCooldown: 10
+  _skillCastTime: 0
   _skillRepeatCount: 0
-  _bossSkillParticle: {fileID: 0}
+  _bossSkillParticle: {fileID: 1470878046072542513, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
   _mineProjectilePrefab: {fileID: 4752453250131162497, guid: 304e73bfc89b3b94481486bdd3fe5b5b, type: 3}
   _damage: 1
-  _projectileSpeed: 7
-  _projectileIdleTime: 0.5
+  _projectileSpeed: 8
+  _speedRandomPercent: 0.4
+  _deceleration: 5
+  _stopSpeedThreshold: 0.05
+  _blinkDuration: 0.5
+  _explodeDelay: 0
   _targetMask:
     serializedVersion: 2
     m_Bits: 128
-  _projectilesCount: 20
-  _projectileInterval: 0.25
+  _projectilesCount: 25
+  _projectileInterval: 0.03
+  _startAngle: 0
+  _wobbleAmplitude: 0.5
+  _wobbleFrequency: 0.7
+  _randomAngleJitter: 2

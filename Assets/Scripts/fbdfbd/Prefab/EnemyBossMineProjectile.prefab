@@ -177,6 +177,7 @@ MonoBehaviour:
   _fallbackExplosionRadius: 0.8
   _blinkMinInterval: 0.06
   _blinkMaxInterval: 0.16
+  _explodeParticle: {fileID: 4081615899977684327}
 --- !u!1001 &5264851014697352942
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -330,6 +331,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
+--- !u!198 &4081615899977684327 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8193263865222556553, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}
+  m_PrefabInstance: {fileID: 5264851014697352942}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6177873188286416343 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2066225291962563385, guid: 19fc7c3a5add53149a9540bcbf701847, type: 3}

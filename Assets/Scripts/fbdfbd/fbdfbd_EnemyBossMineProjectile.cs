@@ -15,7 +15,7 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
     [Min(0f)][SerializeField] private float _fallbackExplosionRadius = 0.8f;
     [Min(0.01f)][SerializeField] private float _blinkMinInterval = 0.06f;
     [Min(0.01f)][SerializeField] private float _blinkMaxInterval = 0.16f;
-    [SerializeField] private GameObject _explodeParticlePrefab;
+    [SerializeField] private ParticleSystem _explodeParticle;
 
     private int _damage;
     private Vector2 _direction;
@@ -30,6 +30,7 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
     private bool _isInitialized;
     private bool _isStopped;
     private bool _isExploded;
+    private bool _isDamageWindowOpen;
 
     private Coroutine _stopRoutine;
     private readonly HashSet<int> _damagedTargets = new HashSet<int>();
@@ -51,7 +52,16 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
         _rb.freezeRotation = true;
 
         if (_triggerCollider != null)
+        {
             _triggerCollider.isTrigger = true;
+            _triggerCollider.enabled = false;
+        }
+
+        if (_explodeParticle == null)
+            _explodeParticle = GetComponentInChildren<ParticleSystem>(true);
+
+        if (_explodeParticle != null)
+            _explodeParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
     public void Init(
@@ -78,7 +88,17 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
         _isInitialized = true;
         _isStopped = false;
         _isExploded = false;
+        _isDamageWindowOpen = false;
         _damagedTargets.Clear();
+
+        if (_triggerCollider != null)
+            _triggerCollider.enabled = false;
+
+        if (_spriteRenderer != null)
+            _spriteRenderer.enabled = true;
+
+        if (_explodeParticle != null)
+            _explodeParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
     public void WaitBeforeExplosion()
@@ -151,15 +171,20 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
             return;
 
         _isExploded = true;
-        OnExplodeFx();
+        if (_spriteRenderer != null)
+            _spriteRenderer.enabled = false;
 
-        ApplyDamageToCurrentOverlaps();
-        StartCoroutine(DestroyAfterExplodeWindow());
+        float fxLifeTime = OnExplodeFx();
+        StartCoroutine(ExplosionDamageWindowRoutine());
+        float destroyDelay = Mathf.Max(_explosionTriggerTime, fxLifeTime);
+        StartCoroutine(DestroyAfterExplodeWindow(destroyDelay));
     }
 
-    private IEnumerator DestroyAfterExplodeWindow()
+    private IEnumerator DestroyAfterExplodeWindow(float delay)
     {
-        yield return new WaitForSeconds(_explosionTriggerTime);
+        if (delay > 0f)
+            yield return new WaitForSeconds(delay);
+
         Destroy(gameObject);
     }
 
@@ -171,7 +196,7 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
             filter.useLayerMask = true;
             filter.layerMask = _targetMask;
 
-            int count = _triggerCollider.OverlapCollider(filter, _overlapResults);
+            int count = _triggerCollider.Overlap(filter, _overlapResults);
             for (int i = 0; i < count; i++)
                 TryDamage(_overlapResults[i]);
 
@@ -185,10 +210,31 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!_isExploded)
+        if (!_isDamageWindowOpen)
             return;
 
         TryDamage(other);
+    }
+
+    private IEnumerator ExplosionDamageWindowRoutine()
+    {
+        if (_triggerCollider == null)
+        {
+            ApplyDamageToCurrentOverlaps();
+            yield break;
+        }
+
+        _isDamageWindowOpen = true;
+        _triggerCollider.enabled = true;
+
+        // Enable moment overlap check + short trigger window for late entries.
+        ApplyDamageToCurrentOverlaps();
+
+        if (_explosionTriggerTime > 0f)
+            yield return new WaitForSeconds(_explosionTriggerTime);
+
+        _triggerCollider.enabled = false;
+        _isDamageWindowOpen = false;
     }
 
     private void TryDamage(Collider2D other)
@@ -222,11 +268,56 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
     {
     }
 
-    private void OnExplodeFx()
+    private float OnExplodeFx()
     {
-        if (_explodeParticlePrefab == null)
-            return;
+        if (_explodeParticle == null)
+            return 0f;
 
-        Instantiate(_explodeParticlePrefab, transform.position, Quaternion.identity);
+        if (!_explodeParticle.gameObject.activeSelf)
+            _explodeParticle.gameObject.SetActive(true);
+
+        _explodeParticle.Play(true);
+
+        return EstimateFxLifeTime(_explodeParticle);
+    }
+
+    private float EstimateFxLifeTime(ParticleSystem rootParticle)
+    {
+        if (rootParticle == null)
+            return 0f;
+
+        ParticleSystem[] systems = rootParticle.GetComponentsInChildren<ParticleSystem>(true);
+        if (systems == null || systems.Length == 0)
+            return 0f;
+
+        float maxLife = 0f;
+
+        for (int i = 0; i < systems.Length; i++)
+        {
+            ParticleSystem.MainModule main = systems[i].main;
+
+            float startDelay = GetCurveMax(main.startDelay);
+            float duration = Mathf.Max(0f, main.duration);
+            float startLife = GetCurveMax(main.startLifetime);
+
+            float candidate = startDelay + duration + startLife;
+            if (candidate > maxLife)
+                maxLife = candidate;
+        }
+
+        return maxLife + 0.1f;
+    }
+
+    private static float GetCurveMax(ParticleSystem.MinMaxCurve curve)
+    {
+        float value = curve.constantMax;
+
+        if (value <= 0f)
+            value = curve.constant;
+
+        if (value <= 0f)
+            value = curve.curveMultiplier;
+
+        return Mathf.Max(0f, value);
     }
 }

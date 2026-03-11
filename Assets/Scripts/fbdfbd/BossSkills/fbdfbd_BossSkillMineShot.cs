@@ -38,11 +38,15 @@ public class fbdfbd_BossSkillMineShot : fbdfbd_BossSkillBase
 
     public override void Exit()
     {
-        if (_fireRoutine != null)
-        {
-            StopCoroutine(_fireRoutine);
-            _fireRoutine = null;
-        }
+    }
+
+    private void OnDisable()
+    {
+        if (_fireRoutine == null)
+            return;
+
+        StopCoroutine(_fireRoutine);
+        _fireRoutine = null;
     }
 
     private IEnumerator FireRoutine()
