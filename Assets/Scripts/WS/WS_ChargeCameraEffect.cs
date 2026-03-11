@@ -23,12 +23,18 @@ public class WS_ChargeCameraEffect : MonoBehaviour
     [SerializeField] private float _endShakeAmplitude = 0.18f;
     [SerializeField] private float _endShakeSpeed = 55f;
     [SerializeField] private float _endShakeDuration = 0.12f;
+    [SerializeField] private float _fullChargeThreshold = 0.999f;
+
+    [Header("End Impact Zoom")]
+    [SerializeField] private float _endImpactMoveDistance = 1.1f;
+    [SerializeField] private float _endImpactZoomOffset = -1.0f;
+    [SerializeField] private float _endImpactDuration = 0.14f;
 
     private bool _isCharging;
     private float _noiseTime;
     private float _baseSize;
-
     private float _endShakeTimer;
+    private float _endImpactTimer;
 
     private void Reset()
     {
@@ -59,6 +65,18 @@ public class WS_ChargeCameraEffect : MonoBehaviour
             targetSize = _baseSize + _zoomInOffset;
         }
 
+        if (_endImpactTimer > 0f && _player != null)
+        {
+            _endImpactTimer -= Time.deltaTime;
+
+            float t = 1f - Mathf.Clamp01(_endImpactTimer / _endImpactDuration);
+            float punch = 1f - Mathf.Pow(1f - t, 3f);
+
+            Vector3 dir = (_player.position - Vector3.zero).normalized;
+            targetPos += new Vector3(dir.x, dir.y, 0f) * (_endImpactMoveDistance * punch);
+            targetSize += _endImpactZoomOffset * punch;
+        }
+
         Vector3 finalPos = Vector3.Lerp(transform.position, targetPos, _positionLerpSpeed * Time.deltaTime);
 
         if (_isCharging)
@@ -76,7 +94,7 @@ public class WS_ChargeCameraEffect : MonoBehaviour
             _endShakeTimer -= Time.deltaTime;
             _noiseTime += Time.deltaTime * _endShakeSpeed;
 
-            float t = _endShakeTimer / _endShakeDuration;
+            float t = Mathf.Clamp01(_endShakeTimer / _endShakeDuration);
             float amplitude = _endShakeAmplitude * t;
 
             float shakeX = (Mathf.PerlinNoise(_noiseTime, 10f) - 0.5f) * 2f * amplitude;
@@ -101,11 +119,17 @@ public class WS_ChargeCameraEffect : MonoBehaviour
     public void BeginCharge()
     {
         _isCharging = true;
+        _endShakeTimer = 0f;
+        _endImpactTimer = 0f;
     }
 
-    public void EndCharge()
+    public void EndCharge(float chargePercent)
     {
         _isCharging = false;
-        _endShakeTimer = _endShakeDuration;
+
+        bool isFullCharge = chargePercent >= _fullChargeThreshold;
+
+        _endShakeTimer = isFullCharge ? _endShakeDuration : 0f;
+        _endImpactTimer = isFullCharge ? _endImpactDuration : 0f;
     }
 }

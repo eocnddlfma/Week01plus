@@ -228,7 +228,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
             if (Mouse.current.leftButton.wasReleasedThisFrame)
             {
                 _isCharging = false;
-                cameraEffect.EndCharge();
+                cameraEffect.EndCharge(chargePercent);
 
                 if (_pivotAnimator != null)
                 {

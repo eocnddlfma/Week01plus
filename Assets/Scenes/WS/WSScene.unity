@@ -20945,6 +20945,13 @@ MonoBehaviour:
   _sizeLerpSpeed: 8
   _shakeAmplitude: 0.05
   _shakeSpeed: 35
+  _endShakeAmplitude: 7
+  _endShakeSpeed: 55
+  _endShakeDuration: 0.12
+  _fullChargeThreshold: 0.999
+  _endImpactMoveDistance: 3
+  _endImpactZoomOffset: -1
+  _endImpactDuration: 0.14
 --- !u!1 &1531500009
 GameObject:
   m_ObjectHideFlags: 0
@@ -22669,13 +22676,13 @@ MonoBehaviour:
   _launchDuration: 0.35
   _launchDurationOffset: 0.05
   _randomAngleOffset: 0
-  _returnStrength: 20
-  _returnDamping: 1.85
+  _returnStrength: 40
+  _returnDamping: 1.2
   _returnStrengthMax: 300
   _returnEscalationTime: 50
   _orbitAssistStrength: 12
   _useCounterClockwiseAssist: 1
-  _maxReturnSpeed: 32
+  _maxReturnSpeed: 60
   _rejoinDistanceToOrbit: 0.6
   _rejoinVelocityLimit: 8
   _rejoinBrakeDamping: 1
