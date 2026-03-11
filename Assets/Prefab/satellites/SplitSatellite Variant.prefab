@@ -23,7 +23,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3024492458965304509, guid: d1fb7ea60ccae7c4492b46f23fd2728e, type: 3}
       propertyPath: satelliteName
-      value: "\uBD84\uC5F4 \uACF5"
+      value: SplitBall
       objectReference: {fileID: 0}
     - target: {fileID: 7864346543517856554, guid: d1fb7ea60ccae7c4492b46f23fd2728e, type: 3}
       propertyPath: m_LocalScale.x
@@ -123,7 +123,11 @@ MonoBehaviour:
   _rejoinVelocityLimit: 8.72
   _rejoinBrakeDamping: 8.4
   _snapDuration: 1.03
+  _baseDamage: 2
+  _maxChargeDamage: 20
+  _varianceRange: 0.1
   _drawOrbitGizmo: 1
+  _stateGizmoRadius: 0.5
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 64

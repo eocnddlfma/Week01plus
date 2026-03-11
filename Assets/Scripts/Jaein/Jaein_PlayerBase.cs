@@ -23,7 +23,7 @@ public class Jaein_PlayerBase : Jaein_ObjectBase
         _isDead = false;
     }
 
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, bool isCharge = false)
     {
         if (_isDead || _isInvincible) return;
 

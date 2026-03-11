@@ -30,11 +30,27 @@ public class WS_ChargeCameraEffect : MonoBehaviour
     [SerializeField] private float _endImpactZoomOffset = -1.0f;
     [SerializeField] private float _endImpactDuration = 0.14f;
 
+    [Header("Damaged Shake")]
+    [SerializeField] private float _damagedShakeAmplitude = 0.22f;
+    [SerializeField] private float _damagedShakeSpeed = 70f;
+    [SerializeField] private float _damagedShakeDuration = 0.18f;
+    [SerializeField] private float _damagedKickDistance = 0.18f;
+    [SerializeField] private bool _useDamageKickBack = true;
+
+    private Jaein_PlayerController _playerController;
+
     private bool _isCharging;
-    private float _noiseTime;
     private float _baseSize;
     private float _endShakeTimer;
     private float _endImpactTimer;
+
+    private float _chargeNoiseTime;
+    private float _endNoiseTime;
+    private float _damagedNoiseTime;
+    private float _damagedShakeTimer;
+
+    private Vector3 _currentBasePos;
+    private float _currentSize;
 
     private void Reset()
     {
@@ -47,7 +63,30 @@ public class WS_ChargeCameraEffect : MonoBehaviour
             _targetCamera = GetComponent<Camera>();
 
         if (_targetCamera != null)
+        {
             _baseSize = _targetCamera.orthographicSize;
+            _currentSize = _baseSize;
+        }
+
+        _currentBasePos = _basePosition;
+        transform.position = _basePosition;
+
+        CachePlayerController();
+    }
+
+    private void OnEnable()
+    {
+        RegisterPlayerEvent();
+    }
+
+    private void OnDisable()
+    {
+        UnregisterPlayerEvent();
+    }
+
+    private void OnDestroy()
+    {
+        UnregisterPlayerEvent();
     }
 
     private void LateUpdate()
@@ -55,13 +94,13 @@ public class WS_ChargeCameraEffect : MonoBehaviour
         if (_targetCamera == null)
             return;
 
-        Vector3 targetPos = _basePosition;
+        Vector3 targetBasePos = _basePosition;
         float targetSize = _baseSize;
 
         if (_isCharging && _player != null)
         {
-            Vector3 dir = (_player.position - Vector3.zero).normalized;
-            targetPos += new Vector3(dir.x, dir.y, 0f) * _moveDistance;
+            Vector3 dir = GetPlayerDirFromCenter();
+            targetBasePos += new Vector3(dir.x, dir.y, 0f) * _moveDistance;
             targetSize = _baseSize + _zoomInOffset;
         }
 
@@ -72,43 +111,64 @@ public class WS_ChargeCameraEffect : MonoBehaviour
             float t = 1f - Mathf.Clamp01(_endImpactTimer / _endImpactDuration);
             float punch = 1f - Mathf.Pow(1f - t, 3f);
 
-            Vector3 dir = (_player.position - Vector3.zero).normalized;
-            targetPos += new Vector3(dir.x, dir.y, 0f) * (_endImpactMoveDistance * punch);
+            Vector3 dir = GetPlayerDirFromCenter();
+            targetBasePos += new Vector3(dir.x, dir.y, 0f) * (_endImpactMoveDistance * punch);
             targetSize += _endImpactZoomOffset * punch;
         }
 
-        Vector3 finalPos = Vector3.Lerp(transform.position, targetPos, _positionLerpSpeed * Time.deltaTime);
+        _currentBasePos = Vector3.Lerp(_currentBasePos, targetBasePos, _positionLerpSpeed * Time.deltaTime);
+        _currentSize = Mathf.Lerp(_currentSize, targetSize, _sizeLerpSpeed * Time.deltaTime);
+
+        Vector3 additiveOffset = Vector3.zero;
 
         if (_isCharging)
         {
-            _noiseTime += Time.deltaTime * _shakeSpeed;
+            _chargeNoiseTime += Time.deltaTime * _shakeSpeed;
 
-            float shakeX = (Mathf.PerlinNoise(_noiseTime, 0f) - 0.5f) * 2f * _shakeAmplitude;
-            float shakeY = (Mathf.PerlinNoise(0f, _noiseTime) - 0.5f) * 2f * _shakeAmplitude;
+            float shakeX = (Mathf.PerlinNoise(_chargeNoiseTime, 0f) - 0.5f) * 2f * _shakeAmplitude;
+            float shakeY = (Mathf.PerlinNoise(0f, _chargeNoiseTime) - 0.5f) * 2f * _shakeAmplitude;
 
-            finalPos += new Vector3(shakeX, shakeY, 0f);
+            additiveOffset += new Vector3(shakeX, shakeY, 0f);
         }
 
         if (_endShakeTimer > 0f)
         {
             _endShakeTimer -= Time.deltaTime;
-            _noiseTime += Time.deltaTime * _endShakeSpeed;
+
+            _endNoiseTime += Time.deltaTime * _endShakeSpeed;
 
             float t = Mathf.Clamp01(_endShakeTimer / _endShakeDuration);
             float amplitude = _endShakeAmplitude * t;
 
-            float shakeX = (Mathf.PerlinNoise(_noiseTime, 10f) - 0.5f) * 2f * amplitude;
-            float shakeY = (Mathf.PerlinNoise(10f, _noiseTime) - 0.5f) * 2f * amplitude;
+            float shakeX = (Mathf.PerlinNoise(_endNoiseTime, 10f) - 0.5f) * 2f * amplitude;
+            float shakeY = (Mathf.PerlinNoise(10f, _endNoiseTime) - 0.5f) * 2f * amplitude;
 
-            finalPos += new Vector3(shakeX, shakeY, 0f);
+            additiveOffset += new Vector3(shakeX, shakeY, 0f);
         }
 
-        transform.position = finalPos;
-        _targetCamera.orthographicSize = Mathf.Lerp(
-            _targetCamera.orthographicSize,
-            targetSize,
-            _sizeLerpSpeed * Time.deltaTime
-        );
+        if (_damagedShakeTimer > 0f)
+        {
+            _damagedShakeTimer -= Time.deltaTime;
+            _damagedNoiseTime += Time.deltaTime * _damagedShakeSpeed;
+
+            float t = Mathf.Clamp01(_damagedShakeTimer / _damagedShakeDuration);
+            float amplitude = _damagedShakeAmplitude * t;
+
+            float shakeX = (Mathf.PerlinNoise(_damagedNoiseTime, 20f) - 0.5f) * 2f * amplitude;
+            float shakeY = (Mathf.PerlinNoise(20f, _damagedNoiseTime) - 0.5f) * 2f * amplitude;
+
+            additiveOffset += new Vector3(shakeX, shakeY, 0f);
+
+            if (_useDamageKickBack && _player != null)
+            {
+                Vector3 playerDir = GetPlayerDirFromCenter();
+                float kick = 1f - Mathf.Pow(1f - t, 2f);
+                additiveOffset -= new Vector3(playerDir.x, playerDir.y, 0f) * (_damagedKickDistance * kick);
+            }
+        }
+
+        transform.position = _currentBasePos + additiveOffset;
+        _targetCamera.orthographicSize = _currentSize;
     }
 
     public void SetBaseSize(float size)
@@ -131,5 +191,52 @@ public class WS_ChargeCameraEffect : MonoBehaviour
 
         _endShakeTimer = isFullCharge ? _endShakeDuration : 0f;
         _endImpactTimer = isFullCharge ? _endImpactDuration : 0f;
+    }
+
+    private void CachePlayerController()
+    {
+        if (_player == null)
+        {
+            _playerController = null;
+            return;
+        }
+
+        _playerController = _player.GetComponent<Jaein_PlayerController>();
+    }
+
+    private void RegisterPlayerEvent()
+    {
+        if (_playerController == null)
+            CachePlayerController();
+
+        if (_playerController != null)
+        {
+            _playerController.OnDamaged += HandleDamaged;
+        }
+    }
+
+    private void UnregisterPlayerEvent()
+    {
+        if (_playerController != null)
+        {
+            _playerController.OnDamaged -= HandleDamaged;
+        }
+    }
+
+    private void HandleDamaged(int currentHp)
+    {
+        _damagedShakeTimer = _damagedShakeDuration;
+    }
+
+    private Vector3 GetPlayerDirFromCenter()
+    {
+        if (_player == null)
+            return Vector3.zero;
+
+        Vector3 dir = _player.position - Vector3.zero;
+        if (dir.sqrMagnitude < 0.0001f)
+            return Vector3.zero;
+
+        return dir.normalized;
     }
 }
