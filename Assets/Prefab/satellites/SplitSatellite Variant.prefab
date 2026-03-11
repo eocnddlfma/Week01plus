@@ -107,7 +107,6 @@ MonoBehaviour:
   _orbitRadius: 2
   _orbitAngularSpeed: 180
   _startAngle: 0
-  _testHitKey: 32
   _launchSpeed: 25
   _launchSpeedOffset: 2
   _launchDuration: 0.2

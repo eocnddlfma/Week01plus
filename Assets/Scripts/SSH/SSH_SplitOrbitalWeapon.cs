@@ -50,8 +50,7 @@ public class SSH_SplitOrbitalWeapon : Jaein_OrbitalWeapon
         base.OnTriggerEnter2D(other);
 
         if (_state != BallState.Orbit
-            && (_enemyLayer.value & (1 << other.gameObject.layer)) != 0
-            && !other.TryGetComponent<fbdfbd_EnemyProjectile>(out _))
+            && (_enemyLayer.value & (1 << other.gameObject.layer)) != 0)
         {
             SpawnOppositeClone();
         }
