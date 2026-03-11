@@ -15,7 +15,7 @@ public class RingAnimation : MonoBehaviour
     [SerializeField] private WS_CircleLineRenderer _innterRing;
     [SerializeField] private WS_CircleLineRenderer _outerRing;
     [SerializeField] private WS_CircleLineRenderer _outerRing2;
-    [SerializeField] private Camera _targetCamera;
+    [SerializeField] private WS_ChargeCameraEffect _cameraEffect;
 
     [Header("Curve")]
     [SerializeField] private AnimationCurve _curve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
@@ -36,18 +36,9 @@ public class RingAnimation : MonoBehaviour
     private Sequence _sequence;
     private float _cameraStartSize;
 
-    private void Awake()
-    {
-        if (_targetCamera != null)
-            _cameraStartSize = _targetCamera.orthographicSize;
-    }
-
     public void Play()
     {
         _sequence?.Kill();
-
-        if (_targetCamera != null)
-            _cameraStartSize = _targetCamera.orthographicSize;
 
         Apply(_startStep.radius, _startStep.segments, _cameraStartSize);
 
@@ -102,8 +93,8 @@ public class RingAnimation : MonoBehaviour
     {
         _mainRing.SetCircle(radius, segments);
 
-        if (_targetCamera != null)
-            _targetCamera.orthographicSize = cameraSize;
+        if (_cameraEffect != null)
+            _cameraEffect.SetBaseSize(cameraSize);
     }
 
     private void OnDestroy()

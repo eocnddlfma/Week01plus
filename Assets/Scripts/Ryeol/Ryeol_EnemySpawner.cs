@@ -10,7 +10,9 @@ public class Ryeol_EnemySpawner : MonoBehaviour
     [SerializeField] private float spawnRadius = 10f; // 플레이어에게서 해당 수치만큼 떨어진 곳에서 스폰.
     
     [SerializeField] private GameObject _player;
-    
+
+    [SerializeField] private float _changeWaveThreshold = 0.8f; // 웨이브 바뀌는 정도 (해당 Wave에 스폰된 적의 몇 퍼를 죽여야 넘어가는지)
+
     private Transform _enemyContainer;
     private int _currentWaveIndex = 0;
     private Ryeol_WaveData _currentWaveData;
@@ -77,7 +79,7 @@ public class Ryeol_EnemySpawner : MonoBehaviour
         //if (_spawnIndex < _currentWaveData.enemyPrefabs.Length) return false; // 아직 스폰 중이면 막을까?
 
         int totalCount = _currentWaveData.enemyPrefabs.Length;
-        float threshold = _currentWaveData.isBoss ? 1f : 0.8f;
+        float threshold = _currentWaveData.isBoss ? 1f : _changeWaveThreshold;
         return _currentWaveKilledCount >= totalCount * threshold;
     }
 
