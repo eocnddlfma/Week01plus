@@ -34866,8 +34866,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ad0f8887f674a44b10bcbe9270652f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jaein_PlayerController
-  _hp: 0
-  _maxHp: 5
+  _hp: 10
+  _maxHp: 10
   _isDead: 0
   _spriteRenderer: {fileID: 0}
   _invincibleDuration: 1
@@ -34875,18 +34875,18 @@ MonoBehaviour:
   _colliderMode: 1
   _weaponBoxCollider: {fileID: 0}
   _weaponPolygonCollider: {fileID: 0}
-  _moveSpeed: 5
-  _rotationSpeed: 10
+  _moveSpeed: 12
+  _rotationSpeed: 15
   _playerBody: {fileID: 7980365704234890648}
   _boxWeaponTransform: {fileID: 2404993110645459714}
   _polygonWeaponTransform: {fileID: 8480192876629177922}
   _dashKey: 32
   _dashSpeed: 25
   _dashDuration: 0.15
-  _dashCooldown: 0.75
+  _dashCooldown: 0.5
   _attackCooldown: 0
-  _attackDuration: 0.25
-  _maxChargeTime: 0.4
+  _attackDuration: 0.2
+  _maxChargeTime: 0.7
   _chargeThreshold: 0.2
   _minChargeScale: 1
   _maxChargeScale: 1.25
@@ -34894,6 +34894,10 @@ MonoBehaviour:
   _attackTriggerName: Attack
   _chargeBoolName: IsCharging
   _fullChargeBoolName: IsFullCharged
+  _boundaryCenter: {x: 0, y: 0}
+  _boundaryRadius: 24
+  _useBoundary: 1
+  _boundarySkin: 1
   cameraEffect: {fileID: 0}
 --- !u!50 &7853493235715031826
 Rigidbody2D:

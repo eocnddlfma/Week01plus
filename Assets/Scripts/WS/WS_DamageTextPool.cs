@@ -51,7 +51,7 @@ public class WS_DamageTextPool : MonoBehaviour
         return null;
     }
 
-    public void Show(int damage, Vector2 anchoredPosition)
+    public void Show(int damage, Vector2 anchoredPosition, bool isCharge)
     {
         WS_TextFloating item = GetAvailableItem();
 
@@ -61,6 +61,6 @@ public class WS_DamageTextPool : MonoBehaviour
             return;
         }
 
-        item.Play(damage, anchoredPosition);
+        item.Play(damage, anchoredPosition, isCharge);
     }
 }

@@ -157,3 +157,14 @@ MonoBehaviour:
   _vibrato: 8
   _elasticity: 0.8
   _fadeStartDelay: 0.15
+  _criticalThreshold: 0.999
+  _criticalColor: {r: 1, g: 0, b: 0, a: 1}
+  _criticalMoveY: 45
+  _criticalDuration: 0.8
+  _criticalStartScaleMultiplier: 1.25
+  _criticalPunchScale: 0.55
+  _criticalPunchDuration: 0.22
+  _criticalVibrato: 10
+  _criticalElasticity: 0.95
+  _criticalFadeStartDelay: 0.05
+  _criticalPrePopYOffset: -20

@@ -32,7 +32,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: satelliteName
-      value: "\uC911\uB825\uACF5"
+      value: GravityBall
       objectReference: {fileID: 0}
     - target: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_Name
@@ -124,7 +124,11 @@ MonoBehaviour:
   _rejoinVelocityLimit: 11.55
   _rejoinBrakeDamping: 12.07
   _snapDuration: 0.3
+  _baseDamage: 2
+  _maxChargeDamage: 20
+  _varianceRange: 0.1
   _drawOrbitGizmo: 1
+  _stateGizmoRadius: 0.5
   _gravityRadius: 5
   _gravityStrength: 25
   _gravityDivideValue: 1.5
