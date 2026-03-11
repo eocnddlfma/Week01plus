@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59d651f0229a1e040af299b78343c115, type: 3}
+  m_Name: BossSkill_Shot
+  m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_SOBossSkillTriple
+  _skillName: TripleShot
+  _skillNumber: 2
+  _skillCooldown: 5
+  _skillCastTime: 0.5
+  _skillRepeatCount: 5
+  _bossSkillParticle: {fileID: 0}
+  _projectilePrefab: {fileID: 4870169749638757217, guid: 852135b2ddcd11c45a62f11c6d8f3196, type: 3}
+  _damage: 1
+  _projectileSpeed: 8
+  _projectileLifeTime: 3
+  _targetMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _projectilesPerExecute: 3
+  _fanAngle: 30
+  _waveInterval: 0.5
+  _angleOffsets:
+  - -20
+  - 0
+  - 20

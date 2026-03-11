@@ -5,6 +5,9 @@ using UnityEngine;
 public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
 {
     [System.Serializable]
+    /// <summary>
+    /// 보스가 사용하는 스킬 슬롯
+    /// </summary>
     protected class BossSkillSlot
     {
         [SerializeField] private fbdfbd_SOBossSkillBase _skillData;
@@ -24,6 +27,7 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
     private readonly List<int> _readySkillIndexes = new List<int>();
 
     protected bool IsCastingSkill { get; private set; }
+    protected int SkillSlotCount => _skillSlots.Count;
 
     protected override void Awake()
     {
@@ -31,9 +35,10 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
         BuildSkillRuntimeState();
     }
 
+    // 기본 FixedUpdate는 타겟 추적 및 이동처리 
     protected override void FixedUpdate()
     {
-        if ( _stopMoveWhileCasting)
+        if (_stopMoveWhileCasting && IsCastingSkill)
         {
             Rb.linearVelocity = Vector2.zero;
             return;
@@ -42,11 +47,13 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
         base.FixedUpdate();
     }
 
+    
     protected override bool CanAttack(float distanceToTarget)
     {
         if (IsCastingSkill || Target == null)
             return false;
 
+        // 쿨다운 다 지난 스킬이 존재하는지 여부
         return BuildReadySkillIndexes() > 0;
     }
 
@@ -62,14 +69,88 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
         StartCoroutine(RunSkillCoroutine(skillIndex));
     }
 
-    // 기본 선택 규칙
+    // 기본 룰: 가중치로 판별. 2개중 특정 조건없이 사용하는 등에 사용
+    // 보스마다 필요한 스킬 선택 로직 변경이 필요하다면 변경
     protected virtual int PickReadySkillIndex()
+    {
+        return PickWeightedRandomFromReady();
+    }
+
+    protected virtual void OnBeforeCast(int skillIndex, BossSkillSlot slot) { }
+    protected virtual void OnAfterCast(int skillIndex, BossSkillSlot slot) { }
+
+    protected bool IsValidSkillIndex(int skillIndex)
+    {
+        return skillIndex >= 0 && skillIndex < _skillSlots.Count;
+    }
+
+    protected bool IsSkillReady(int skillIndex)
+    {
+        EnsureRuntimeStateSize();
+
+        if (!IsValidSkillIndex(skillIndex))
+            return false;
+
+        BossSkillSlot slot = _skillSlots[skillIndex];
+        if (slot == null || slot.SkillData == null || slot.SkillLogic == null)
+            return false;
+
+        return Time.time >= _nextSkillReadyTimes[skillIndex];
+    }
+
+    protected int FindSkillIndexByName(string skillName)
+    {
+        if (string.IsNullOrEmpty(skillName))
+            return -1;
+
+        for (int i = 0; i < _skillSlots.Count; i++)
+        {
+            BossSkillSlot slot = _skillSlots[i];
+            if (slot == null || slot.SkillData == null)
+                continue;
+
+            if (slot.SkillData.SkillName == skillName)
+                return i;
+        }
+
+        return -1;
+    }
+
+    protected int FindSkillIndexByLogic<T>() where T : fbdfbd_BossSkillBase
+    {
+        for (int i = 0; i < _skillSlots.Count; i++)
+        {
+            BossSkillSlot slot = _skillSlots[i];
+            if (slot == null || slot.SkillLogic == null)
+                continue;
+
+            if (slot.SkillLogic is T)
+                return i;
+        }
+
+        return -1;
+    }
+
+    protected int FillReadySkillIndexes(List<int> output)
+    {
+        if (output == null)
+            return 0;
+
+        BuildReadySkillIndexes();
+        output.Clear();
+
+        for (int i = 0; i < _readySkillIndexes.Count; i++)
+            output.Add(_readySkillIndexes[i]);
+
+        return output.Count;
+    }
+
+    protected int PickWeightedRandomFromReady()
     {
         int readyCount = BuildReadySkillIndexes();
         if (readyCount <= 0)
             return -1;
 
-        // 가중치 랜덤 선택
         int totalWeight = 0;
         for (int i = 0; i < _readySkillIndexes.Count; i++)
         {
@@ -92,9 +173,6 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
         return _readySkillIndexes[_readySkillIndexes.Count - 1];
     }
 
-    protected virtual void OnBeforeCast(BossSkillSlot slot) { }
-    protected virtual void OnAfterCast(BossSkillSlot slot) { }
-
     private void BuildSkillRuntimeState()
     {
         _nextSkillReadyTimes.Clear();
@@ -111,6 +189,8 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
             _nextSkillReadyTimes.RemoveRange(_skillSlots.Count, _nextSkillReadyTimes.Count - _skillSlots.Count);
     }
 
+
+    // 쿨타임이 다 지난 스킬이 존재하는지 여부
     private int BuildReadySkillIndexes()
     {
         EnsureRuntimeStateSize();
@@ -134,7 +214,7 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
 
     private IEnumerator RunSkillCoroutine(int skillIndex)
     {
-        if (skillIndex < 0 || skillIndex >= _skillSlots.Count)
+        if (!IsValidSkillIndex(skillIndex))
             yield break;
 
         BossSkillSlot slot = _skillSlots[skillIndex];
@@ -145,7 +225,7 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
             yield break;
 
         IsCastingSkill = true;
-        OnBeforeCast(slot);
+        OnBeforeCast(skillIndex, slot);
 
         logic.Enter();
 
@@ -163,7 +243,7 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
         logic.Exit();
         _nextSkillReadyTimes[skillIndex] = Time.time + Mathf.Max(0f, data.SkillCooldown);
 
-        OnAfterCast(slot);
+        OnAfterCast(skillIndex, slot);
         IsCastingSkill = false;
     }
 }
