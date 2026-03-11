@@ -184,15 +184,6 @@ public class WS_ChargeCameraEffect : MonoBehaviour
                .SetEase(Ease.OutCubic);
     }
 
-    /// <summary>
-    /// positionOffset을 DOTween으로 보간
-    /// </summary>
-    public void TweenToPositionOffset(Vector3 offset, float duration)
-    {
-        DOTween.To(() => positionOffset, x => positionOffset = x, offset, duration)
-               .SetEase(Ease.OutCubic);
-    }
-
     public void SetBaseSize(float size)
     {
         _baseSize = size;
