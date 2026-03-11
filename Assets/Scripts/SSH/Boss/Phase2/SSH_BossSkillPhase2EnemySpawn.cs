@@ -15,6 +15,9 @@ namespace SSH.Boss
                 yield break;
             }
 
+            GameObject enemiesRoot = GameObject.Find("Enemies");
+            Transform  container   = enemiesRoot != null ? enemiesRoot.transform : null;
+
             for (int i = 0; i < _so.SpawnCount; i++)
             {
                 GameObject prefab = _so.EnemyPrefabs[Random.Range(0, _so.EnemyPrefabs.Length)];
@@ -22,6 +25,7 @@ namespace SSH.Boss
                 Vector3    pos    = transform.position + new Vector3(offset.x, offset.y, 0f);
 
                 GameObject enemy = Instantiate(prefab, pos, Quaternion.identity);
+                if (container != null) enemy.transform.SetParent(container);
 
                 fbdfbd_EnemyBase enemyBase = enemy.GetComponent<fbdfbd_EnemyBase>();
                 if (enemyBase != null)
