@@ -46,10 +46,9 @@ public class SSH_EnemyProjectile : MonoBehaviour
         if (other == null || other.gameObject == _owner) return;
         if ((_targetMask.value & (1 << other.gameObject.layer)) == 0) return;
 
-        Jaein_ObjectBase dmg = other.GetComponent<Jaein_ObjectBase>();
-        if (dmg != null)
+        if (other.TryGetComponent(out Jaein_ObjectBase target))
         {
-            dmg.TakeDamage(_damage);
+            target.TakeDamage(_damage);
             Debug.Log($"Boss 투사체 타격, 데미지: {_damage}");
         }
 

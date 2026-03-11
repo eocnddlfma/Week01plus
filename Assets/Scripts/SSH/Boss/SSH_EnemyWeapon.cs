@@ -43,7 +43,8 @@ public class SSH_EnemyWeapon : MonoBehaviour
         if (other == null || other.gameObject == _owner) return;
         if ((_targetMask.value & (1 << other.gameObject.layer)) == 0) return;
 
-        other.SendMessage("TakeDamage", _damage, SendMessageOptions.DontRequireReceiver);
+        if (other.TryGetComponent(out Jaein_ObjectBase target))
+            target.TakeDamage(_damage);
 
         _usage--;
         if (_usage <= 0) Destroy(gameObject);
