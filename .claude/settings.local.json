@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/jungle/.claude/skills/unity-mcp-skill/**)",
+      "Read(//c/Users/jungle/.claude/**)",
+      "Read(//c/Users/jungle/AppData/Roaming/Claude//**)",
+      "Read(//c/Users/jungle/.config/**)",
+      "WebFetch(domain:www.reddit.com)",
+      "Read(//c/Users/jungle/AppData/Roaming/Claude/**)",
+      "Read(//c/Users/jungle/AppData/Local/claude-cli-nodejs/Cache/c--Users-jungle-Week01-/mcp-logs-claude-vscode/**)",
+      "Bash(xargs grep:*)",
+      "Bash(claude mcp:*)",
+      "Read(//c/Users/jungle/**)",
+      "Bash(find C:/Users/jungle/Week01+ -name *.json -path *claude*)",
+      "Bash(find C:/Users/jungle/.claude/projects -name *.json)",
+      "Read(//dev/**)"
+    ]
+  }
+}
