@@ -1,8 +1,10 @@
 using UnityEngine;
 
-public class fbdfbd_EnemyProjectile : MonoBehaviour
+public class fbdfbd_EnemyProjectile : MonoBehaviour, IEnemyProjectile
 {
     [SerializeField] private Rigidbody2D _rb;
+
+    public Rigidbody2D Rb => _rb;
 
     private int _damage;
     private float _speed;

@@ -43,9 +43,6 @@ public class Jaein_BatWeaponManager : MonoBehaviour
     [Header("Weapon References")]
     [SerializeField] private Transform _weaponTransform;
     [SerializeField] private SpriteRenderer _weaponSpriteRenderer;
-    [SerializeField] private BoxCollider2D _weaponBoxCollider;
-    [SerializeField] private PolygonCollider2D _weaponPolygonCollider;
-    [SerializeField] private CircleCollider2D _hitCircleCollider;
     [SerializeField] private Transform _endpointTransform; // 무기의 끝 위치
     [SerializeField] private float _hitRadius = 2f; // 타격 범위 반지름
 
@@ -87,8 +84,6 @@ public class Jaein_BatWeaponManager : MonoBehaviour
         // 자동 참조
         if (_weaponTransform == null) _weaponTransform = transform;
         if (_weaponSpriteRenderer == null) _weaponSpriteRenderer = GetComponent<SpriteRenderer>();
-        if (_weaponBoxCollider == null) _weaponBoxCollider = GetComponent<BoxCollider2D>();
-        if (_weaponPolygonCollider == null) _weaponPolygonCollider = GetComponent<PolygonCollider2D>();
         if (_endpointTransform == null) _endpointTransform = transform.Find("EndPoint"); // 자식 오브젝트에서 Endpoint 찾기
 
         _initialWeaponScale = _weaponTransform.localScale;
@@ -105,20 +100,10 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             _initialPivotRotation = pivot.localRotation;
             _initialPivotScale = pivot.localScale;
             _pivotParent = pivot.parent; // PlayerBody
-            
-            // CircleCollider는 Pivot에서 찾기 (하지만 OverlapCircleAll 사용하므로 항상 비활성화)
-            if (_hitCircleCollider == null) _hitCircleCollider = pivot.GetComponent<CircleCollider2D>();
-            
-            if (_hitCircleCollider != null)
-            {
-                _hitCircleCollider.isTrigger = true;
-                _hitCircleCollider.enabled = false; // OverlapCircleAll 사용하므로 항상 비활성화
-            }
         }
 
 
         SetupLevels();
-        DisableWeaponColliders();
     }
 
     private void SetupLevels()
@@ -195,7 +180,8 @@ public class Jaein_BatWeaponManager : MonoBehaviour
 
         if (held && !_isAttacking)
         {
-            _currentChargeTimer += Time.deltaTime;
+            float chargeMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.ChargeSpeedMult : 1f;
+            _currentChargeTimer += Time.deltaTime * chargeMult;
             if (!_isCharging && _currentChargeTimer > _chargeThreshold)
                 _isCharging = true;
 
@@ -253,13 +239,14 @@ public class Jaein_BatWeaponManager : MonoBehaviour
 
         float dynamicRotationAngle = Mathf.Lerp(minLevel.rotationAngle, maxLevel.rotationAngle, chargePercent);
         float dynamicRotationDuration = Mathf.Lerp(minLevel.rotationDuration, maxLevel.rotationDuration, chargePercent);
-        int dynamicDamageAmount = Mathf.RoundToInt(Mathf.Lerp(minLevel.damageAmount, maxLevel.damageAmount, chargePercent));
-        float dynamicKnockbackForce = Mathf.Lerp(minLevel.knockbackForce, maxLevel.knockbackForce, chargePercent);
+        float batDmgMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.BatDamageMult : 1f;
+        float kbMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.KnockbackMult : 1f;
+        int dynamicDamageAmount = Mathf.RoundToInt(Mathf.Lerp(minLevel.damageAmount, maxLevel.damageAmount, chargePercent) * batDmgMult);
+        float dynamicKnockbackForce = Mathf.Lerp(minLevel.knockbackForce, maxLevel.knockbackForce, chargePercent) * kbMult;
 
         _currentDamageAmount = dynamicDamageAmount;
         _currentKnockbackForce = dynamicKnockbackForce;
 
-        EnableWeaponColliders();
         _hitEnemiesThisAttack.Clear();
         _hitBallsThisAttack.Clear();
 
@@ -270,10 +257,10 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             yield break;
         }
 
-        float hitRadius = Vector2.Distance(pivot.position, _endpointTransform.position);
+        float rangeMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.AttackRangeMult : 1f;
+        float hitRadius = Vector2.Distance(pivot.position, _endpointTransform.position) * rangeMult;
 
         // 스윙 중심은 항상 플레이어 몸통(playerBody) 방향 기준
-        // pivot의 현재 위치(차지 프리뷰로 변경되어 있을 수 있음)에 의존하지 않음
         float facingZ = _pivotParent != null ? _pivotParent.eulerAngles.z : 0f;
         float centerZ = facingZ + _initialPivotRotation.eulerAngles.z + 90f;
         float startEulerZ = centerZ - dynamicRotationAngle * 0.5f;
@@ -282,144 +269,83 @@ public class Jaein_BatWeaponManager : MonoBehaviour
         CollectHitTargets(pivot, hitRadius, startEulerZ, targetEulerZ);
 
         float rotationDuration = dynamicRotationDuration;
-        float anglePerStep = dynamicRotationAngle;
 
-        // 타격 대상이 있으면 순차 타격
         if (_hitTargetsThisAttack.Count > 0)
         {
-            float totalHitTime = rotationDuration * 0.7f; // 타격에 70% 시간 할당
-            float timePerHit = totalHitTime / _hitTargetsThisAttack.Count;
+            // 항상 반시계방향(증가하는 각도)으로만 회전
+            // 첫 타격 대상까지만 부드럽게 회전(슬로우), 나머지는 회전 없이 즉시 타격
+            HitTarget firstTarget = _hitTargetsThisAttack[0];
 
-            float currentRotation = startEulerZ;
+            float absFirstTargetAngle = (startEulerZ + firstTarget.angleToHit) % 360f;
+            float firstTargetRotation = absFirstTargetAngle - _targetRotationOffsetAngle;
 
-            for (int i = 0; i < _hitTargetsThisAttack.Count; i++)
+            // 항상 반시계방향(증가하는 각도)으로만 회전
+            float totalAngle = (targetEulerZ - startEulerZ + 360f) % 360f;
+            float angleToFirst = (firstTargetRotation - startEulerZ + 360f) % 360f;
+            float durationToFirst = rotationDuration * (angleToFirst / totalAngle);
+
+            // 첫 타격 대상까지 부드럽게 반시계방향 회전
+            float elapsed = 0f;
+            while (elapsed < durationToFirst && pivot != null)
             {
-                HitTarget target = _hitTargetsThisAttack[i];
-                // angleToHit는 startEulerZ 기준 상대값이므로 실제 각도로 변환
-                float absTargetAngle = (startEulerZ + target.angleToHit) % 360f;
-                // 타격 대상의 실제 각도에서 약간 덜 회전
-                float nextRotationTarget = absTargetAngle - _targetRotationOffsetAngle;
-
-                // 타격 대상 각도로 부드럽게 회전
-                float rotationElapsed = 0f;
-                while (rotationElapsed < timePerHit * 0.5f && pivot != null)
-                {
-                    float progress = Mathf.Clamp01(rotationElapsed / (timePerHit * 0.5f));
-                    float easedProgress = _rotationEasingCurve.Evaluate(progress);
-                    currentRotation = Mathf.Lerp(currentRotation, nextRotationTarget, easedProgress);
-                    pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, currentRotation);
-
-                    rotationElapsed += Time.fixedDeltaTime;
-                    yield return new WaitForFixedUpdate();
-                }
-
-                // 최종 회전 위치로 설정
-                pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, nextRotationTarget);
-                currentRotation = nextRotationTarget;
-
+                float progress = Mathf.Clamp01(elapsed / durationToFirst);
+                float easedProgress = _rotationEasingCurve.Evaluate(progress);
+                float currentZ = (startEulerZ + angleToFirst * easedProgress) % 360f;
+                pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, currentZ);
+                _currentRotationAngle = currentZ;
+                elapsed += Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
+            }
+            if (pivot != null)
+                pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, firstTargetRotation);
 
-                // ProcessHitTarget으로 직접 데미지 처리
-                ProcessHitTarget(target);
+            // 첫 타격만 히트스탑, 나머지는 회전 없이 즉시 타격
+            WS_HitStopController hitStop = GetComponent<WS_HitStopController>();
+            if (hitStop != null)
+                hitStop.TryPlayWithChargeAndHitCount(_currentChargePercentForAttack, 1);
+            ProcessHitTarget(firstTarget);
 
-                WS_HitStopController hitStop = GetComponent<WS_HitStopController>();
-                if (hitStop != null)
-                    hitStop.TryPlayWithChargeAndHitCount(_currentChargePercentForAttack, i + 1);
-
-                // 타격 후, 현재 각도부터 최종 각도까지 범위에서 추가 타격 대상 검색
-                AddAdditionalHitTargets(pivot, hitRadius, nextRotationTarget, targetEulerZ);
-
-                // 타격 후 짧은 대기
-                yield return new WaitForSeconds(timePerHit * 0.5f);
+            for (int i = 1; i < _hitTargetsThisAttack.Count; i++)
+            {
+                ProcessHitTarget(_hitTargetsThisAttack[i]);
             }
 
-            // 최종 각도 순간이동
+            // 마지막 타격 이후 남은 각도만큼 end까지 자연스럽게 회전
+            float angleAfterFirst = (targetEulerZ - firstTargetRotation + 360f) % 360f;
+            float durationAfterFirst = rotationDuration * (angleAfterFirst / totalAngle);
+            float elapsedEnd = 0f;
+            while (elapsedEnd < durationAfterFirst && pivot != null)
+            {
+                float progress = Mathf.Clamp01(elapsedEnd / durationAfterFirst);
+                float easedProgress = _rotationEasingCurve.Evaluate(progress);
+                float currentZ = (firstTargetRotation + angleAfterFirst * easedProgress) % 360f;
+                pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, currentZ);
+                _currentRotationAngle = currentZ;
+                elapsedEnd += Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
+            }
             if (pivot != null)
                 pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, targetEulerZ);
         }
         else
         {
-            // 타격 대상 없음 - 기존 회전 애니메이션 수행
             float elapsedTime = 0f;
-            bool checkedHalfway = false;
-
+            float totalAngleOnly = (targetEulerZ - startEulerZ + 360f) % 360f;
             while (elapsedTime < rotationDuration && pivot != null)
             {
                 float progress = Mathf.Clamp01(elapsedTime / rotationDuration);
                 float easedProgress = _rotationEasingCurve.Evaluate(progress);
-                float currentZ = Mathf.Lerp(startEulerZ, targetEulerZ, easedProgress);
+                float currentZ = (startEulerZ + totalAngleOnly * easedProgress) % 360f;
                 pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, currentZ);
-
                 _currentRotationAngle = currentZ;
-
-                // 절반 지점에서 한번 검사
-                if (!checkedHalfway && progress >= 0.5f)
-                {
-                    checkedHalfway = true;
-                    AddAdditionalHitTargets(pivot, hitRadius, currentZ, targetEulerZ);
-
-                    // 새로운 타격 대상이 발견되면 남은 부분은 타격 연출로 진행
-                    if (_hitTargetsThisAttack.Count > 0)
-                    {
-                        Debug.Log($"[Weapon] 절반 지점에서 새로운 타격 대상 {_hitTargetsThisAttack.Count}개 발견!");
-
-                        // 남은 회전에서 타격 연출 수행
-                        float remainingRotation = rotationDuration - elapsedTime;
-                        float totalHitTime = remainingRotation * 0.7f;
-                        float timePerHit = totalHitTime / _hitTargetsThisAttack.Count;
-
-                        for (int i = 0; i < _hitTargetsThisAttack.Count; i++)
-                        {
-                            HitTarget target = _hitTargetsThisAttack[i];
-                            float nextRotationTarget = centerZ + (target.angleToHit - centerZ) - _targetRotationOffsetAngle;
-
-                            // 타격 대상 각도로 부드럽게 회전
-                            float rotationElapsed = 0f;
-                            while (rotationElapsed < timePerHit * 0.5f && pivot != null)
-                            {
-                                float rotProgress = Mathf.Clamp01(rotationElapsed / (timePerHit * 0.5f));
-                                float rotEasedProgress = _rotationEasingCurve.Evaluate(rotProgress);
-                                currentZ = Mathf.Lerp(currentZ, nextRotationTarget, rotEasedProgress);
-                                pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, currentZ);
-
-                                rotationElapsed += Time.fixedDeltaTime;
-                                yield return new WaitForFixedUpdate();
-                            }
-
-                            // 최종 회전 위치로 설정
-                            pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, nextRotationTarget);
-                            currentZ = nextRotationTarget;
-
-                            yield return new WaitForFixedUpdate();
-
-                            // 타격 처리
-                            ProcessHitTarget(target);
-
-                            WS_HitStopController hitStop = GetComponent<WS_HitStopController>();
-                            if (hitStop != null)
-                                hitStop.TryPlayWithChargeAndHitCount(_currentChargePercentForAttack, i + 1);
-
-                            yield return new WaitForSeconds(timePerHit * 0.5f);
-                        }
-
-
-
-                        pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, targetEulerZ);
-                        break; // 루프 종료
-                    }
-                }
-
                 elapsedTime += Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
             }
-
-            // 최종 각도 설정
-            pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, targetEulerZ);
+            if (pivot != null)
+                pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, targetEulerZ);
         }
 
-        DisableWeaponColliders();
         ResetToNormal();
-
         _isAttacking = false;
     }
 
@@ -440,20 +366,6 @@ public class Jaein_BatWeaponManager : MonoBehaviour
         _isCharging = false;
     }
 
-    private void EnableWeaponColliders()
-    {
-        // 적 타격용 collider만 활성화 (CircleCollider는 OverlapCircleAll 사용하므로 필요 없음)
-        if (_weaponBoxCollider != null) _weaponBoxCollider.enabled = true;
-        if (_weaponPolygonCollider != null) _weaponPolygonCollider.enabled = true;
-    }
-
-    private void DisableWeaponColliders()
-    {
-        if (_weaponBoxCollider != null) _weaponBoxCollider.enabled = false;
-        if (_weaponPolygonCollider != null) _weaponPolygonCollider.enabled = false;
-    }
-
-    
     /// <summary>
     /// Pivot의 CollisionHandler에서 호출하는 공용 메서드
     /// </summary>
@@ -479,17 +391,10 @@ public class Jaein_BatWeaponManager : MonoBehaviour
         chargeLevel = Mathf.Clamp(chargeLevel, 0, 3);
 
         // 프로젝타일 처리
-        fbdfbd_EnemyProjectile projectile = collision.GetComponent<fbdfbd_EnemyProjectile>();
+        IEnemyProjectile projectile = collision.GetComponent<IEnemyProjectile>();
         if (projectile != null)
         {
             HandleEnemyProjectile(projectile, chargeLevel);
-            return;
-        }
-
-        SSH_EnemyProjectile sshProjectile = collision.GetComponent<SSH_EnemyProjectile>();
-        if (sshProjectile != null)
-        {
-            HandleEnemyProjectile(sshProjectile, chargeLevel);
             return;
         }
         // 적 타격 처리
@@ -517,7 +422,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
     /// - Level 2: 제거
     /// - Level 3: 제거
     /// </summary>
-    private void HandleEnemyProjectile(Component projectile, int chargeLevel)
+    private void HandleEnemyProjectile(IEnemyProjectile projectile, int chargeLevel)
     {
         switch (chargeLevel)
         {
@@ -535,7 +440,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             case 2:
                 // 제거
                 Debug.Log($"[Weapon] 탄환 Level 2: 제거");
-                Destroy(projectile.gameObject);
+                Destroy((projectile as Component).gameObject);
                 break;
 
             case 3:
@@ -549,9 +454,9 @@ public class Jaein_BatWeaponManager : MonoBehaviour
     /// <summary>
     /// 적 탄환 밀처내기 (방향 유지, 순간이동)
     /// </summary>
-    private void PushEnemyProjectile(Component projectile)
+    private void PushEnemyProjectile(IEnemyProjectile projectile)
     {
-        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
+        Rigidbody2D rb = projectile.Rb;
         if (rb == null) return;
 
         // 현재 방향 유지
@@ -568,24 +473,13 @@ public class Jaein_BatWeaponManager : MonoBehaviour
     /// <summary>
     /// 적 탄환 반사 (방향 반전, 배트 데미지 적용, 색상/이펙트)
     /// </summary>
-    private void ReflectEnemyProjectile(Component projectile)
+    private void ReflectEnemyProjectile(IEnemyProjectile projectile)
     {
         // 이펙트 재생
         WS_EffectParticle effect = _weaponTransform.GetComponentInChildren<WS_EffectParticle>();
         if (effect != null) effect.Play(_currentChargePercentForAttack);
 
-        fbdfbd_EnemyProjectile fbProj = projectile as fbdfbd_EnemyProjectile;
-        if (fbProj != null)
-        {
-            fbProj.ReflectAsBatHit(_currentDamageAmount, _enemyReflectLayerMask, Color.white);
-            return;
-        }
-
-        SSH_EnemyProjectile sshProj = projectile as SSH_EnemyProjectile;
-        if (sshProj != null)
-        {
-            sshProj.ReflectAsBatHit(_currentDamageAmount, _enemyReflectLayerMask, Color.white);
-        }
+        projectile.ReflectAsBatHit(_currentDamageAmount, _enemyReflectLayerMask, Color.white);
     }
 
     /// <summary>
@@ -646,7 +540,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
 
         foreach (Collider2D hit in hits)
         {
-            // 공 감지
+            // 공 감지 - 각도 범위 상관없이 반지름 내에 있으면 항상 수집
             Jaein_OrbitalWeapon orbitalWeapon = hit.GetComponent<Jaein_OrbitalWeapon>();
             if (orbitalWeapon != null && orbitalWeapon.State == Jaein_OrbitalWeapon.BallState.Orbit && !ballsAdded.Contains(orbitalWeapon))
             {
@@ -655,19 +549,16 @@ public class Jaein_BatWeaponManager : MonoBehaviour
                 angle = NormalizeAngle(angle);
                 float relAngle = ToRelativeAngle(angle);
                 float distance = dir.magnitude;
-                if (IsAngleInRange(angle, startAngle, endAngle))
+                _hitTargetsThisAttack.Add(new HitTarget
                 {
-                    _hitTargetsThisAttack.Add(new HitTarget
-                    {
-                        targetType = HitTarget.TargetType.Ball,
-                        ball = orbitalWeapon,
-                        angleToHit = relAngle,
-                        distanceToPivot = distance,
-                        targetPosition = orbitalWeapon.transform.position
-                    });
-                    ballsAdded.Add(orbitalWeapon);
-                    Debug.Log($"[Weapon] 공 추가: {orbitalWeapon.name}, 각도: {angle} (rel:{relAngle}), 거리: {distance}");
-                }
+                    targetType = HitTarget.TargetType.Ball,
+                    ball = orbitalWeapon,
+                    angleToHit = relAngle,
+                    distanceToPivot = distance,
+                    targetPosition = orbitalWeapon.transform.position
+                });
+                ballsAdded.Add(orbitalWeapon);
+                Debug.Log($"[Weapon] 공 추가: {orbitalWeapon.name}, 각도: {angle} (rel:{relAngle}), 거리: {distance}");
             }
 
             // 적 감지
@@ -861,27 +752,79 @@ public class Jaein_BatWeaponManager : MonoBehaviour
     {
         if (target.targetType == HitTarget.TargetType.Ball)
         {
+            // 공이 이미 이번 공격에서 타격되었더라도, 여러 번 타격 가능하게 중복 체크 제거
             Debug.Log($"[Weapon] 공 타격: {target.ball.name}, 차지: {_currentChargePercentForAttack:P0}");
             target.ball.TriggerLaunchFromWeapon(_currentChargePercentForAttack);
             target.ball.PlayWeaponEffect(_weaponTransform, _currentChargePercentForAttack);
-            _hitBallsThisAttack.Add(target.ball);
+            // _hitBallsThisAttack.Add(target.ball); // 중복 방지 제거 (여러 번 타격 허용)
         }
         else
         {
             // 죽은 적(파괴된 오브젝트) 패스
             if (target.enemy == null) return;
+            if (_hitEnemiesThisAttack.Contains(target.enemy)) return; // 적은 중복 타격 방지
             Debug.Log($"[Weapon] 적 타격 처리: {target.enemy.name}");
             ApplyEnemyHit(target.enemy);
-        }
-        
-        // 슬로우 발동 (타격 횟수를 반영하여 시간 감소)
-        WS_HitStopController hitStop = GetComponent<WS_HitStopController>();
-        if (hitStop != null)
-        {
-            int currentHitCount = _hitBallsThisAttack.Count + _hitEnemiesThisAttack.Count;
-            hitStop.TryPlayWithChargeAndHitCount(_currentChargePercentForAttack, currentHitCount);
+            _hitEnemiesThisAttack.Add(target.enemy);
         }
     }
+
+    // --- 분리된 타격 애니메이션/처리 루틴 ---
+    private IEnumerator RotateAndHitTargets(Transform pivot, float startEulerZ, float targetEulerZ, float rotationDuration, float hitRadius)
+    {
+        float totalHitTime = rotationDuration * 0.7f;
+        float timePerHit = totalHitTime / _hitTargetsThisAttack.Count;
+        float currentRotation = startEulerZ;
+        for (int i = 0; i < _hitTargetsThisAttack.Count; i++)
+        {
+            HitTarget target = _hitTargetsThisAttack[i];
+            float absTargetAngle = (startEulerZ + target.angleToHit) % 360f;
+            float nextRotationTarget = absTargetAngle - _targetRotationOffsetAngle;
+
+            // 부드럽게 회전
+            float rotationElapsed = 0f;
+            while (rotationElapsed < timePerHit * 0.5f && pivot != null)
+            {
+                float progress = Mathf.Clamp01(rotationElapsed / (timePerHit * 0.5f));
+                float easedProgress = _rotationEasingCurve.Evaluate(progress);
+                currentRotation = Mathf.Lerp(currentRotation, nextRotationTarget, easedProgress);
+                pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, currentRotation);
+                rotationElapsed += Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
+            }
+            pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, nextRotationTarget);
+            currentRotation = nextRotationTarget;
+            yield return new WaitForFixedUpdate();
+            if (i == 0)
+            {
+                WS_HitStopController hitStop = GetComponent<WS_HitStopController>();
+                if (hitStop != null)
+                    hitStop.TryPlayWithChargeAndHitCount(_currentChargePercentForAttack, 1);
+            }
+            ProcessHitTarget(target);
+            yield return new WaitForSeconds(timePerHit * 0.5f);
+        }
+        if (pivot != null)
+            pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, targetEulerZ);
+    }
+
+    private IEnumerator RotateWithoutHit(Transform pivot, float startEulerZ, float targetEulerZ, float rotationDuration)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < rotationDuration && pivot != null)
+        {
+            float progress = Mathf.Clamp01(elapsedTime / rotationDuration);
+            float easedProgress = _rotationEasingCurve.Evaluate(progress);
+            float currentZ = Mathf.Lerp(startEulerZ, targetEulerZ, easedProgress);
+            pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, currentZ);
+            _currentRotationAngle = currentZ;
+            elapsedTime += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        if (pivot != null)
+            pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, targetEulerZ);
+    }
+    
 
     public bool IsAttacking => _isAttacking;
     public bool IsCharging => _isCharging;

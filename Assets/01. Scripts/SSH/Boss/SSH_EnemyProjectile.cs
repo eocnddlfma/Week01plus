@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SSH_EnemyProjectile : MonoBehaviour
+public class SSH_EnemyProjectile : MonoBehaviour, IEnemyProjectile
 {
 
     [SerializeField]private int _damage;
@@ -12,6 +12,8 @@ public class SSH_EnemyProjectile : MonoBehaviour
     private float _spawnTime;
     [SerializeField] private LayerMask _targetMask;
     private GameObject _owner;
+
+    public Rigidbody2D Rb => _rb;
 
     private void Awake()
     {

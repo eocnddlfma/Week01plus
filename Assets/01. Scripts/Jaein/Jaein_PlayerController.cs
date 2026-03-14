@@ -91,7 +91,8 @@ public class Jaein_PlayerController : Jaein_PlayerBase
 
     private void HandleDash()
     {
-        if (!_weaponSystem.IsCharging && Input.GetKeyDown(_dashKey) && Time.time >= _lastDashTime + _dashCooldown && !_isDashing)
+        float dashCD = _dashCooldown * (PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.DashCooldownMult : 1f);
+        if (!_weaponSystem.IsCharging && Input.GetKeyDown(_dashKey) && Time.time >= _lastDashTime + dashCD && !_isDashing)
         {
             // 입력 방향이 없으면 바라보는 방향으로, 있으면 입력 방향으로 대쉬
             Vector2 dashDir = _inputVec.sqrMagnitude > 0.001f ? _inputVec : (Vector2)_playerBody.right;
@@ -140,7 +141,8 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         if (Rb == null)
             return;
 
-        float speed = _weaponSystem.IsCharging ? _moveSpeed * 0.5f : _moveSpeed;
+        float statMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.MoveSpeedMult : 1f;
+        float speed = (_weaponSystem.IsCharging ? _moveSpeed * 0.5f : _moveSpeed) * statMult;
         Vector2 desiredVelocity = _inputVec * speed;
 
         if (_useBoundary && desiredVelocity.sqrMagnitude > 0.0001f)
@@ -208,10 +210,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     // 투사체 처리 (무기와의 충돌은 Jaein_BatWeaponManager에서 처리)
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<fbdfbd_EnemyProjectile>(out _))
-            Destroy(other.gameObject);
-
-        if (other.TryGetComponent<SSH_EnemyProjectile>(out _))
+        if (other.TryGetComponent<IEnemyProjectile>(out _))
             Destroy(other.gameObject);
     }
 
