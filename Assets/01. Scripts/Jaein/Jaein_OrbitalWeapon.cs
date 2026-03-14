@@ -218,7 +218,8 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         Vector2 launchDir = RotateVector(facingDir, randomOffset).normalized;
 
         float powerMultiplier = 1.0f + (chargePercent * 0.5f);
-        _velocity = launchDir * (_launchSpeed * powerMultiplier + Random.Range(-_launchSpeedOffset, _launchSpeedOffset));
+        float ballSpeedMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.BallSpeedMult : 1f;
+        _velocity = launchDir * ((_launchSpeed * powerMultiplier + Random.Range(-_launchSpeedOffset, _launchSpeedOffset)) * ballSpeedMult);
 
         float durationMultiplier = 1.0f + (chargePercent * 0.5f);
         _stateTimer = _launchDuration * durationMultiplier + Random.Range(-_launchDurationOffset, _launchDurationOffset);
@@ -362,11 +363,8 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     /// </summary>
     public void TriggerLaunchFromWeapon(float chargePercent)
     {
-        if (_state != BallState.Launched)
-        {
-            _chargePercent = chargePercent;
-            Launch(_chargePercent);
-        }
+        _chargePercent = chargePercent;
+        Launch(_chargePercent);
     }
 
     /// <summary>
@@ -398,7 +396,8 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
     private int CalculateDamage(float chargePercent)
     {
-        float rawDamage = Mathf.Lerp(_baseDamage, _maxChargeDamage, chargePercent);
+        float ballDmgMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.BallDamageMult : 1f;
+        float rawDamage = Mathf.Lerp(_baseDamage, _maxChargeDamage, chargePercent) * ballDmgMult;
         float variance = rawDamage * _varianceRange;
 
         float finalDamage = Random.Range(rawDamage - variance, rawDamage + variance);

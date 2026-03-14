@@ -22,6 +22,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
         public bool knockbackEnemies = true;
         public float knockbackForce = 5f;
         public int damageAmount = 1;
+        public float hitStopDurationMult = 1f; // 히트스탑 듀레이션 멀티플라이어
     }
 
     [System.Serializable]
@@ -53,6 +54,8 @@ public class Jaein_BatWeaponManager : MonoBehaviour
     [SerializeField] private float _chargeThreshold = 0.2f;
     [SerializeField] private AnimationCurve _rotationEasingCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [SerializeField] private float _targetRotationOffsetAngle = 5f; // 타격 대상 각도에서 얼마나 덜 회전할지
+    [SerializeField] private float _hitProcessPercent = 0.7f; // 타격 처리 타이밍 (0~1, 기본 70%)
+    [SerializeField] private float _quickTurnBackAngle = 1.5f; // 빠른 회전 시 뒤로 물러날 각도
 
     private float _currentChargeTimer = 0f;
     private int _currentChargeLevel = 0;
@@ -125,7 +128,8 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             weaponColor = Color.white,
             weaponSizeMultiplier = 1f,
             knockbackForce = 3f,
-            damageAmount = 1
+            damageAmount = 1,
+            hitStopDurationMult = 1f
         };
 
         // Level 1: 세게 휘두르기 (탄환 밀처짐)
@@ -138,7 +142,8 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             weaponColor = new Color(1f, 0.8f, 0.5f),
             weaponSizeMultiplier = 1.1f,
             knockbackForce = 5f,
-            damageAmount = 2
+            damageAmount = 2,
+            hitStopDurationMult = 1.2f
         };
 
         // Level 2: 개쎄게 휘두르기 (탄환 지워짐)
@@ -151,7 +156,8 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             weaponColor = new Color(1f, 0.5f, 0.2f),
             weaponSizeMultiplier = 1.2f,
             knockbackForce = 7f,
-            damageAmount = 3
+            damageAmount = 3,
+            hitStopDurationMult = 1.5f
         };
 
         // Level 3: 존나쌔게 휘두르기 (탄환 반사)
@@ -164,7 +170,8 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             weaponColor = Color.red,
             weaponSizeMultiplier = 1.3f,
             knockbackForce = 10f,
-            damageAmount = 4
+            damageAmount = 4,
+            hitStopDurationMult = 2f
         };
     }
 
@@ -272,58 +279,61 @@ public class Jaein_BatWeaponManager : MonoBehaviour
 
         if (_hitTargetsThisAttack.Count > 0)
         {
-            // 항상 반시계방향(증가하는 각도)으로만 회전
-            // 첫 타격 대상까지만 부드럽게 회전(슬로우), 나머지는 회전 없이 즉시 타격
+            // 첫 타격 대상 각도 계산 (1~2도 덜 가기)
             HitTarget firstTarget = _hitTargetsThisAttack[0];
+            float firstTargetAbsAngle = ((startEulerZ + firstTarget.angleToHit) % 360f) - _quickTurnBackAngle;
 
-            float absFirstTargetAngle = (startEulerZ + firstTarget.angleToHit) % 360f;
-            float firstTargetRotation = absFirstTargetAngle - _targetRotationOffsetAngle;
+            // 먼저 첫 타격 대상으로 빠르게 회전 (20% 시간)
+            float quickRotationDuration = rotationDuration * 0.2f;
+            float angleToFirst = (firstTargetAbsAngle - startEulerZ + 360f) % 360f;
+            float elapsedQuick = 0f;
 
-            // 항상 반시계방향(증가하는 각도)으로만 회전
-            float totalAngle = (targetEulerZ - startEulerZ + 360f) % 360f;
-            float angleToFirst = (firstTargetRotation - startEulerZ + 360f) % 360f;
-            float durationToFirst = rotationDuration * (angleToFirst / totalAngle);
-
-            // 첫 타격 대상까지 부드럽게 반시계방향 회전
-            float elapsed = 0f;
-            while (elapsed < durationToFirst && pivot != null)
+            while (elapsedQuick < quickRotationDuration && pivot != null)
             {
-                float progress = Mathf.Clamp01(elapsed / durationToFirst);
+                float progress = Mathf.Clamp01(elapsedQuick / quickRotationDuration);
                 float easedProgress = _rotationEasingCurve.Evaluate(progress);
                 float currentZ = (startEulerZ + angleToFirst * easedProgress) % 360f;
                 pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, currentZ);
                 _currentRotationAngle = currentZ;
-                elapsed += Time.fixedDeltaTime;
+                elapsedQuick += Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
             }
-            if (pivot != null)
-                pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, firstTargetRotation);
 
-            // 첫 타격만 히트스탑, 나머지는 회전 없이 즉시 타격
+            // 히트스탑 발동 (차지 레벨에 따른 듀레이션 멀티플라이어 적용)
+            float hitStopDurationMult = Mathf.Lerp(_chargeLevels[0].hitStopDurationMult, _chargeLevels[3].hitStopDurationMult, _currentChargePercentForAttack);
             WS_HitStopController hitStop = GetComponent<WS_HitStopController>();
             if (hitStop != null)
-                hitStop.TryPlayWithChargeAndHitCount(_currentChargePercentForAttack, 1);
-            ProcessHitTarget(firstTarget);
+                hitStop.TryPlayWithChargeAndHitCount(_currentChargePercentForAttack, 1, hitStopDurationMult);
 
-            for (int i = 1; i < _hitTargetsThisAttack.Count; i++)
-            {
-                ProcessHitTarget(_hitTargetsThisAttack[i]);
-            }
+            // 원래 스윙 경로로 계속 회전 (남은 시간)
+            float remainingDuration = rotationDuration - quickRotationDuration;
+            float angleFromFirstToTarget = (targetEulerZ - firstTargetAbsAngle + 360f) % 360f;
+            float elapsedRemain = 0f;
+            bool hitProcessed = false;
 
-            // 마지막 타격 이후 남은 각도만큼 end까지 자연스럽게 회전
-            float angleAfterFirst = (targetEulerZ - firstTargetRotation + 360f) % 360f;
-            float durationAfterFirst = rotationDuration * (angleAfterFirst / totalAngle);
-            float elapsedEnd = 0f;
-            while (elapsedEnd < durationAfterFirst && pivot != null)
+            while (elapsedRemain < remainingDuration && pivot != null)
             {
-                float progress = Mathf.Clamp01(elapsedEnd / durationAfterFirst);
+                float progress = Mathf.Clamp01(elapsedRemain / remainingDuration);
                 float easedProgress = _rotationEasingCurve.Evaluate(progress);
-                float currentZ = (firstTargetRotation + angleAfterFirst * easedProgress) % 360f;
+                float currentZ = (firstTargetAbsAngle + angleFromFirstToTarget * easedProgress) % 360f;
                 pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, currentZ);
                 _currentRotationAngle = currentZ;
-                elapsedEnd += Time.fixedDeltaTime;
+
+                // 지정된 퍼센트에 도달하면 타격 처리
+                if (!hitProcessed && progress >= _hitProcessPercent)
+                {
+                    // 모든 타격 대상을 한꺼번에 처리
+                    for (int i = 0; i < _hitTargetsThisAttack.Count; i++)
+                    {
+                        ProcessHitTarget(_hitTargetsThisAttack[i]);
+                    }
+                    hitProcessed = true;
+                }
+
+                elapsedRemain += Time.fixedDeltaTime;
                 yield return new WaitForFixedUpdate();
             }
+
             if (pivot != null)
                 pivot.eulerAngles = new Vector3(pivot.eulerAngles.x, pivot.eulerAngles.y, targetEulerZ);
         }

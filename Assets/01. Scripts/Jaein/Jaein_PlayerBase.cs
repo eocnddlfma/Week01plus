@@ -62,12 +62,13 @@ public class Jaein_PlayerBase : Jaein_ObjectBase
     protected IEnumerator InvincibleRoutine(bool isHit)
     {
         _isInvincible = true;
+        float duration = _invincibleDuration * (PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.InvincibilityMult : 1f);
 
         if (isHit)
         {
             // [피격 시] 깜빡임 효과 수행
             float elapsed = 0f;
-            while (elapsed < _invincibleDuration)
+            while (elapsed < duration)
             {
                 if (_spriteRenderer != null)
                 {
@@ -92,7 +93,7 @@ public class Jaein_PlayerBase : Jaein_ObjectBase
         else
         {
             // [피격 아님] 깜빡임 없이 시간만 대기 (예: 아이템 획득 무적 등)
-            yield return new WaitForSeconds(_invincibleDuration);
+            yield return new WaitForSeconds(duration);
         }
 
         _isInvincible = false;
@@ -101,5 +102,15 @@ public class Jaein_PlayerBase : Jaein_ObjectBase
     public void Heal(int heal)
     {
         _hp = Math.Clamp(_hp + heal, 1, MaxHp);
+    }
+
+    /// <summary>
+    /// 최대 체력 증가 (증강 시스템에서 호출)
+    /// </summary>
+    public void IncreaseMaxHp(int amount)
+    {
+        _maxHp += amount;
+        _hp = Mathf.Min(_hp + amount, _maxHp);
+        OnDamaged?.Invoke(_hp);
     }
 }

@@ -42,20 +42,20 @@ public class WS_HitStopController : MonoBehaviour
     /// 타격이 많을수록 슬로우 시간이 짧아짐 (연속 타격 느낌)
     /// 10개 타격 시 약 0.7배 정도로 감소
     /// </summary>
-    public bool TryPlayWithChargeAndHitCount(float chargePercent, int hitCount)
+    public bool TryPlayWithChargeAndHitCount(float chargePercent, int hitCount, float durationMultiplier = 1f)
     {
         chargePercent = Mathf.Clamp01(chargePercent);
         hitCount = Mathf.Max(1, hitCount); // 최소 1
-        
+
         // 차지량에 따라 기본 슬로우 시간 계산 (0% = 0.035초 → 100% = 0.1초)
         float baseDuration = Mathf.Lerp(_defaultDuration, 0.1f, chargePercent);
-        
+
         // 타격 횟수에 따라 슬로우 시간 감소 (천천히 감소)
         // 1타: 100%, 10타: 70%, 더 많으면 더 감소
         float hitCountMultiplier = Mathf.Clamp01(1f - Mathf.Sqrt(hitCount - 1) * 0.1f);
-        
-        float durationMult = baseDuration * hitCountMultiplier;
-        
+
+        float durationMult = baseDuration * hitCountMultiplier * durationMultiplier;
+
         // 차지량에 따라 슬로우 강도 조정 (0% = 0.5 → 100% = 0.1)
         float slowedTimeScale = Mathf.Lerp(1f, 0.1f, chargePercent);
 
@@ -66,10 +66,13 @@ public class WS_HitStopController : MonoBehaviour
         return true;
     }
 
-    private IEnumerator HitStopRoutine(float durationMult, float mult = -1f)
-    {            
-        Time.timeScale = _slowedTimeScale * mult;
+    private IEnumerator HitStopRoutine(float durationMult, float mult = 0f)
+    {
+        float newTimeScale = _slowedTimeScale * mult;
+        Debug.Log($"[HitStop] Setting duration: {_defaultDuration * durationMult}");
+        Time.timeScale = newTimeScale;
         yield return new WaitForSecondsRealtime(_defaultDuration * durationMult);
+        Debug.Log($"[HitStop] Restoring timeScale to 1");
         Time.timeScale = 1f;
         _routine = null;
     }
