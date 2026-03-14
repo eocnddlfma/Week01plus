@@ -129,7 +129,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cbb407f3baa7a9241927f6dcbfeeb0ee, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Jaein_OrbitalWeapon
+  m_EditorClassIdentifier: Assembly-CSharp::OrbitalWeapon
   _center: {fileID: 0}
   _orbitRadius: 2
   _orbitAngularSpeed: 180
