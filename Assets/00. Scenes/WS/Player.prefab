@@ -372,13 +372,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ad0f8887f674a44b10bcbe9270652f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jaein_PlayerController
-  _moveSpeed: 5
-  _rotationSpeed: 10
+  _hp: 0
+  _maxHp: 0
+  _isDead: 0
+  _spriteRenderer: {fileID: 0}
+  _invincibleDuration: 1
+  _flashInterval: 0.1
+  _statsData: {fileID: 11400000, guid: ee650d5aa271ff547981480848178b54, type: 2}
   _playerBody: {fileID: 8183359043978001494}
-  _attackCooldown: 0.75
-  _attackDuration: 0.3
-  _pivotAnimator: {fileID: 0}
-  _attackTriggerName: Attack
+  _weaponSystem: {fileID: 0}
+  _dashKey: 32
+  _boundaryCenter: {x: 0, y: 0}
+  _boundaryRadius: 24
+  _useBoundary: 1
+  _boundarySkin: 0.05
+  cameraEffect: {fileID: 0}
 --- !u!50 &7645384240034631626
 Rigidbody2D:
   serializedVersion: 5

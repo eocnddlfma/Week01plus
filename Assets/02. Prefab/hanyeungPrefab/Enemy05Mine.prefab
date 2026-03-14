@@ -112,6 +112,7 @@ MonoBehaviour:
   _hp: 30
   _maxHp: 30
   _isDead: 0
+  _statsData: {fileID: 11400000, guid: eba87074e390c0e41833da9fe549b03e, type: 2}
   _target: {fileID: 0}
   _moveSpeed: 4
   _stopDistance: 15
