@@ -16,13 +16,9 @@ public class WaveManager : MonoBehaviour
     private Transform _enemyContainer;
     private int _currentWaveIndex = 0;
     private WaveData _currentWaveData;
-    private int _spawnIndex = 0; // 현재 스폰된 몹의 인덱스
+    private List<WaveData.EnemySpawnInfo> _remainingEnemies;
     private bool _isChangingWave = false;
     private int _currentWaveKilledCount = 0;
-
-    // 보스 웨이브 클리어 관련 이벤트
-    public event Action OnBossCleared;
-    public event Action<bool> OnWaveClear; //보스인지 아닌지, true = 보스 웨이브
 
     private void Start()
     {
@@ -37,15 +33,19 @@ public class WaveManager : MonoBehaviour
                 _player = playerObj.gameObject;
         }
 
-        GameManager.Instance.OnEnemyUnregistered += CheckNextWave;
+        // 남은 적 리스트 초기화
+        _remainingEnemies = new List<WaveData.EnemySpawnInfo>();
+        foreach (var info in _currentWaveData.enemyList)
+            _remainingEnemies.Add(new WaveData.EnemySpawnInfo { enemyPrefab = info.enemyPrefab, spawnCount = info.spawnCount });
+
+        GameEvents.OnEnemyKilled += CheckNextWave;  // Phase 6: GameManager 이벤트에서 GameEvents로 변경
 
         StartCoroutine(CoSpawnEnemy());
     }
 
     private void OnDestroy()
     {
-        if (GameManager.Instance != null)
-            GameManager.Instance.OnEnemyUnregistered -= CheckNextWave;
+        GameEvents.OnEnemyKilled -= CheckNextWave;  // Phase 6: GameManager 이벤트에서 GameEvents로 변경
     }
 
     private IEnumerator CoSpawnEnemy()
@@ -66,7 +66,7 @@ public class WaveManager : MonoBehaviour
 
     private bool ShouldSpawnEnemy()
     {
-        return _spawnIndex < _currentWaveData.enemyPrefabs.Length;
+        return _remainingEnemies != null && _remainingEnemies.Exists(e => e.spawnCount > 0);
     }
 
     
@@ -84,9 +84,10 @@ public class WaveManager : MonoBehaviour
 
     private bool ShouldNextWave()
     {
-        //if (_spawnIndex < _currentWaveData.enemyPrefabs.Length) return false; // 아직 스폰 중이면 막을까?
-
-        int totalCount = _currentWaveData.enemyPrefabs.Length;
+        int totalCount = 0;
+        if (_currentWaveData.enemyList != null)
+            foreach (var info in _currentWaveData.enemyList)
+                totalCount += info.spawnCount;
         float threshold = _currentWaveData.isBoss ? 1f : _changeWaveThreshold;
         return _currentWaveKilledCount >= totalCount * threshold;
     }
@@ -96,10 +97,6 @@ public class WaveManager : MonoBehaviour
     {
         _isChangingWave = true;
 
-        // 막 클리어된 Wave가 보스Wave였다면
-        if (_currentWaveData.isBoss)
-            OnBossCleared?.Invoke();
-
         _currentWaveIndex++;
 
         if (_currentWaveIndex >= _waveDatas.Count)
@@ -107,7 +104,6 @@ public class WaveManager : MonoBehaviour
             // 게임 클리어
             Debug.Log("All waves cleared!");
             GameManager.Instance.GameClear();
-
 
             return;
         }
@@ -118,14 +114,17 @@ public class WaveManager : MonoBehaviour
         if (_currentWaveData.isBoss)
         {
             ClearEnemies();
-            OnWaveClear?.Invoke(true);
+            GameEvents.RaiseWaveCleared(true);  // Phase 6: GameEvents로 변경
         }
         else
         {
-            OnWaveClear?.Invoke(false);
+            GameEvents.RaiseWaveCleared(false);  // Phase 6: GameEvents로 변경
         }
 
-        _spawnIndex = 0;
+        // 남은 적 리스트 초기화
+        _remainingEnemies = new List<WaveData.EnemySpawnInfo>();
+        foreach (var info in _currentWaveData.enemyList)
+            _remainingEnemies.Add(new WaveData.EnemySpawnInfo { enemyPrefab = info.enemyPrefab, spawnCount = info.spawnCount });
         _currentWaveKilledCount = 0;
         _isChangingWave = false;
     }
@@ -165,10 +164,13 @@ public class WaveManager : MonoBehaviour
     public void Clear()
     {
         _currentWaveIndex = 0;
-        _spawnIndex = 0;
         _isChangingWave = false;
         _currentWaveData = _waveDatas[0];
         _currentWaveKilledCount = 0;
+        // 남은 적 리스트 초기화
+        _remainingEnemies = new List<WaveData.EnemySpawnInfo>();
+        foreach (var info in _currentWaveData.enemyList)
+            _remainingEnemies.Add(new WaveData.EnemySpawnInfo { enemyPrefab = info.enemyPrefab, spawnCount = info.spawnCount });
 
         ClearEnemies();
 

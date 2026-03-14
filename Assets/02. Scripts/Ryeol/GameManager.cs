@@ -18,9 +18,6 @@ public class GameManager : MonoBehaviour
 
     public GameState CurrentState { get; private set; } = GameState.Ready;
 
-    // Action
-    public event Action<GameState> OnStateChanged;
-    
     private void ChangeState(GameState newState)
     {
         if (CurrentState == newState)
@@ -32,6 +29,7 @@ public class GameManager : MonoBehaviour
         Debug.Log($"GameState: {oldState} → {newState}");
 
         OnStateChanged?.Invoke(newState);
+        GameEvents.RaiseGameStateChanged(newState);  // Phase 6: 글로벌 이벤트 버스
     }
 
     #endregion
@@ -39,13 +37,8 @@ public class GameManager : MonoBehaviour
     private int _currentEnemyCount = 0;
     public int EnemyCount => _currentEnemyCount;
 
-    public event Action OnEnemyUnregistered;
-
     #region 점수&레벨
     private int _score = 0;
-
-    // Action
-    public event Action<int> OnScoreChanged;
     #endregion
 
     // Temp: 플레이어 참조 
@@ -115,7 +108,10 @@ public class GameManager : MonoBehaviour
     {
         _currentEnemyCount--;
         if (countAsKill)
+        {
             OnEnemyUnregistered?.Invoke();
+            GameEvents.RaiseEnemyKilled();  // Phase 6: 글로벌 이벤트 버스
+        }
     }
 
     #endregion
@@ -128,6 +124,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"Score: {_score}");
         OnScoreChanged?.Invoke(_score);
+        GameEvents.RaiseScoreChanged(_score);  // Phase 6: 글로벌 이벤트 버스
     }
     public int GetScore()
     {

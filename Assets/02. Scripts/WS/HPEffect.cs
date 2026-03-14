@@ -37,8 +37,8 @@ public class WS_HPEffect : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_player != null)
-            _player.OnDamaged += HandleDamaged;
+        // Phase 6: player.OnDamaged에서 GameEvents로 변경
+        GameEvents.OnPlayerDamaged += HandleDamaged;
     }
 
     private void Start()
@@ -49,8 +49,8 @@ public class WS_HPEffect : MonoBehaviour
 
     private void OnDisable()
     {
-        if (_player != null)
-            _player.OnDamaged -= HandleDamaged;
+        // Phase 6: player.OnDamaged에서 GameEvents로 변경
+        GameEvents.OnPlayerDamaged -= HandleDamaged;
     }
 
     private void Update()

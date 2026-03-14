@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class WS_BallGetter : MonoBehaviour
 {
-    [SerializeField] private WaveManager _spawner;
-
     [Header("Ball")]
     [SerializeField] private GameObject[] _ballLists;
     [SerializeField] private Transform _container;
@@ -19,8 +17,8 @@ public class WS_BallGetter : MonoBehaviour
 
     private void Start()
     {
-        if (_spawner != null)
-            _spawner.OnWaveClear += GetBall;
+        // Phase 6: WaveManager 참조 제거 및 GameEvents로 변경
+        GameEvents.OnWaveCleared += GetBall;
 
         if (_player == null)
         {
@@ -36,8 +34,8 @@ public class WS_BallGetter : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_spawner != null)
-            _spawner.OnWaveClear -= GetBall;
+        // Phase 6: GameEvents로 변경
+        GameEvents.OnWaveCleared -= GetBall;
     }
 
     private void GetBall(bool isBoss)

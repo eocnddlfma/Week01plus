@@ -25,14 +25,13 @@ public class GameScene : MonoBehaviour
     {
         Debug.Log("@>> GameScene Init()");
 
-        GameManager.Instance.OnStateChanged += HandleStateChanged;
+        GameEvents.OnGameStateChanged += HandleStateChanged;  // Phase 6: GameEvents로 변경
 
     }
 
     private void OnDestroy()
     {
-        if (GameManager.Instance != null)
-            GameManager.Instance.OnStateChanged -= HandleStateChanged;
+        GameEvents.OnGameStateChanged -= HandleStateChanged;  // Phase 6: GameEvents로 변경
     }
 
     private void HandleStateChanged(GameManager.GameState newState)

@@ -27,7 +27,7 @@ public class UI_GameEndScreen : MonoBehaviour
         HidePanel();
 
         // 이벤트 구독
-        GameManager.Instance.OnStateChanged += HandleStateChanged;
+        GameEvents.OnGameStateChanged += HandleStateChanged;  // Phase 6: GameEvents로 변경
 
         #region 버튼 리스너 등록
 
@@ -46,8 +46,11 @@ public class UI_GameEndScreen : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Phase 6: GameEvents 구독 해제 추가 (기존 누락 버그 수정)
+        GameEvents.OnGameStateChanged -= HandleStateChanged;
+
         #region 버튼 리스너 해제
-        
+
         if (_restartButton != null)
         {
             _restartButton.onClick.RemoveListener(OnRestartButtonClicked);

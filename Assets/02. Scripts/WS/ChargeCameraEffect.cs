@@ -242,21 +242,14 @@ public class ChargeCameraEffect : MonoBehaviour
 
     private void RegisterPlayerEvent()
     {
-        if (_playerController == null)
-            CachePlayerController();
-
-        if (_playerController != null)
-        {
-            _playerController.OnDamaged += HandleDamaged;
-        }
+        // Phase 6: player.OnDamaged에서 GameEvents로 변경
+        GameEvents.OnPlayerDamaged += HandleDamaged;
     }
 
     private void UnregisterPlayerEvent()
     {
-        if (_playerController != null)
-        {
-            _playerController.OnDamaged -= HandleDamaged;
-        }
+        // Phase 6: player.OnDamaged에서 GameEvents로 변경
+        GameEvents.OnPlayerDamaged -= HandleDamaged;
     }
 
     private void HandleDamaged(int currentHp)

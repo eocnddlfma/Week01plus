@@ -50,7 +50,7 @@ public class WS_BoundaryRingAnimator : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.OnScoreChanged += BoomPulse;
+        GameEvents.OnScoreChanged += BoomPulse;  // Phase 6: GameEvents로 변경
     }
     private void OnEnable()
     {
@@ -66,6 +66,7 @@ public class WS_BoundaryRingAnimator : MonoBehaviour
 
     private void OnDestroy()
     {
+        GameEvents.OnScoreChanged -= BoomPulse;  // Phase 6: GameEvents 구독 해제 추가 (기존 누락 버그 수정)
         KillTweens();
     }
 

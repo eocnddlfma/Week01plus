@@ -36,7 +36,6 @@ public class AugmentManager : MonoBehaviour
     [SerializeField] private bool _showOnBossWaveOnly = false;
 
     private PlayerStatModifier _statModifier;
-    private WaveManager _spawner;
     private List<AugmentData> _appliedAugments = new List<AugmentData>();
 
     public List<AugmentData> AppliedAugments => _appliedAugments;
@@ -53,10 +52,8 @@ public class AugmentManager : MonoBehaviour
 
     private void Start()
     {
-        // EnemySpawner 이벤트 구독
-        _spawner = FindAnyObjectByType<WaveManager>();
-        if (_spawner != null)
-            _spawner.OnWaveClear += OnWaveClear;
+        // Phase 6: WaveManager 이벤트에서 GameEvents로 변경 (WaveManager 참조 제거)
+        GameEvents.OnWaveCleared += OnWaveClear;
 
         // 플레이어에 PlayerStatModifier 확보
         var player = FindAnyObjectByType<PlayerController>();
@@ -73,8 +70,8 @@ public class AugmentManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_spawner != null)
-            _spawner.OnWaveClear -= OnWaveClear;
+        // Phase 6: WaveManager 이벤트에서 GameEvents로 변경
+        GameEvents.OnWaveCleared -= OnWaveClear;
 
         if (Instance == this)
             Instance = null;

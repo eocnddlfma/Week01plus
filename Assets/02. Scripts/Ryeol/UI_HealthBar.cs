@@ -20,7 +20,7 @@ public class UI_HealthBar : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.OnStateChanged += HandleStateChanged;
+        GameEvents.OnGameStateChanged += HandleStateChanged;  // Phase 6: GameEvents로 변경
             if (_player == null)
             {
                 _player = FindAnyObjectByType<PlayerBase>();
@@ -28,14 +28,14 @@ public class UI_HealthBar : MonoBehaviour
                     Debug.LogError("PlayerBase를 찾을 수 없습니다.");
             }
             if (_player != null)
-                _player.OnDamaged += TakeDamage;
+                GameEvents.OnPlayerDamaged += TakeDamage;  // Phase 6: GameEvents로 변경
     }
 
     private void OnDestroy()
     {
-        GameManager.Instance.OnStateChanged -= HandleStateChanged;
+        GameEvents.OnGameStateChanged -= HandleStateChanged;  // Phase 6: GameEvents로 변경
             if (_player != null)
-                _player.OnDamaged -= TakeDamage;
+                GameEvents.OnPlayerDamaged -= TakeDamage;  // Phase 6: GameEvents로 변경
     }
 
     void HandleStateChanged(GameManager.GameState state)

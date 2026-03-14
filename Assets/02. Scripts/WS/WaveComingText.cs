@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class WaveComingText : MonoBehaviour
 {
-    [SerializeField] private WaveManager _spanwer;
     private Animation _animation;
     private TMP_Text _text;
 
@@ -11,13 +10,13 @@ public class WaveComingText : MonoBehaviour
     {
         _animation = GetComponent<Animation>();
         _text = GetComponent<TMP_Text>();
-        if (_spanwer != null)
-            _spanwer.OnWaveClear += Play;
+        // Phase 6: WaveManager 참조 제거 및 GameEvents로 변경
+        GameEvents.OnWaveCleared += Play;
     }
     private void OnDisable()
     {
-        if (_spanwer != null)
-            _spanwer.OnWaveClear -= Play;
+        // Phase 6: GameEvents로 변경
+        GameEvents.OnWaveCleared -= Play;
     }
 
     private void Play(bool isBoss)

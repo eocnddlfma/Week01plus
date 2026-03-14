@@ -10,7 +10,7 @@ public class PlayerBase : EntityBase
     [SerializeField] private float _flashInterval = 0.1f;
 
     [Header("Action by Woosung")]
-    public Action<int> OnDamaged; //받은 데미지가 아니라, 남은 체력을 보내야함.
+    public event Action<int> OnDamaged; //받은 데미지가 아니라, 남은 체력을 보내야함.
 
     private bool _isInvincible = false;
 
@@ -29,7 +29,8 @@ public class PlayerBase : EntityBase
 
         _hp = Mathf.Clamp(_hp - damage, 0, _maxHp);
         //데미지를 입었을 때 체력바에게 전송
-        OnDamaged.Invoke(_hp);
+        OnDamaged?.Invoke(_hp);  // Phase 6: null 체크 추가
+        GameEvents.RaisePlayerDamaged(_hp);  // Phase 6: GameEvents로 전송
         Debug.Log($"현재 체력: {_hp}");
 
         if (_hp == 0)
@@ -112,5 +113,6 @@ public class PlayerBase : EntityBase
         _maxHp += amount;
         _hp = Mathf.Min(_hp + amount, _maxHp);
         OnDamaged?.Invoke(_hp);
+        GameEvents.RaisePlayerDamaged(_hp);  // Phase 6: GameEvents로 전송
     }
 }
