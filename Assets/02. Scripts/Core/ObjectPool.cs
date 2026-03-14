@@ -4,8 +4,9 @@ using UnityEngine;
 /// <summary>
 /// 범용 오브젝트 풀 클래스 (Phase 7)
 /// 빈번한 Instantiate/Destroy를 방지하고 GC Allocation을 감소시킵니다.
+/// T는 MonoBehaviour 또는 GameObject일 수 있습니다.
 /// </summary>
-public class ObjectPool<T> where T : MonoBehaviour
+public class ObjectPool<T> where T : class
 {
     private readonly T _prefab;
     private readonly Transform _parent;

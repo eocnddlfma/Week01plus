@@ -7,8 +7,8 @@ public class EnemyPoolManager : MonoBehaviour
 
     [SerializeField] private int _defaultInitialSize = 5;
 
-    private Dictionary<GameObject, ObjectPool<GameObject>> _pools =
-        new Dictionary<GameObject, ObjectPool<GameObject>>();
+    // 프리팹 경로(또는 인스턴스ID) → 풀 매핑
+    private Dictionary<int, List<GameObject>> _pools = new Dictionary<int, List<GameObject>>();
 
     private void Awake()
     {
@@ -21,65 +21,53 @@ public class EnemyPoolManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 프리팹에 대한 풀을 가져옵니다. 없으면 자동 생성합니다.
+    /// 프리팹에 대한 풀에서 Enemy를 획득합니다.
     /// </summary>
     public GameObject Get(GameObject prefab)
     {
         if (prefab == null)
             return null;
 
-        if (!_pools.ContainsKey(prefab))
+        int prefabId = prefab.GetInstanceID();
+
+        if (!_pools.ContainsKey(prefabId))
         {
             CreatePool(prefab, _defaultInitialSize);
         }
 
-        ObjectPool<GameObject> pool = _pools[prefab];
-        GameObject instance = pool.Get();
+        List<GameObject> pool = _pools[prefabId];
 
-        if (instance != null)
+        // 비활성 오브젝트 찾기
+        foreach (var obj in pool)
         {
-            instance.SetActive(true);
+            if (!obj.activeSelf)
+            {
+                obj.SetActive(true);
+                return obj;
+            }
         }
 
-        return instance;
-    }
-
-    /// <summary>
-    /// Enemy를 풀에 반환합니다.
-    /// </summary>
-    public void Return(GameObject instance, GameObject prefab)
-    {
-        if (instance == null || prefab == null)
-            return;
-
-        if (!_pools.ContainsKey(prefab))
-        {
-            Destroy(instance);
-            return;
-        }
-
-        instance.SetActive(false);
-        _pools[prefab].Return(instance);
+        // 비활성 오브젝트 없으면 새로 생성
+        GameObject newInstance = Instantiate(prefab);
+        newInstance.SetActive(true);
+        pool.Add(newInstance);
+        return newInstance;
     }
 
     private void CreatePool(GameObject prefab, int initialSize)
     {
-        ObjectPool<GameObject> pool = new ObjectPool<GameObject>(
-            createFunc: () => Instantiate(prefab),
-            onGetFunc: (obj) => { },
-            onReturnFunc: (obj) => obj.SetActive(false),
-            canExpand: true
-        );
+        int prefabId = prefab.GetInstanceID();
+        List<GameObject> pool = new List<GameObject>();
 
         // 초기 풀 채우기
         for (int i = 0; i < initialSize; i++)
         {
-            GameObject instance = pool.Get();
+            GameObject instance = Instantiate(prefab);
             instance.SetActive(false);
-            pool.Return(instance);
+            pool.Add(instance);
         }
 
-        _pools[prefab] = pool;
+        _pools[prefabId] = pool;
     }
 
     private void OnDestroy()
