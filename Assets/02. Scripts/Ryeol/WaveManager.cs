@@ -145,12 +145,18 @@ public class WaveManager : MonoBehaviour
         Vector2 randomCircle = UnityEngine.Random.insideUnitCircle.normalized * spawnRadius;
         Vector3 spawnPosition = _player.transform.position + new Vector3(randomCircle.x, randomCircle.y, 0);
 
-        // 적 생성
-        GameObject enemy = Instantiate(selected.enemyPrefab, spawnPosition, Quaternion.identity);
-        var enemyBase = enemy.GetComponent<EnemyBase>();
-        if (enemyBase != null)
-            enemyBase.SetTarget(_player.transform); // 적 타겟 주입
-        enemy.transform.SetParent(_enemyContainer);
+        // Phase 7: 풀에서 적 획득
+        if (EnemyPoolManager.Instance == null) return;
+        GameObject enemy = EnemyPoolManager.Instance.Get(selected.enemyPrefab);
+        if (enemy != null)
+        {
+            enemy.transform.position = spawnPosition;
+            enemy.transform.rotation = Quaternion.identity;
+            var enemyBase = enemy.GetComponent<EnemyBase>();
+            if (enemyBase != null)
+                enemyBase.SetTarget(_player.transform); // 적 타겟 주입
+            enemy.transform.SetParent(_enemyContainer);
+        }
     }
 
     private void ClearEnemies()

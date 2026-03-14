@@ -245,9 +245,36 @@ public abstract class EnemyBase : EntityBase
             GameManager.Instance.UnregisterEnemy();
             _isEnemyCountRegistered = false;
         }
-        
-        Destroy(gameObject);
+
         GameManager.Instance.AddScore(100);
+        ReturnToPool();
+    }
+
+    // Phase 7: 에너미 풀링
+    protected virtual void OnDisable()
+    {
+        ResetState();
+    }
+
+    protected virtual void ResetState()
+    {
+        // 기본 상태 리셋
+        _isDead = false;
+        _hp = 1;
+        _currentVelocity = Vector2.zero;
+        _externalVelocity = Vector2.zero;
+        Rb.linearVelocity = Vector2.zero;
+        _target = null;
+        _isEnemyCountRegistered = false;
+
+        // 트랜스폼 리셋
+        if (Rb != null)
+            Rb.position = Vector2.zero;
+    }
+
+    private void ReturnToPool()
+    {
+        gameObject.SetActive(false);
     }
 
     protected void ScheduleNextAttack()

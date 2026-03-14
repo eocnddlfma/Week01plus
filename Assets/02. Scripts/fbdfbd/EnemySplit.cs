@@ -71,14 +71,30 @@ public class EnemySplit : EnemyBase
         if (spawnPos == null)
             return;
 
+        // Phase 7: 풀에서 클론 획득
+        if (EnemyPoolManager.Instance == null)
+            return;
+
         Transform container = transform.parent;
-        GameObject clone = Instantiate(_splitEnemyClonePrefab, spawnPos.position, spawnPos.rotation, container);
-
-
-        if (clone.TryGetComponent(out EnemySplitClone splitClone))
+        GameObject clone = EnemyPoolManager.Instance.Get(_splitEnemyClonePrefab);
+        if (clone != null)
         {
-            splitClone.SetTarget(Target);
+            clone.transform.position = spawnPos.position;
+            clone.transform.rotation = spawnPos.rotation;
+            clone.transform.SetParent(container);
+
+            if (clone.TryGetComponent(out EnemySplitClone splitClone))
+            {
+                splitClone.SetTarget(Target);
+            }
         }
+    }
+
+    protected override void ResetState()
+    {
+        base.ResetState();
+        StopSplitRoutine();
+        _isSplitting = false;
     }
 
     private void OnDisable()

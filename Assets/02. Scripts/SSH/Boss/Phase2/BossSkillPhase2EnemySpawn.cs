@@ -24,14 +24,21 @@ namespace SSH.Boss
                 Vector2    offset = Random.insideUnitCircle.normalized * _so.SpawnRadius;
                 Vector3    pos    = transform.position + new Vector3(offset.x, offset.y, 0f);
 
-                GameObject enemy = Instantiate(prefab, pos, Quaternion.identity);
-                if (container != null) enemy.transform.SetParent(container);
-
-                EnemyBase enemyBase = enemy.GetComponent<EnemyBase>();
-                if (enemyBase != null)
+                // Phase 7: 풀에서 에너미 획득
+                if (EnemyPoolManager.Instance == null) yield break;
+                GameObject enemy = EnemyPoolManager.Instance.Get(prefab);
+                if (enemy != null)
                 {
-                    if (_boss?.Target != null) enemyBase.SetTarget(_boss.Target);
-                    enemyBase.UnregisterFromEnemyCount();
+                    enemy.transform.position = pos;
+                    enemy.transform.rotation = Quaternion.identity;
+                    if (container != null) enemy.transform.SetParent(container);
+
+                    EnemyBase enemyBase = enemy.GetComponent<EnemyBase>();
+                    if (enemyBase != null)
+                    {
+                        if (_boss?.Target != null) enemyBase.SetTarget(_boss.Target);
+                        enemyBase.UnregisterFromEnemyCount();
+                    }
                 }
 
                 yield return new WaitForSeconds(_so.SpawnDelay);
