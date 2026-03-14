@@ -13,14 +13,15 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
     private Vector2 _direction;
     private LayerMask _targetMask;
     private GameObject _owner;
+    private Color _originalColor;
 
     private void Awake()
     {
         if (_rb == null) _rb = GetComponent<Rigidbody2D>();
         if (_rb == null) _rb = gameObject.AddComponent<Rigidbody2D>();
 
+        _originalColor = GetComponent<SpriteRenderer>().color;
         _rb.gravityScale = 0f;
-        _rb.bodyType = RigidbodyType2D.Kinematic;
     }
 
     public void Init(int damage, Vector2 direction, float speed, float lifeTime, LayerMask targetMask, GameObject owner)
@@ -58,14 +59,15 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
         ReturnToPool();
     }
 
-    public void ReflectAsBatHit(int overrideDamage, LayerMask enemyMask, Color hitColor)
+    public void ReflectAsBatHit(int overrideDamage, LayerMask enemyMask)
     {
         _direction = -_direction;
         _damage = overrideDamage;
         _owner = null;
         _targetMask = enemyMask;
         var sr = GetComponent<SpriteRenderer>();
-        if (sr != null) sr.color = hitColor;
+        if (sr != null) sr.color = Color.white;
+        _lifeTime+=10f;
     }
 
     /// <summary>
@@ -86,8 +88,8 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
     {
         // ReflectAsBatHit이 색상 변경 → 복원
         var sr = GetComponent<SpriteRenderer>();
-        if (sr != null)
-            sr.color = Color.white;
+        if (sr.color == Color.white)
+            sr.color = _originalColor;
 
         // BossSkillPhase1Rain이 localScale 변경 → 복원
         if (transform.localScale != Vector3.one)

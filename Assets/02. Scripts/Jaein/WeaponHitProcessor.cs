@@ -118,7 +118,14 @@ public class WeaponHitProcessor : MonoBehaviour
         EffectParticle effect = _weaponTransform.GetComponentInChildren<EffectParticle>();
         if (effect != null) effect.Play(_currentChargePercentForAttack);
 
-        projectile.ReflectAsBatHit((int)_currentDamageAmount, _enemyReflectLayerMask, Color.white);
+        projectile.ReflectAsBatHit((int)_currentDamageAmount, _enemyReflectLayerMask);
+    }
+
+    // SwingSystem의 OverlapCircleAll에서 수집한 적에게 호출
+    public void ProcessEnemyHit(EnemyBase enemy)
+    {
+        if (enemy == null || _hitEnemiesThisAttack.Contains(enemy)) return;
+        ApplyEnemyHit(enemy);
     }
 
     private void ApplyEnemyHit(EnemyBase enemy)

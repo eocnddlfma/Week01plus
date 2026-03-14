@@ -240,11 +240,8 @@ public abstract class EnemyBase : EntityBase
     {
         Rb.linearVelocity = Vector2.zero;
 
-        if (_isEnemyCountRegistered && GameManager.Instance != null)
-        {
-            GameManager.Instance.UnregisterEnemy(enemy: this);
-            _isEnemyCountRegistered = false;
-        }
+        // 적이 죽을 때 직접 이벤트 호출
+        GameEvents.RaiseEnemyKilled(this);
 
         GameManager.Instance.AddScore(100);
         ReturnToPool();

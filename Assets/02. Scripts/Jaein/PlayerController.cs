@@ -25,8 +25,8 @@ public class PlayerController : PlayerBase
     {
         base.Awake();
 
-        if (_playerBody == null)
-            _playerBody = GetComponentInChildren<Transform>();
+        if (_playerBody == null && transform.childCount > 0)
+            _playerBody = transform.GetChild(0);
 
         if (_weaponSystem == null)
             _weaponSystem = GetComponentInChildren<BatWeaponManager>();

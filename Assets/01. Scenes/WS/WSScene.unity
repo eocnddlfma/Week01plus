@@ -3420,78 +3420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37c8f33e5981b934dbaac7cc326e6e73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jaein_WeaponChargeInfo
-  _statsData: {fileID: 0}
-  _chargeLevels:
-  - levelName: 
-    rotationAngle: 180
-    attackPower: 1
-    rotationDuration: 0.3
-    weaponColor: {r: 1, g: 1, b: 1, a: 1}
-    weaponSizeMultiplier: 1
-    knockbackEnemies: 1
-    knockbackForce: 5
-    damageAmount: 1
-    hitStopDurationMult: 1
-  - levelName: 
-    rotationAngle: 180
-    attackPower: 1
-    rotationDuration: 0.3
-    weaponColor: {r: 1, g: 1, b: 1, a: 1}
-    weaponSizeMultiplier: 1
-    knockbackEnemies: 1
-    knockbackForce: 5
-    damageAmount: 1
-    hitStopDurationMult: 1
-  - levelName: 
-    rotationAngle: 180
-    attackPower: 1
-    rotationDuration: 0.3
-    weaponColor: {r: 1, g: 1, b: 1, a: 1}
-    weaponSizeMultiplier: 1
-    knockbackEnemies: 1
-    knockbackForce: 5
-    damageAmount: 1
-    hitStopDurationMult: 1
-  - levelName: 
-    rotationAngle: 180
-    attackPower: 1
-    rotationDuration: 0.3
-    weaponColor: {r: 1, g: 1, b: 1, a: 1}
-    weaponSizeMultiplier: 1
-    knockbackEnemies: 1
-    knockbackForce: 5
-    damageAmount: 1
-    hitStopDurationMult: 1
-  _weaponTransform: {fileID: 0}
-  _weaponSpriteRenderer: {fileID: 0}
-  _endpointTransform: {fileID: 0}
-  _enemyReflectLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  _rotationEasingCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 4.7032967
-      outSlope: 4.7032967
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.054166667
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &3994675842289520438
 GameObject:
   m_ObjectHideFlags: 0
@@ -4529,7 +4457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Jaein_BatWeaponManager
   _enemyReflectLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _weaponTransform: {fileID: 0}
   _endpointTransform: {fileID: 0}
 --- !u!114 &8197585636916991919
@@ -4545,47 +4473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_HitStopController
   _statsData: {fileID: 11400000, guid: 376ce3a34745bdb47ba310d27cd4f99e, type: 2}
-  _chargeLevels:
-  - levelName: 
-    rotationAngle: 180
-    attackPower: 1
-    rotationDuration: 0.3
-    weaponColor: {r: 1, g: 1, b: 1, a: 1}
-    weaponSizeMultiplier: 1
-    knockbackEnemies: 1
-    knockbackForce: 5
-    damageAmount: 1
-    hitStopDurationMult: 1
-  - levelName: 
-    rotationAngle: 180
-    attackPower: 1
-    rotationDuration: 0.3
-    weaponColor: {r: 1, g: 1, b: 1, a: 1}
-    weaponSizeMultiplier: 1
-    knockbackEnemies: 1
-    knockbackForce: 5
-    damageAmount: 1
-    hitStopDurationMult: 1
-  - levelName: 
-    rotationAngle: 180
-    attackPower: 1
-    rotationDuration: 0.3
-    weaponColor: {r: 1, g: 1, b: 1, a: 1}
-    weaponSizeMultiplier: 1
-    knockbackEnemies: 1
-    knockbackForce: 5
-    damageAmount: 1
-    hitStopDurationMult: 1
-  - levelName: 
-    rotationAngle: 180
-    attackPower: 1
-    rotationDuration: 0.3
-    weaponColor: {r: 1, g: 1, b: 1, a: 1}
-    weaponSizeMultiplier: 1
-    knockbackEnemies: 1
-    knockbackForce: 5
-    damageAmount: 1
-    hitStopDurationMult: 1
+  _chargeLevels: []
   _weaponTransform: {fileID: 0}
   _weaponSpriteRenderer: {fileID: 0}
   _pivotParent: {fileID: 0}
@@ -4612,12 +4500,12 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 4
+      outSlope: 4
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.058333334
     - serializedVersion: 3
       time: 1
       value: 1
@@ -4630,7 +4518,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _hitProcessPercent: 0.7
+  _hitProcessPercent: 0.3
   _quickTurnBackAngle: 1.5
 --- !u!114 &8197585636916991921
 MonoBehaviour:

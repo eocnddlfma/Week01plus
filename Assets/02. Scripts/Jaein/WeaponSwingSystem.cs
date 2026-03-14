@@ -190,6 +190,10 @@ public class WeaponSwingSystem : MonoBehaviour
             target.ball.TriggerLaunchFromWeapon(1f);
             target.ball.PlayWeaponEffect(_weaponTransform, 1f);
         }
+        else if (target.targetType == HitTarget.TargetType.Enemy)
+        {
+            _hitProcessor.ProcessEnemyHit(target.enemy);
+        }
     }
 
     private void CollectHitTargets(Transform pivot, float radius, float startAngle, float endAngle)
@@ -235,7 +239,6 @@ public class WeaponSwingSystem : MonoBehaviour
             EnemyBase enemy = hit.GetComponent<EnemyBase>();
             if (enemy != null && !enemiesAdded.Contains(enemy))
             {
-                if (enemy == null) continue;
                 Vector2 dir = ((Vector2)enemy.transform.position - (Vector2)pivot.position);
                 float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
                 angle = NormalizeAngle(angle);

@@ -40,6 +40,7 @@ public class WeaponChargeSystem : MonoBehaviour
     private float _currentChargeTimer = 0f;
     private int _currentChargeLevel = 0;
     private bool _isCharging = false;
+    private bool _wasPressed = false;
     private float _chargePercent = 0f;
     private float _lastAttackTime = -100f;
 
@@ -164,9 +165,11 @@ public class WeaponChargeSystem : MonoBehaviour
         {
             _currentChargeTimer = 0f;
             _currentChargeLevel = 0;
+            _chargePercent = 0f;
+            _wasPressed = true;
         }
 
-        if (held && !_isCharging)
+        if (held && _wasPressed)
         {
             float chargeMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.ChargeSpeedMult : 1f;
             _currentChargeTimer += Time.deltaTime * chargeMult;
@@ -177,9 +180,19 @@ public class WeaponChargeSystem : MonoBehaviour
                 UpdateChargeVisuals();
         }
 
-        if (released && _isCharging)
+        if (released)
         {
-            ReleaseCharge();
+            if (_isCharging)
+            {
+                ReleaseCharge();
+            }
+            else if (_wasPressed)
+            {
+                // 차지 없는 빠른 탭 → 0단계 공격 발동
+                _chargePercent = 0f;
+                ReleaseCharge();
+            }
+            _wasPressed = false;
         }
     }
 
@@ -214,6 +227,7 @@ public class WeaponChargeSystem : MonoBehaviour
     {
         _currentChargeTimer = 0f;
         _isCharging = false;
+        _wasPressed = false;
         ResetVisuals();
     }
 

@@ -43,19 +43,16 @@ public class BatWeaponManager : MonoBehaviour
         _chargeSystem.HandleAttackInput(pressed, held, released);
     }
 
-    public void OnWeaponTriggerEnter2D(Collider2D collision)
+    // Unity 물리 콜백 — 무기 콜라이더(isTrigger)가 다른 오브젝트에 닿을 때
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         _hitProcessor.OnWeaponTriggerEnter2D(collision);
     }
 
-    public void OnWeaponTriggerStay2D(Collider2D collision)
+    // 외부에서 직접 호출하는 퍼블릭 인터페이스 (하위 호환)
+    public void OnWeaponTriggerEnter2D(Collider2D collision)
     {
-        // Unused callback
-    }
-
-    public void OnWeaponTriggerExit2D(Collider2D collision)
-    {
-        // Unused callback
+        _hitProcessor.OnWeaponTriggerEnter2D(collision);
     }
 
     public bool IsAttacking => _hitProcessor.IsAttacking;

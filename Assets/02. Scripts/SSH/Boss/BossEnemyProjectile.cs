@@ -58,13 +58,13 @@ public class BossEnemyProjectile : MonoBehaviour, IEnemyProjectile
         if (usage <= 0) Destroy(gameObject);
     }
 
-    public void ReflectAsBatHit(int overrideDamage, LayerMask enemyMask, Color hitColor)
+    public void ReflectAsBatHit(int overrideDamage, LayerMask enemyMask)
     {
         transform.Rotate(0f, 0f, 180f);
         _damage = overrideDamage;
         _owner = null;
         _targetMask = enemyMask;
         var sr = GetComponent<SpriteRenderer>();
-        if (sr != null) sr.color = hitColor;
+        if (sr != null) sr.color = Color.white;
     }
 }

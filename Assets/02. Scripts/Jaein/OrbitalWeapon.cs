@@ -223,9 +223,8 @@ public class OrbitalWeapon : MonoBehaviour
     {
         if (_center == null) return;
         
-        if(chargePercent == 1.0f)
+        if (chargePercent >= 0.999f)
         {
-            //김우성 추가
             var controller = GetComponent<HitStopController>();
             if (controller != null)
                 controller.TryPlay();
