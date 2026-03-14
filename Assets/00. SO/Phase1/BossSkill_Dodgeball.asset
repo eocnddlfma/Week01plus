@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa2c25bf72af1d74a92a5598d22c1028, type: 3}
+  m_Name: BossSkill_Dodgeball
+  m_EditorClassIdentifier: Assembly-CSharp::SSH_SOBossSkillDodgeball
+  _skillName: 
+  _skillNumber: 101
+  _skillCooldown: 31
+  _skillCastTime: 31
+  _skillRepeatCount: 0
+  _bossSkillParticle: {fileID: 0}
+  _patternPrefab: {fileID: 5809113855475138189, guid: c9fd2e4832fb52742a1366c3a31d4a35, type: 3}
+  _stepDelay: 1.7
+  _lineOffset: 9
+  _warningDuration: 1
+  _blinkInterval: 0.2
+  _burstCount: 16
+  _burstRadius: 14
+  _rotCount: 45
+  _rotDelay: 0.25
+  _rotLaps: 2.1
+  _rotSpawnCount: 15
+  _rotSpeed: 200

@@ -30,6 +30,13 @@ public class WaveManager : MonoBehaviour
         _currentWaveData = _waveDatas[0];
         _enemyContainer = new GameObject("Enemies").transform;
 
+        if (_player == null)
+        {
+            var playerObj = FindAnyObjectByType<PlayerBase>();
+            if (playerObj != null)
+                _player = playerObj.gameObject;
+        }
+
         GameManager.Instance.OnEnemyUnregistered += CheckNextWave;
 
         StartCoroutine(CoSpawnEnemy());
