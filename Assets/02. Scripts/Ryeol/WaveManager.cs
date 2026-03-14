@@ -70,7 +70,7 @@ public class WaveManager : MonoBehaviour
     }
 
     
-    private void CheckNextWave()
+    private void CheckNextWave(EnemyBase _)
     {
         if (_isChangingWave) return; // 이미 넘어가는 중이면 무시
 

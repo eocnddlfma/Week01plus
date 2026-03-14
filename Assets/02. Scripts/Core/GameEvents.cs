@@ -21,7 +21,7 @@ public static class GameEvents
     /// <summary>
     /// 적이 처치될 때 발화 (EnemyBase.OnDeath → GameManager.UnregisterEnemy)
     /// </summary>
-    public static event Action OnEnemyKilled;
+    public static event Action<EnemyBase> OnEnemyKilled;
 
     /// <summary>
     /// 플레이어가 피격될 때 발화 (현재 남은 체력)
@@ -48,7 +48,7 @@ public static class GameEvents
     // ============= Raise 메서드 =============
     public static void RaiseGameStateChanged(GameManager.GameState state) => OnGameStateChanged?.Invoke(state);
     public static void RaiseScoreChanged(int score) => OnScoreChanged?.Invoke(score);
-    public static void RaiseEnemyKilled() => OnEnemyKilled?.Invoke();
+    public static void RaiseEnemyKilled(EnemyBase enemy) => OnEnemyKilled?.Invoke(enemy);
     public static void RaisePlayerDamaged(int remainingHp) => OnPlayerDamaged?.Invoke(remainingHp);
     public static void RaiseWaveStarted(int waveIndex) => OnWaveStarted?.Invoke(waveIndex);
     public static void RaiseWaveCleared(bool isBoss) => OnWaveCleared?.Invoke(isBoss);

@@ -36,8 +36,17 @@ public class ObjectPool<T> where T : MonoBehaviour
     public T Get()
     {
         // 비활성 오브젝트 검색
-        foreach (var obj in _pool)
+        for (int i = _pool.Count - 1; i >= 0; i--)
         {
+            var obj = _pool[i];
+
+            // Destroy된 오브젝트 제거
+            if (obj == null)
+            {
+                _pool.RemoveAt(i);
+                continue;
+            }
+
             if (!obj.gameObject.activeSelf)
             {
                 obj.gameObject.SetActive(true);

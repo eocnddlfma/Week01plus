@@ -103,12 +103,12 @@ public class GameManager : MonoBehaviour
         _currentEnemyCount++;
     }
 
-    public void UnregisterEnemy(bool countAsKill = true)
+    public void UnregisterEnemy(bool countAsKill = true, EnemyBase enemy = null)
     {
         _currentEnemyCount--;
         if (countAsKill)
         {
-            GameEvents.RaiseEnemyKilled();  // Phase 6: 글로벌 이벤트 버스
+            GameEvents.RaiseEnemyKilled(enemy);  // Phase 6: 글로벌 이벤트 버스
         }
     }
 

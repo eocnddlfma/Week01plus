@@ -237,7 +237,6 @@ public class FixAll
         // ======================================================
         int fixedFiles = 0;
         int fixedRefs = 0;
-        int skippedDeprecated = 0;
 
         foreach (string ext in extensions)
         {

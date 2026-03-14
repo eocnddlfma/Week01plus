@@ -163,7 +163,6 @@ public class WeaponChargeSystem : MonoBehaviour
         if (pressed && !_isCharging && Time.time >= _lastAttackTime + _chargeCooldown)
         {
             _currentChargeTimer = 0f;
-            _isCharging = false;
             _currentChargeLevel = 0;
         }
 
@@ -171,14 +170,14 @@ public class WeaponChargeSystem : MonoBehaviour
         {
             float chargeMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.ChargeSpeedMult : 1f;
             _currentChargeTimer += Time.deltaTime * chargeMult;
-            if (!_isCharging && _currentChargeTimer > _chargeThreshold)
+            if (_currentChargeTimer > _chargeThreshold)
                 _isCharging = true;
 
             if (_isCharging)
                 UpdateChargeVisuals();
         }
 
-        if (released && !_isCharging)
+        if (released && _isCharging)
         {
             ReleaseCharge();
         }

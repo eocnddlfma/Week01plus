@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
         if (_rb == null) _rb = GetComponent<Rigidbody2D>();
         if (_playerBody == null)
         {
-            var body = FindAnyObjectByType<Transform>();
+            var body = transform.GetChild(0);
             if (body != null)
                 _playerBody = body;
         }

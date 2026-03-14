@@ -242,7 +242,7 @@ public abstract class EnemyBase : EntityBase
 
         if (_isEnemyCountRegistered && GameManager.Instance != null)
         {
-            GameManager.Instance.UnregisterEnemy();
+            GameManager.Instance.UnregisterEnemy(enemy: this);
             _isEnemyCountRegistered = false;
         }
 

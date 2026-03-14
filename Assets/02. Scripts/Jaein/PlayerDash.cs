@@ -26,12 +26,8 @@ public class PlayerDash : MonoBehaviour
     {
         if (_rb == null) _rb = GetComponent<Rigidbody2D>();
         if (_movement == null) _movement = GetComponent<PlayerMovement>();
-        if (_playerBody == null)
-        {
-            var body = FindAnyObjectByType<Transform>();
-            if (body != null)
-                _playerBody = body;
-        }
+        if (_playerBody == null && transform.childCount > 0)
+            _playerBody = transform.GetChild(0);
         if (_weaponSystem == null)
         {
             var weapon = FindAnyObjectByType<BatWeaponManager>();

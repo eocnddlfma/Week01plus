@@ -24,31 +24,31 @@ MonoBehaviour:
     weaponSizeMultiplier: 1
     knockbackForce: 5
     damageAmount: 1
-    hitStopDurationMult: 1
+    hitStopDurationMult: 0.32
   - levelName: 
-    rotationAngle: 180
+    rotationAngle: 226
     attackPower: 1
     rotationDuration: 0.3
-    weaponColor: {r: 1, g: 1, b: 1, a: 1}
+    weaponColor: {r: 0.8113208, g: 0.4477572, b: 0.4477572, a: 1}
     weaponSizeMultiplier: 1
     knockbackForce: 5
-    damageAmount: 1
-    hitStopDurationMult: 1
+    damageAmount: 2
+    hitStopDurationMult: 1.21
   - levelName: 
-    rotationAngle: 180
+    rotationAngle: 266.3
     attackPower: 1
     rotationDuration: 0.3
-    weaponColor: {r: 1, g: 1, b: 1, a: 1}
-    weaponSizeMultiplier: 1
-    knockbackForce: 5
-    damageAmount: 1
-    hitStopDurationMult: 1
+    weaponColor: {r: 0.8113208, g: 0.14925243, b: 0.14925243, a: 1}
+    weaponSizeMultiplier: 2.18
+    knockbackForce: 6.89
+    damageAmount: 90
+    hitStopDurationMult: 4.39
   - levelName: 
-    rotationAngle: 180
-    attackPower: 1
+    rotationAngle: 307.7
+    attackPower: 4
     rotationDuration: 0.3
-    weaponColor: {r: 1, g: 1, b: 1, a: 1}
-    weaponSizeMultiplier: 1
-    knockbackForce: 5
-    damageAmount: 1
-    hitStopDurationMult: 1
+    weaponColor: {r: 1, g: 0, b: 0, a: 1}
+    weaponSizeMultiplier: 3.22
+    knockbackForce: 10.05
+    damageAmount: 106
+    hitStopDurationMult: 3.38

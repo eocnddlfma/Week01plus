@@ -178,7 +178,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3746609}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10a23b62b712cab41bd8c1b34e35a11b, type: 3}
+  m_Script: {fileID: 11500000, guid: 1cff961332d6a204fbc2e32d6d2cf07e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_HPEffect
   _player: {fileID: 4212091939060036683}
@@ -471,7 +471,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 124923953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f5b9b21fa353d4ea2b03df4213a111, type: 3}
+  m_Script: {fileID: 11500000, guid: 8bdc4bd814d6f834cadfbcb4d00d4fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_TMPRainbowGradient
   _tmpText: {fileID: 124923955}
@@ -993,7 +993,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 461592677}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f5b9b21fa353d4ea2b03df4213a111, type: 3}
+  m_Script: {fileID: 11500000, guid: 8bdc4bd814d6f834cadfbcb4d00d4fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_TMPRainbowGradient
   _tmpText: {fileID: 461592679}
@@ -1058,7 +1058,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 463449362}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f5b9b21fa353d4ea2b03df4213a111, type: 3}
+  m_Script: {fileID: 11500000, guid: 8bdc4bd814d6f834cadfbcb4d00d4fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_TMPRainbowGradient
   _tmpText: {fileID: 463449365}
@@ -1187,7 +1187,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 463449362}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 742043a25d2e9e345afdaecd861cae58, type: 3}
+  m_Script: {fileID: 11500000, guid: bb4816b13f5b7d841a4e309f38fffb81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_BallGetterAnimation
   _text: {fileID: 463449365}
@@ -1337,7 +1337,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 464464339}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f5b9b21fa353d4ea2b03df4213a111, type: 3}
+  m_Script: {fileID: 11500000, guid: 8bdc4bd814d6f834cadfbcb4d00d4fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_TMPRainbowGradient
   _tmpText: {fileID: 464464341}
@@ -1425,12 +1425,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 668908077}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4adfca182c1ad1c408fe82587ff53526, type: 3}
+  m_Script: {fileID: 11500000, guid: 2c94528f389207642aa5f1e9dc16b96a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_MainGameFlowController
   _titleCg: {fileID: 844693435}
   _ringAnimation: {fileID: 1600479762}
-  _isClick: 0
 --- !u!1 &788735782
 GameObject:
   m_ObjectHideFlags: 0
@@ -1579,7 +1578,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 788735782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f5b9b21fa353d4ea2b03df4213a111, type: 3}
+  m_Script: {fileID: 11500000, guid: 8bdc4bd814d6f834cadfbcb4d00d4fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_TMPRainbowGradient
   _tmpText: {fileID: 788735784}
@@ -1885,6 +1884,81 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 217}
   m_SizeDelta: {x: 1500, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &969269113
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 969269117}
+  - component: {fileID: 969269116}
+  - component: {fileID: 969269115}
+  - component: {fileID: 969269114}
+  m_Layer: 0
+  m_Name: EnemyProjectilePool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &969269114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969269113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 265b40298182bef4d8720ba89f0a7359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyPoolManager
+  _defaultInitialSize: 5
+--- !u!114 &969269115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969269113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69eb3a06cce47f647b626f42e6087b0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBossMineProjectilePool
+  _prefab: {fileID: 4752453250131162497, guid: 304e73bfc89b3b94481486bdd3fe5b5b, type: 3}
+  _initialSize: 10
+--- !u!114 &969269116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969269113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93ae0f417e769cd48a651a3b12be4d81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyProjectilePool
+  _prefab: {fileID: 4870169749638757217, guid: 852135b2ddcd11c45a62f11c6d8f3196, type: 3}
+  _initialSize: 20
+--- !u!4 &969269117
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969269113}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1024770465 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 879554033986512116, guid: f61a40a1d9768b748bb82b6e2a0ea181, type: 3}
@@ -1908,8 +1982,8 @@ GameObject:
   - component: {fileID: 1057952563}
   - component: {fileID: 1057952562}
   - component: {fileID: 1057952564}
-  - component: {fileID: 1057952566}
   - component: {fileID: 1057952565}
+  - component: {fileID: 1057952566}
   m_Layer: 5
   m_Name: '[Text] NextWaveComing'
   m_TagString: Untagged
@@ -1956,7 +2030,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B O O S  C O M I N G
+  m_text: B O S S  C O M I N G
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c6db5df11c57c20419165e321a0a0a08, type: 2}
   m_sharedMaterial: {fileID: -3875922560508329880, guid: c6db5df11c57c20419165e321a0a0a08, type: 2}
@@ -2045,7 +2119,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1057952560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f5b9b21fa353d4ea2b03df4213a111, type: 3}
+  m_Script: {fileID: 11500000, guid: 8bdc4bd814d6f834cadfbcb4d00d4fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_TMPRainbowGradient
   _tmpText: {fileID: 1057952562}
@@ -2079,10 +2153,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1057952560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f6067e6243fdb44ebd4be9d37a02ba0, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f033b8ee06e9674f89f51d9a51a43d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveComingText
-  _spanwer: {fileID: 1870240931}
 --- !u!4 &1083152894 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2915721794408734461, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
@@ -2425,43 +2498,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 1354891387}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44bbbaedd3e7a5040ab76c48384e4467, type: 3}
+  m_Script: {fileID: 11500000, guid: c443d193d7adc574881c6d289f430645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_ChargeCameraEffect
-  _targetCamera: {fileID: 1354891389}
-  _player: {fileID: 2362285120704369789}
+  _targetCamera: {fileID: 0}
+  _player: {fileID: 0}
   _basePosition: {x: 0, y: 0, z: -10}
-  _moveDistance: 2
-  _positionLerpSpeed: 4
-  _zoomInOffset: -1
-  _sizeLerpSpeed: 4
-  _shakeAmplitude: 0.01
-  _shakeSpeed: 10
-  _endShakeAmplitude: 1
+  _moveDistance: 0.6
+  _positionLerpSpeed: 8
+  _zoomInOffset: -0.6
+  _sizeLerpSpeed: 8
+  _shakeAmplitude: 0.05
+  _shakeSpeed: 30
+  _endShakeAmplitude: 0.18
   _endShakeSpeed: 55
   _endShakeDuration: 0.12
   _fullChargeThreshold: 0.999
-  _endImpactMoveDistance: 2
-  _endImpactZoomOffset: -2
-  _endImpactDuration: 0.1
-  _damagedShakeAmplitude: 0.8
+  _endImpactMoveDistance: 1.1
+  _endImpactZoomOffset: -1
+  _endImpactDuration: 0.14
+  _damagedShakeAmplitude: 0.22
   _damagedShakeSpeed: 70
   _damagedShakeDuration: 0.18
   _damagedKickDistance: 0.18
   _useDamageKickBack: 1
-  _playerController: {fileID: 0}
-  _isCharging: 0
-  _baseSize: 0
-  _endShakeTimer: 0
-  _endImpactTimer: 0
   sizeOffset: 0
   positionOffset: {x: 0, y: 0, z: 0}
-  _chargeNoiseTime: 0
-  _endNoiseTime: 0
-  _damagedNoiseTime: 0
-  _damagedShakeTimer: 0
-  _currentBasePos: {x: 0, y: 0, z: 0}
-  _currentSize: 0
 --- !u!114 &1448733733 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3585550976496479544, guid: f61a40a1d9768b748bb82b6e2a0ea181, type: 3}
@@ -2740,10 +2802,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1572562200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a667bc298c52dd74896e2db43bd6a0ee, type: 3}
+  m_Script: {fileID: 11500000, guid: bad6ca714e59cfc42b213df195d6cf0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_BallGetter
-  _spawner: {fileID: 1870240931}
   _ballLists:
   - {fileID: 5483284810942166359, guid: d2dc92da86baf544c9f592a6489028c6, type: 3}
   - {fileID: 4609401388222385738, guid: 7ecc0d90345449642a49706d24a744bd, type: 3}
@@ -2770,7 +2831,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1600479760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c38b099090c5d14cadac2b991f397ae, type: 3}
+  m_Script: {fileID: 11500000, guid: ead27a62d58ed7145aa59b86fdc4bca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RingAnimation
   _mainRing: {fileID: 1991526692}
@@ -2967,11 +3028,11 @@ PrefabInstance:
       objectReference: {fileID: 8329097454644803893}
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: _changeWaveThreshold
-      value: 0.9
+      value: 0.87
       objectReference: {fileID: 0}
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: _waveDatas.Array.size
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: '_waveDatas.Array.data[0]'
@@ -2980,27 +3041,35 @@ PrefabInstance:
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: '_waveDatas.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: e1fa14a0681ae0a4d9eb1abe0e5f8752, type: 2}
+      objectReference: {fileID: 11400000, guid: 2ecfed68835c50d42a08ed5d019d3354, type: 2}
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: '_waveDatas.Array.data[2]'
       value: 
-      objectReference: {fileID: 11400000, guid: 8ed023fb158c15d4295a600b1e088047, type: 2}
+      objectReference: {fileID: 11400000, guid: 6222c800de2803442ba311127c5fd342, type: 2}
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: '_waveDatas.Array.data[3]'
       value: 
-      objectReference: {fileID: 11400000, guid: ef9c3e5323b40a840b3506b5b5e20d43, type: 2}
+      objectReference: {fileID: 11400000, guid: 3c9d6014daf204d4f876037dd87b3f64, type: 2}
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: '_waveDatas.Array.data[4]'
       value: 
-      objectReference: {fileID: 11400000, guid: 7a6b020e278d34a439faddb54f8a7e73, type: 2}
+      objectReference: {fileID: 11400000, guid: aea4eba0a8ea1064b82f29c84aadfb0b, type: 2}
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: '_waveDatas.Array.data[5]'
       value: 
-      objectReference: {fileID: 11400000, guid: 90f890fdfd11aad4792b2fe4619fd665, type: 2}
+      objectReference: {fileID: 11400000, guid: d0681d02f8a4e3243bd4b93c0fecee56, type: 2}
     - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: '_waveDatas.Array.data[6]'
       value: 
-      objectReference: {fileID: 11400000, guid: cb63d125103f8534d9471d6742056bcf, type: 2}
+      objectReference: {fileID: 11400000, guid: 7bc65ae73f203f14a9b73ee22ed59be2, type: 2}
+    - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
+      propertyPath: '_waveDatas.Array.data[7]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 65f35227962207b49a0060626f7446fa, type: 2}
+    - target: {fileID: -1657602853474704895, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
+      propertyPath: '_waveDatas.Array.data[8]'
+      value: 
+      objectReference: {fileID: 11400000, guid: bdc6b608061a4d44284e86da775c4279, type: 2}
     - target: {fileID: 4007090818301135136, guid: 8069e6d93889b08449c0c9b61f0e6e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3348,10 +3417,81 @@ MonoBehaviour:
   m_GameObject: {fileID: 8197585636916991916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88d40a589e48212489a654ab9d10eb76, type: 3}
+  m_Script: {fileID: 11500000, guid: 37c8f33e5981b934dbaac7cc326e6e73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jaein_WeaponChargeInfo
-  _chargePercent: 0
+  _statsData: {fileID: 0}
+  _chargeLevels:
+  - levelName: 
+    rotationAngle: 180
+    attackPower: 1
+    rotationDuration: 0.3
+    weaponColor: {r: 1, g: 1, b: 1, a: 1}
+    weaponSizeMultiplier: 1
+    knockbackEnemies: 1
+    knockbackForce: 5
+    damageAmount: 1
+    hitStopDurationMult: 1
+  - levelName: 
+    rotationAngle: 180
+    attackPower: 1
+    rotationDuration: 0.3
+    weaponColor: {r: 1, g: 1, b: 1, a: 1}
+    weaponSizeMultiplier: 1
+    knockbackEnemies: 1
+    knockbackForce: 5
+    damageAmount: 1
+    hitStopDurationMult: 1
+  - levelName: 
+    rotationAngle: 180
+    attackPower: 1
+    rotationDuration: 0.3
+    weaponColor: {r: 1, g: 1, b: 1, a: 1}
+    weaponSizeMultiplier: 1
+    knockbackEnemies: 1
+    knockbackForce: 5
+    damageAmount: 1
+    hitStopDurationMult: 1
+  - levelName: 
+    rotationAngle: 180
+    attackPower: 1
+    rotationDuration: 0.3
+    weaponColor: {r: 1, g: 1, b: 1, a: 1}
+    weaponSizeMultiplier: 1
+    knockbackEnemies: 1
+    knockbackForce: 5
+    damageAmount: 1
+    hitStopDurationMult: 1
+  _weaponTransform: {fileID: 0}
+  _weaponSpriteRenderer: {fileID: 0}
+  _endpointTransform: {fileID: 0}
+  _enemyReflectLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _rotationEasingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 4.7032967
+      outSlope: 4.7032967
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.054166667
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &3994675842289520438
 GameObject:
   m_ObjectHideFlags: 0
@@ -3377,34 +3517,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8329097454644803893}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6ad0f8887f674a44b10bcbe9270652f, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c04aacaf1d8d7741bc6c6d4d2402a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jaein_PlayerController
-  _hp: 10
-  _maxHp: 10
+  _hp: 12
+  _maxHp: 12
   _isDead: 0
-  <Rb>k__BackingField: {fileID: 0}
   _spriteRenderer: {fileID: 0}
   _invincibleDuration: 1
   _flashInterval: 0.1
-  _isInvincible: 0
-  _moveSpeed: 12
-  _rotationSpeed: 15
-  _playerBody: {fileID: 7980365705766587438}
-  _weaponSystem: {fileID: 8197585636916991918}
-  _dashKey: 32
-  _dashSpeed: 40
-  _dashDuration: 0.1
-  _dashCooldown: 0.3
-  _boundaryCenter: {x: 0, y: 0}
-  _boundaryRadius: 24
-  _useBoundary: 1
-  _boundarySkin: 1
-  cameraEffect: {fileID: 1354891392}
-  _inputVec: {x: 0, y: 0}
-  _mainCamera: {fileID: 0}
-  _lastDashTime: -100
-  _isDashing: 0
+  _statsData: {fileID: 11400000, guid: ee650d5aa271ff547981480848178b54, type: 2}
+  _playerBody: {fileID: 0}
+  _weaponSystem: {fileID: 0}
+  _cameraEffect: {fileID: 0}
 --- !u!212 &4496890912097071637
 SpriteRenderer:
   serializedVersion: 2
@@ -4381,6 +4506,8 @@ GameObject:
   - component: {fileID: 2864677430525259173}
   - component: {fileID: 8197585636916991918}
   - component: {fileID: 8197585636916991919}
+  - component: {fileID: 8197585636916991920}
+  - component: {fileID: 8197585636916991921}
   m_Layer: 8
   m_Name: Weapon
   m_TagString: Weapon
@@ -4397,94 +4524,102 @@ MonoBehaviour:
   m_GameObject: {fileID: 8197585636916991916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b69e0ac6f6861148adf4c897d699df5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8829547d97f5a3d4a8957c2c77239dc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Jaein_BatWeaponManager
+  _enemyReflectLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _weaponTransform: {fileID: 0}
+  _endpointTransform: {fileID: 0}
+--- !u!114 &8197585636916991919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8197585636916991916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0624dc1da04d404448810a0dc308e861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WS_HitStopController
+  _statsData: {fileID: 11400000, guid: 376ce3a34745bdb47ba310d27cd4f99e, type: 2}
   _chargeLevels:
   - levelName: 
     rotationAngle: 180
-    attackPower: 5
+    attackPower: 1
     rotationDuration: 0.3
-    weaponColor:
-      r: 1
-      g: 1
-      b: 1
-      a: 1
+    weaponColor: {r: 1, g: 1, b: 1, a: 1}
     weaponSizeMultiplier: 1
     knockbackEnemies: 1
     knockbackForce: 5
-    damageAmount: 2
+    damageAmount: 1
     hitStopDurationMult: 1
   - levelName: 
-    rotationAngle: 220
-    attackPower: 10
-    rotationDuration: 0.2
-    weaponColor:
-      r: 1
-      g: 0.504717
-      b: 0.504717
-      a: 1
-    weaponSizeMultiplier: 1.3
-    knockbackEnemies: 1
-    knockbackForce: 9
-    damageAmount: 5
-    hitStopDurationMult: 1.5
-  - levelName: 
-    rotationAngle: 250
-    attackPower: 15
-    rotationDuration: 0.22
-    weaponColor:
-      r: 0.8584906
-      g: 0.2713154
-      b: 0.2713154
-      a: 1
-    weaponSizeMultiplier: 1.6
-    knockbackEnemies: 1
-    knockbackForce: 14
-    damageAmount: 7
-    hitStopDurationMult: 3
-  - levelName: 
-    rotationAngle: 300
-    attackPower: 20
+    rotationAngle: 180
+    attackPower: 1
     rotationDuration: 0.3
-    weaponColor:
-      r: 1
-      g: 0
-      b: 0
-      a: 1
-    weaponSizeMultiplier: 5
+    weaponColor: {r: 1, g: 1, b: 1, a: 1}
+    weaponSizeMultiplier: 1
     knockbackEnemies: 1
-    knockbackForce: 22
-    damageAmount: 10
-    hitStopDurationMult: 5
+    knockbackForce: 5
+    damageAmount: 1
+    hitStopDurationMult: 1
+  - levelName: 
+    rotationAngle: 180
+    attackPower: 1
+    rotationDuration: 0.3
+    weaponColor: {r: 1, g: 1, b: 1, a: 1}
+    weaponSizeMultiplier: 1
+    knockbackEnemies: 1
+    knockbackForce: 5
+    damageAmount: 1
+    hitStopDurationMult: 1
+  - levelName: 
+    rotationAngle: 180
+    attackPower: 1
+    rotationDuration: 0.3
+    weaponColor: {r: 1, g: 1, b: 1, a: 1}
+    weaponSizeMultiplier: 1
+    knockbackEnemies: 1
+    knockbackForce: 5
+    damageAmount: 1
+    hitStopDurationMult: 1
   _weaponTransform: {fileID: 0}
   _weaponSpriteRenderer: {fileID: 0}
-  _endpointTransform: {fileID: 0}
-  _hitRadius: 2
-  _enemyReflectLayerMask:
-    m_Bits: 64
-  _chargeCooldown: 0.5
-  _maxChargeTime: 4
+  _pivotParent: {fileID: 0}
+  _chargeCooldown: 0.3
+  _maxChargeTime: 1.2
   _chargeThreshold: 0.2
+--- !u!114 &8197585636916991920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8197585636916991916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6943f67a20f74a4099967afe18efa19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponSwingSystem
+  _weaponTransform: {fileID: 0}
+  _endpointTransform: {fileID: 0}
   _rotationEasingCurve:
+    serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 3
+      time: 0
       value: 0
-      inSlope: 3.6825397
-      outSlope: 3.6825397
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.05772057
-    - time: 0.6371787
-      value: 1.0350835
-      inSlope: -0.21994285
-      outSlope: -0.21994285
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.2752862
-      outWeight: 0.52915287
-    - time: 1
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
       value: 1
       inSlope: 0
       outSlope: 0
@@ -4495,32 +4630,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _targetRotationOffsetAngle: 2
-  _hitProcessPercent: 0.3
+  _hitProcessPercent: 0.7
   _quickTurnBackAngle: 1.5
-  _currentChargeTimer: 0
-  _currentChargeLevel: 0
-  _isCharging: 0
-  _isAttacking: 0
-  _lastAttackTime: -100
-  _chargePercent: 0
-  _currentChargePercentForAttack: 0
-  _currentDamageAmount: 1
-  _currentKnockbackForce: 3
-  _currentRotationAngle: 0
-  _initialWeaponScale: {x: 0, y: 0, z: 0}
-  _initialWeaponPosition: {x: 0, y: 0, z: 0}
-  _initialPivotScale: {x: 0, y: 0, z: 0}
-  _initialWeaponColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 0
-  _initialPivotRotation: {x: 0, y: 0, z: 0, w: 0}
-  _pivotRigidbody: {fileID: 0}
-  _pivotParent: {fileID: 0}
-  _hitTargetsThisAttack: []
---- !u!114 &8197585636916991919
+--- !u!114 &8197585636916991921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4529,11 +4641,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8197585636916991916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b05d987e2a54b524bbdc87709b66c459, type: 3}
+  m_Script: {fileID: 11500000, guid: 577ee294df15e4b458f57d7629d22ff7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WS_HitStopController
-  _defaultDuration: 0.2
-  _slowedTimeScale: 0.05
+  m_EditorClassIdentifier: Assembly-CSharp::HitStopController
+  _defaultDuration: 0.035
+  _slowedTimeScale: 0.08
 --- !u!1 &8329097454644803893
 GameObject:
   m_ObjectHideFlags: 0
@@ -4547,6 +4659,9 @@ GameObject:
   - component: {fileID: 4212091939060036683}
   - component: {fileID: 7853493237312813732}
   - component: {fileID: 1769033373927950148}
+  - component: {fileID: 8329097454644803895}
+  - component: {fileID: 8329097454644803894}
+  - component: {fileID: 8329097454644803896}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -4554,6 +4669,61 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8329097454644803894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8329097454644803893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aa53d445d909894090795964cc75eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputHandler
+  _weaponSystem: {fileID: 0}
+  _cameraEffect: {fileID: 0}
+--- !u!114 &8329097454644803895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8329097454644803893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b583f0808741b0c479a3cd6cae4f3b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDash
+  _playerBody: {fileID: 0}
+  _weaponSystem: {fileID: 0}
+  _rb: {fileID: 0}
+  _movement: {fileID: 0}
+  _dashKey: 32
+  _dashSpeed: 25
+  _dashDuration: 0.15
+  _dashCooldown: 0.75
+--- !u!114 &8329097454644803896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8329097454644803893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18379a8887c6a6747ad23b1bd73a20b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  _playerBody: {fileID: 0}
+  _weaponSystem: {fileID: 0}
+  _rb: {fileID: 0}
+  _moveSpeed: 10
+  _rotationSpeed: 15
+  _boundaryCenter: {x: 0, y: 0}
+  _boundaryRadius: 24
+  _useBoundary: 1
+  _boundarySkin: 0.05
 --- !u!1001 &8983678841836200068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4665,3 +4835,4 @@ SceneRoots:
   - {fileID: 1118066833}
   - {fileID: 458884992}
   - {fileID: 3746611}
+  - {fileID: 969269117}

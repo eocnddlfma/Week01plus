@@ -57,15 +57,15 @@ public class WeaponSwingSystem : MonoBehaviour
         _hitProcessor = GetComponent<WeaponHitProcessor>();
     }
 
-    public void ExecuteSwing(float chargePercent, int damageAmount, float knockbackForce, WeaponChargeSystem.ChargeLevel[] chargeLevels)
+    public void ExecuteSwing(float chargePercent, WeaponChargeSystem.ChargeLevel[] chargeLevels)
     {
         if (_chargeLevels == null)
             _chargeLevels = chargeLevels;
 
-        StartCoroutine(PerformSwing(chargePercent, damageAmount, knockbackForce));
+        StartCoroutine(PerformSwing(chargePercent));
     }
 
-    private IEnumerator PerformSwing(float chargePercent, int damageAmount, float knockbackForce)
+    private IEnumerator PerformSwing(float chargePercent)
     {
         chargePercent = Mathf.Clamp01(chargePercent);
 
