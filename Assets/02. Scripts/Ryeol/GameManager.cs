@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"GameState: {oldState} → {newState}");
 
-        OnStateChanged?.Invoke(newState);
         GameEvents.RaiseGameStateChanged(newState);  // Phase 6: 글로벌 이벤트 버스
     }
 
@@ -109,7 +108,6 @@ public class GameManager : MonoBehaviour
         _currentEnemyCount--;
         if (countAsKill)
         {
-            OnEnemyUnregistered?.Invoke();
             GameEvents.RaiseEnemyKilled();  // Phase 6: 글로벌 이벤트 버스
         }
     }
@@ -123,7 +121,6 @@ public class GameManager : MonoBehaviour
         _score += points;
 
         Debug.Log($"Score: {_score}");
-        OnScoreChanged?.Invoke(_score);
         GameEvents.RaiseScoreChanged(_score);  // Phase 6: 글로벌 이벤트 버스
     }
     public int GetScore()
