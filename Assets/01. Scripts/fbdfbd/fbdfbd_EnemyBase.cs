@@ -3,7 +3,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
+public abstract class EnemyBase : EntityBase
 {
     [Header("Data")]
     [SerializeField] protected EnemyStatsData _statsData;
@@ -65,9 +65,9 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
 
         ScheduleNextAttack();
 
-        if (ShouldTrackEnemyCount && Ryeol_GameManager.Instance != null)
+        if (ShouldTrackEnemyCount && GameManager.Instance != null)
         {
-            Ryeol_GameManager.Instance.RegisterEnemy();
+            GameManager.Instance.RegisterEnemy();
             _isEnemyCountRegistered = true;
         }
     }
@@ -77,7 +77,7 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
         if (_statsData == null) return;
         _moveSpeed = _statsData.moveSpeed;
         _stopDistance = _statsData.stopDistance;
-        // hp는 Jaein_ObjectBase에서 설정하므로 생략 (필요시 추가)
+        // hp는 EntityBase에서 설정하므로 생략 (필요시 추가)
     }
 
     protected virtual void Update()
@@ -240,14 +240,14 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
     {
         Rb.linearVelocity = Vector2.zero;
 
-        if (_isEnemyCountRegistered && Ryeol_GameManager.Instance != null)
+        if (_isEnemyCountRegistered && GameManager.Instance != null)
         {
-            Ryeol_GameManager.Instance.UnregisterEnemy();
+            GameManager.Instance.UnregisterEnemy();
             _isEnemyCountRegistered = false;
         }
         
         Destroy(gameObject);
-        Ryeol_GameManager.Instance.AddScore(100);
+        GameManager.Instance.AddScore(100);
     }
 
     protected void ScheduleNextAttack()
@@ -272,7 +272,7 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
             return;
 
         _hp -= damage;
-        WS_DamageTextManager.I.Show(damage, transform.position, isCharge);
+        DamageTextManager.I.Show(damage, transform.position, isCharge);
         Debug.Log(name + "의 현재 적 체력: " + _hp + " (데미지=" + damage + ")\n" + new System.Diagnostics.StackTrace(1, false).ToString());
         if (_hp <= 0)
         {
@@ -295,9 +295,9 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
 
     public void UnregisterFromEnemyCount()
     {
-        if (_isEnemyCountRegistered && Ryeol_GameManager.Instance != null)
+        if (_isEnemyCountRegistered && GameManager.Instance != null)
         {
-            Ryeol_GameManager.Instance.UnregisterEnemy(countAsKill: false);
+            GameManager.Instance.UnregisterEnemy(countAsKill: false);
             _isEnemyCountRegistered = false;
         }
     }

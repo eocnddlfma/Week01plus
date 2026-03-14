@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class fbdfbd_EnemyMine : fbdfbd_EnemyBase
+public class EnemyMine : EnemyBase
 {
     [Header("Mine Shot")]
     [Min(0.1f)][SerializeField] private float _attackRange = 6f;
     [SerializeField] private Transform _shotPoint;
-    [SerializeField] private fbdfbd_EnemyBossMineProjectile _mineProjectilePrefab;
+    [SerializeField] private EnemyBossMineProjectile _mineProjectilePrefab;
     [Min(1)][SerializeField] private int _damage = 1;
     [Min(0.1f)][SerializeField] private float _projectileSpeed = 7f;
     [Min(0f)][SerializeField] private float _deceleration = 5f;
@@ -32,7 +32,7 @@ public class fbdfbd_EnemyMine : fbdfbd_EnemyBase
         Vector2 origin = _shotPoint != null ? (Vector2)_shotPoint.position : Rb.position;
         Vector2 direction = GetTargetDirection(origin);
 
-        fbdfbd_EnemyBossMineProjectile mine =
+        EnemyBossMineProjectile mine =
             Instantiate(_mineProjectilePrefab, origin, Quaternion.identity);
 
         mine.Init(

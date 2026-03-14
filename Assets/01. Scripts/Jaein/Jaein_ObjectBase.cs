@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Jaein_ObjectBase : MonoBehaviour
+public abstract class EntityBase : MonoBehaviour
 {
     [Header("Health")]
     [SerializeField] protected int _hp;

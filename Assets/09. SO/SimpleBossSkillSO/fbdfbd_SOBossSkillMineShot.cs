@@ -4,7 +4,7 @@ using UnityEngine;
 public class fbdfbd_SOBossSkillMineShot : fbdfbd_SOBossSkillBase
 {
     [Header("Projectile")]
-    [SerializeField] private fbdfbd_EnemyBossMineProjectile _mineProjectilePrefab;
+    [SerializeField] private EnemyBossMineProjectile _mineProjectilePrefab;
     [Min(1)][SerializeField] private int _damage = 1;
     [Min(0.1f)][SerializeField] private float _projectileSpeed = 7f;
     [Range(0f, 1f)][SerializeField] private float _speedRandomPercent = 0.12f;
@@ -22,7 +22,7 @@ public class fbdfbd_SOBossSkillMineShot : fbdfbd_SOBossSkillBase
     [Min(0f)][SerializeField] private float _wobbleFrequency = 0.7f;
     [Min(0f)][SerializeField] private float _randomAngleJitter = 2f;
 
-    public fbdfbd_EnemyBossMineProjectile MineProjectilePrefab => _mineProjectilePrefab;
+    public EnemyBossMineProjectile MineProjectilePrefab => _mineProjectilePrefab;
     public int Damage => _damage;
     public float ProjectileSpeed => _projectileSpeed;
     public float SpeedRandomPercent => _speedRandomPercent;

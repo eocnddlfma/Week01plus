@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WaveData", menuName = "Scriptable Objects/WaveData")]
-public class Ryeol_WaveData : ScriptableObject
+public class WaveData : ScriptableObject
 {
     public int id;
     public GameObject[] enemyPrefabs; // 적 순서까지 고려해서 쫙 넣을 것임

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class WS_MainGameFlowController : MonoBehaviour
+public class MainGameFlowController : MonoBehaviour
 {
 
     [SerializeField] private CanvasGroup _titleCg;
@@ -26,7 +26,7 @@ public class WS_MainGameFlowController : MonoBehaviour
         });
         DOVirtual.DelayedCall(3.0f, () =>
         {
-            Ryeol_GameManager.Instance.StartGame();
+            GameManager.Instance.StartGame();
         });
     }
 }

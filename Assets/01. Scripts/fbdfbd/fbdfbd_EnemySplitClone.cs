@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class fbdfbd_EnemySplitClone : fbdfbd_EnemyBase
+public class EnemySplitClone : EnemyBase
 {
     protected override bool ShouldTrackEnemyCount => false;
 

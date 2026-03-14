@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SSH.Boss
 {
-    public class SSH_BossSkillPhase1Rain : fbdfbd_BossSkillBase
+    public class SSH_BossSkillPhase1Rain : BossSkillBase
     {
         [SerializeField] private SSH_SOBossSkillRain _so;
 
@@ -24,8 +24,8 @@ namespace SSH.Boss
                                                  Quaternion.identity);
                     obj.transform.localScale = phase.scale;
 
-                    SSH_EnemyProjectile proj = obj.GetComponent<SSH_EnemyProjectile>();
-                    if (proj != null) proj.Init(_so.Damage, phase.speed, _so.TargetMask, gameObject);
+                    EnemyProjectile proj = obj.GetComponent<EnemyProjectile>();
+                    if (proj != null) proj.Init(_so.Damage, new Vector2(0, -1), phase.speed, 10f, _so.TargetMask, gameObject);
 
                     yield return new WaitForSeconds(phase.spawnDelay);
                 }

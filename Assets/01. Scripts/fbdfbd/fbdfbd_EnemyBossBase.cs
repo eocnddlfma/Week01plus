@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
+public class BossBase : EnemyBase
 {
     [System.Serializable]
     /// <summary>
@@ -11,11 +11,11 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
     protected class BossSkillSlot
     {
         [SerializeField] private fbdfbd_SOBossSkillBase _skillData;
-        [SerializeField] private fbdfbd_BossSkillBase _skillLogic;
+        [SerializeField] private BossSkillBase _skillLogic;
         [Min(1)][SerializeField] private int _weight = 1;
 
         public fbdfbd_SOBossSkillBase SkillData => _skillData;
-        public fbdfbd_BossSkillBase SkillLogic => _skillLogic;
+        public BossSkillBase SkillLogic => _skillLogic;
         public int Weight => _weight;
     }
 
@@ -116,7 +116,7 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
         return -1;
     }
 
-    protected int FindSkillIndexByLogic<T>() where T : fbdfbd_BossSkillBase
+    protected int FindSkillIndexByLogic<T>() where T : BossSkillBase
     {
         for (int i = 0; i < _skillSlots.Count; i++)
         {
@@ -219,7 +219,7 @@ public class fbdfbd_EnemyBossBase : fbdfbd_EnemyBase
 
         BossSkillSlot slot = _skillSlots[skillIndex];
         fbdfbd_SOBossSkillBase data = slot.SkillData;
-        fbdfbd_BossSkillBase logic = slot.SkillLogic;
+        BossSkillBase logic = slot.SkillLogic;
 
         if (data == null || logic == null)
             yield break;

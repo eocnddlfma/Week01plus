@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-public class WS_ChargeCameraEffect : MonoBehaviour
+public class ChargeCameraEffect : MonoBehaviour
 {
     [Header("Reference")]
     [SerializeField] private Camera _targetCamera;
@@ -38,7 +38,7 @@ public class WS_ChargeCameraEffect : MonoBehaviour
     [SerializeField] private float _damagedKickDistance = 0.18f;
     [SerializeField] private bool _useDamageKickBack = true;
 
-    private Jaein_PlayerController _playerController;
+    private PlayerController _playerController;
 
     private bool _isCharging;
     private float _baseSize;
@@ -229,7 +229,7 @@ public class WS_ChargeCameraEffect : MonoBehaviour
             return;
         }
 
-        _playerController = _player.GetComponent<Jaein_PlayerController>();
+        _playerController = _player.GetComponent<PlayerController>();
     }
 
     private void RegisterPlayerEvent()

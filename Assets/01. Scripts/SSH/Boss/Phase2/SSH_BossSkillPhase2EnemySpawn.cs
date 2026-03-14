@@ -27,7 +27,7 @@ namespace SSH.Boss
                 GameObject enemy = Instantiate(prefab, pos, Quaternion.identity);
                 if (container != null) enemy.transform.SetParent(container);
 
-                fbdfbd_EnemyBase enemyBase = enemy.GetComponent<fbdfbd_EnemyBase>();
+                EnemyBase enemyBase = enemy.GetComponent<EnemyBase>();
                 if (enemyBase != null)
                 {
                     if (_boss?.Target != null) enemyBase.SetTarget(_boss.Target);

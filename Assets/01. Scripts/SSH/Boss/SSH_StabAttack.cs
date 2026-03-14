@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SSH.Boss
 {
-    public class SSH_StabAttack : MonoBehaviour
+    public class StabAttack : MonoBehaviour
     {
         private static readonly float _blinkHalf = 0.08f;
 

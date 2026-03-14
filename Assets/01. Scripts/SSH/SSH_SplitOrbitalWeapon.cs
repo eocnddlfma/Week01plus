@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class SSH_SplitOrbitalWeapon : Jaein_OrbitalWeapon
+public class SplitOrbitalWeapon : OrbitalWeapon
 {
     [Header("Special Ability")]
     [Tooltip("적으로 판정할 레이어. 발사 중 해당 레이어와 충돌 시 반대 방향 복제구 생성")]
@@ -44,7 +44,7 @@ public class SSH_SplitOrbitalWeapon : Jaein_OrbitalWeapon
         Vector2 reflected = 2f * Vector2.Dot(_velocity, radial) * radial - _velocity;
 
         GameObject cloneObj = Instantiate(gameObject, transform.position, transform.rotation);
-        SSH_SplitOrbitalWeapon clone = cloneObj.GetComponent<SSH_SplitOrbitalWeapon>();
+        SplitOrbitalWeapon clone = cloneObj.GetComponent<SplitOrbitalWeapon>();
         clone.InitAsClone(reflected, _launchDuration);
     }
 

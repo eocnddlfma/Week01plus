@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class fbdfbd_EnemyCharger : fbdfbd_EnemyBase
+public class EnemyCharger : EnemyBase
 {
     private enum MoveState
     {
@@ -28,7 +28,7 @@ public class fbdfbd_EnemyCharger : fbdfbd_EnemyBase
 
     [Header("Windup Visual")]
     [SerializeField] private SpriteRenderer[] _windupRenderers;
-    [SerializeField] private fbdfbd_EnemyHitFlashOnDamage _hitFlash;
+    [SerializeField] private EnemyHitFlash _hitFlash;
     [SerializeField] private Color _windupColor = Color.yellow;
     [SerializeField, Range(0f, 1f)] private float _windupBlend = 1f;
     [SerializeField] private AnimationCurve _windupCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
@@ -49,7 +49,7 @@ public class fbdfbd_EnemyCharger : fbdfbd_EnemyBase
     protected override void Awake()
     {
         base.Awake();
-        if (_hitFlash == null) _hitFlash = GetComponent<fbdfbd_EnemyHitFlashOnDamage>();
+        if (_hitFlash == null) _hitFlash = GetComponent<EnemyHitFlash>();
         InitWindupVisual();
         ScheduleNextCharge();
     }

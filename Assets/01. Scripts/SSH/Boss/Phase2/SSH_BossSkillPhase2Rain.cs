@@ -29,9 +29,9 @@ namespace SSH.Boss
                     GameObject proj  = Instantiate(_so.ProjectilePrefab, spawnPos, Quaternion.identity);
                     proj.transform.localScale = phase.scale;
 
-                    SSH_EnemyProjectile script = proj.GetComponent<SSH_EnemyProjectile>();
+                    EnemyProjectile script = proj.GetComponent<EnemyProjectile>();
                     if (script != null)
-                        script.Init(_so.Damage, phase.speed, _so.TargetMask, gameObject);
+                        script.Init(_so.Damage, new Vector2(0, -1), phase.speed, 10f, _so.TargetMask, gameObject);
 
                     yield return new WaitForSeconds(phase.spawnDelay);
                 }

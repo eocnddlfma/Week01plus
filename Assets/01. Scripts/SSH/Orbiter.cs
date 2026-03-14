@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class Orbiter : MonoBehaviour
 {
     /// <summary>
-    /// obsolete : 이 스크립트는 더 이상 사용되지 않습니다. 대신 Jaein_OrbitalWeapon를 사용해주세요.
+    /// obsolete : 이 스크립트는 더 이상 사용되지 않습니다. 대신 OrbitalWeapon를 사용해주세요.
     /// </summary>
 
 

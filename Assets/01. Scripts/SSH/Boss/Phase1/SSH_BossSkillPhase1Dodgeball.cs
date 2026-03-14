@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SSH.Boss
 {
-    public class SSH_BossSkillPhase1Dodgeball : fbdfbd_BossSkillBase
+    public class SSH_BossSkillPhase1Dodgeball : BossSkillBase
     {
         [SerializeField] private SSH_SOBossSkillDodgeball _so;
 
@@ -15,7 +15,7 @@ namespace SSH.Boss
         private GameObject SpawnPattern(Vector3 pos, Quaternion rot)
         {
             GameObject obj = Instantiate(_so.PatternPrefab, pos, rot);
-            SSH_ProjectileSpawner spawner = obj.GetComponentInChildren<SSH_ProjectileSpawner>();
+            ProjectileSpawner spawner = obj.GetComponentInChildren<ProjectileSpawner>();
             if (spawner != null)
             {
                 spawner.SetWarningDuration(_so.WarningDuration);
@@ -103,7 +103,7 @@ namespace SSH.Boss
             for (int i = 0; i < _so.RotCount; i++)
             {
                 GameObject obj = SpawnPattern(Vector3.zero, Quaternion.Euler(0f, 0f, rotAngleStep * i));
-                SSH_ProjectileSpawner spawner = obj.GetComponentInChildren<SSH_ProjectileSpawner>();
+                ProjectileSpawner spawner = obj.GetComponentInChildren<ProjectileSpawner>();
                 if (spawner != null)
                 {
                     spawner.SetCount(_so.RotSpawnCount);

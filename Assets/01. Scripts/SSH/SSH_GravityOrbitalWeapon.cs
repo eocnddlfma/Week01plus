@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SSH_GravityOrbitalWeapon : Jaein_OrbitalWeapon
+public class GravityOrbitalWeapon : OrbitalWeapon
 {
     [Header("Gravity Ability")]
     [Tooltip("중력 범위")]
@@ -36,7 +36,7 @@ public class SSH_GravityOrbitalWeapon : Jaein_OrbitalWeapon
             Collider2D col = _nearbyColliders[i];
 
             // 공 체크 (중력 적용 불가 상태 제외)
-            Jaein_OrbitalWeapon ball = col.GetComponentInParent<Jaein_OrbitalWeapon>();
+            OrbitalWeapon ball = col.GetComponentInParent<OrbitalWeapon>();
             if (ball != null)
             {
                 if (ball == this || !ball.ShouldApplyGravity()) continue;
@@ -51,7 +51,7 @@ public class SSH_GravityOrbitalWeapon : Jaein_OrbitalWeapon
             // 적 체크
             if ((_enemyLayer.value & (1 << col.gameObject.layer)) == 0) continue;
 
-            fbdfbd_EnemyBase enemy = col.GetComponentInParent<fbdfbd_EnemyBase>();
+            EnemyBase enemy = col.GetComponentInParent<EnemyBase>();
             if (enemy == null) continue;
 
             Vector2 toEnemyMe = (Vector2)transform.position - (Vector2)enemy.transform.position;

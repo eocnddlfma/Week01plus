@@ -16,10 +16,10 @@ using UnityEngine;
 /// Project 창에서 우클릭 → Create → Game → AugmentData
 ///
 /// === 기존 코드 변경사항 (최소) ===
-/// - Jaein_PlayerController: 이동속도, 대시 쿨다운에 PlayerStatModifier 적용
-/// - Jaein_BatWeaponManager: 차지속도, 데미지, 넉백, 공격범위에 적용
-/// - Jaein_OrbitalWeapon: 공 데미지, 발사속도에 적용
-/// - Jaein_PlayerBase: 무적시간 적용 + IncreaseMaxHp 메서드 추가
+/// - PlayerController: 이동속도, 대시 쿨다운에 PlayerStatModifier 적용
+/// - BatWeaponManager: 차지속도, 데미지, 넉백, 공격범위에 적용
+/// - OrbitalWeapon: 공 데미지, 발사속도에 적용
+/// - PlayerBase: 무적시간 적용 + IncreaseMaxHp 메서드 추가
 /// </summary>
 public class AugmentManager : MonoBehaviour
 {
@@ -36,7 +36,7 @@ public class AugmentManager : MonoBehaviour
     [SerializeField] private bool _showOnBossWaveOnly = false;
 
     private PlayerStatModifier _statModifier;
-    private Ryeol_EnemySpawner _spawner;
+    private WaveManager _spawner;
     private List<AugmentData> _appliedAugments = new List<AugmentData>();
 
     public List<AugmentData> AppliedAugments => _appliedAugments;
@@ -54,12 +54,12 @@ public class AugmentManager : MonoBehaviour
     private void Start()
     {
         // EnemySpawner 이벤트 구독
-        _spawner = FindObjectOfType<Ryeol_EnemySpawner>();
+        _spawner = FindObjectOfType<WaveManager>();
         if (_spawner != null)
             _spawner.OnWaveClear += OnWaveClear;
 
         // 플레이어에 PlayerStatModifier 확보
-        var player = FindObjectOfType<Jaein_PlayerController>();
+        var player = FindObjectOfType<PlayerController>();
         if (player != null)
         {
             _statModifier = player.GetComponent<PlayerStatModifier>();
@@ -84,7 +84,7 @@ public class AugmentManager : MonoBehaviour
     {
         // 보스 웨이브만 옵션이 켜져 있으면 보스 웨이브가 아닐 때 스킵
         if (_showOnBossWaveOnly && !isBossWave) return;
-        if (Ryeol_GameManager.Instance.CurrentState != Ryeol_GameManager.GameState.Playing) return;
+        if (GameManager.Instance.CurrentState != GameManager.GameState.Playing) return;
         if (_augmentPool == null || _augmentPool.Count == 0) return;
 
         ShowAugmentSelection();
@@ -149,7 +149,7 @@ public class AugmentManager : MonoBehaviour
                 _statModifier.InvincibilityMult += data.value;
                 break;
             case AugmentStatType.MaxHp:
-                var playerBase = _statModifier.GetComponent<Jaein_PlayerBase>();
+                var playerBase = _statModifier.GetComponent<PlayerBase>();
                 if (playerBase != null)
                     playerBase.IncreaseMaxHp(Mathf.RoundToInt(data.value));
                 break;

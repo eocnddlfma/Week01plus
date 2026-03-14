@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class fbdfbd_EnemySplit : fbdfbd_EnemyBase
+public class EnemySplit : EnemyBase
 {
     [Header("Split")]
     [SerializeField] private LayerMask _targetMask;
@@ -75,7 +75,7 @@ public class fbdfbd_EnemySplit : fbdfbd_EnemyBase
         GameObject clone = Instantiate(_splitEnemyClonePrefab, spawnPos.position, spawnPos.rotation, container);
 
 
-        if (clone.TryGetComponent(out fbdfbd_EnemySplitClone splitClone))
+        if (clone.TryGetComponent(out EnemySplitClone splitClone))
         {
             splitClone.SetTarget(Target);
         }

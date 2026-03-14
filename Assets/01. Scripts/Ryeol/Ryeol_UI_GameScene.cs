@@ -3,9 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static Ryeol_GameManager;
+using static GameManager;
 
-public class Ryeol_UI_GameScene : MonoBehaviour
+public class UI_GameEndScreen : MonoBehaviour
 {
 
 
@@ -27,7 +27,7 @@ public class Ryeol_UI_GameScene : MonoBehaviour
         HidePanel();
 
         // 이벤트 구독
-        Ryeol_GameManager.Instance.OnStateChanged += HandleStateChanged;
+        GameManager.Instance.OnStateChanged += HandleStateChanged;
 
         #region 버튼 리스너 등록
 

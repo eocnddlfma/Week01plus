@@ -15,7 +15,7 @@ public class RingAnimation : MonoBehaviour
     [SerializeField] private WS_CircleLineRenderer _innterRing;
     [SerializeField] private WS_CircleLineRenderer _outerRing;
     [SerializeField] private WS_CircleLineRenderer _outerRing2;
-    [SerializeField] private WS_ChargeCameraEffect _cameraEffect;
+    [SerializeField] private ChargeCameraEffect _cameraEffect;
 
     [Header("Curve")]
     [SerializeField] private AnimationCurve _curve = AnimationCurve.Linear(0f, 0f, 1f, 1f);

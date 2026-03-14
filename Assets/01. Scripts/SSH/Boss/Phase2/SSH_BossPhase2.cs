@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SSH.Boss
 {
-    public class SSH_BossPhase2 : fbdfbd_EnemyBossBase
+    public class BossPhase2 : BossBase
     {
         [Header("Camera")]
         [SerializeField] private float _targetCameraSize    = 35f;
@@ -38,7 +38,7 @@ namespace SSH.Boss
             Camera cam = Camera.main;
             if (cam == null) return;
 
-            WS_ChargeCameraEffect effect = cam.GetComponent<WS_ChargeCameraEffect>();
+            ChargeCameraEffect effect = cam.GetComponent<ChargeCameraEffect>();
             if (effect != null)
             {
                 effect.TweenToSize(_targetCameraSize, _cameraTweenDuration);

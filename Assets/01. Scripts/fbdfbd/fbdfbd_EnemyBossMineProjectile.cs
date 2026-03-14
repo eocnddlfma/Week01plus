@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
+public class EnemyBossMineProjectile : MonoBehaviour
 {
     [Header("Runtime Components")]
     [SerializeField] private Rigidbody2D _rb;
@@ -179,7 +179,7 @@ public class fbdfbd_EnemyBossMineProjectile : MonoBehaviour
         if (delta.sqrMagnitude > radius * radius)
             return;
 
-        Jaein_ObjectBase damageable = _target.GetComponent<Jaein_ObjectBase>();
+        EntityBase damageable = _target.GetComponent<EntityBase>();
         if (damageable != null)
         {
             Debug.Log("Mine explosion hit target in range.");

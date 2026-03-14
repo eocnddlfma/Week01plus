@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Ryeol_GameScene : MonoBehaviour
+public class GameScene : MonoBehaviour
 {
 
     // TODO (참조: 이것도 근데 원래 이렇게 안 하긴 하는데 일단 이런 식으로) 
@@ -8,7 +8,7 @@ public class Ryeol_GameScene : MonoBehaviour
     // UI
 
 
-    [SerializeField] private Ryeol_EnemySpawner _enemySpawner;
+    [SerializeField] private WaveManager _enemySpawner;
 
     private void Start()
     {
@@ -19,27 +19,27 @@ public class Ryeol_GameScene : MonoBehaviour
     {
         Debug.Log("@>> GameScene Init()");
 
-        Ryeol_GameManager.Instance.OnStateChanged += HandleStateChanged;
+        GameManager.Instance.OnStateChanged += HandleStateChanged;
 
     }
 
     private void OnDestroy()
     {
-        if (Ryeol_GameManager.Instance != null)
-            Ryeol_GameManager.Instance.OnStateChanged -= HandleStateChanged;
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnStateChanged -= HandleStateChanged;
     }
 
-    private void HandleStateChanged(Ryeol_GameManager.GameState newState)
+    private void HandleStateChanged(GameManager.GameState newState)
     {
         switch (newState)
         {
-            case Ryeol_GameManager.GameState.Playing:
+            case GameManager.GameState.Playing:
                 OnPlaying();
                 break;
-            case Ryeol_GameManager.GameState.GameOver:
+            case GameManager.GameState.GameOver:
                 OnGameOver();
                 break;
-            case Ryeol_GameManager.GameState.GameClear:
+            case GameManager.GameState.GameClear:
                 OnGameClear();
                 break;
         }

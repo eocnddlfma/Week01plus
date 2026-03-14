@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Jaein_OrbitalWeapon : MonoBehaviour
+public class OrbitalWeapon : MonoBehaviour
 {
     public enum BallState
     {
@@ -59,7 +59,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     [SerializeField] private bool _drawOrbitGizmo = true;
     [SerializeField] private float _stateGizmoRadius = 0.5f;
 
-    private Jaein_PlayerController _playerController;
+    private PlayerController _playerController;
 
     protected BallState _state = BallState.Orbit;
     protected BallState State => _state;
@@ -76,7 +76,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
     protected virtual void Awake()
     {
-        _playerController = FindAnyObjectByType<Jaein_PlayerController>();
+        _playerController = FindAnyObjectByType<PlayerController>();
         _center = _playerController.transform;
         if (_playerController == null) print("따라갈 대상 못찾음");
 
@@ -101,7 +101,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
 
     protected virtual void Start()
     {
-        _playerController = FindAnyObjectByType<Jaein_PlayerController>();
+        _playerController = FindAnyObjectByType<PlayerController>();
         _center = _playerController.transform;
         if (_playerController == null) print("따라갈 대상 못찾음");
         _angleDeg = _startAngle;
@@ -226,7 +226,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         if(chargePercent == 1.0f)
         {
             //김우성 추가
-            var controller = GetComponent<WS_HitStopController>();
+            var controller = GetComponent<HitStopController>();
             if (controller != null)
                 controller.TryPlay();
         }
@@ -393,7 +393,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     /// </summary>
     public void PlayWeaponEffect(Transform weaponTransform, float chargePercent)
     {
-        WS_EffectParticle effect = weaponTransform.GetComponentInChildren<WS_EffectParticle>();
+        EffectParticle effect = weaponTransform.GetComponentInChildren<EffectParticle>();
         if (effect != null)
             effect.Play(chargePercent);
     }
@@ -417,7 +417,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         // 적과 충돌 시 저장된 차지 퍼센트로 데미지 계산
-        var enemy = other.gameObject.GetComponent<fbdfbd_EnemyBase>();
+        var enemy = other.gameObject.GetComponent<EnemyBase>();
 
         if (enemy != null)
         {

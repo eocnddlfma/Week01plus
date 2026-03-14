@@ -50,7 +50,7 @@ public class WS_BoundaryRingAnimator : MonoBehaviour
 
     private void Start()
     {
-        Ryeol_GameManager.Instance.OnScoreChanged += BoomPulse;
+        GameManager.Instance.OnScoreChanged += BoomPulse;
     }
     private void OnEnable()
     {

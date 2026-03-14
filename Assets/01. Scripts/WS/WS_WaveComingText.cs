@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WaveComingText : MonoBehaviour
 {
-    [SerializeField] private Ryeol_EnemySpawner _spanwer;
+    [SerializeField] private WaveManager _spanwer;
     private Animation _animation;
     private TMP_Text _text;
 

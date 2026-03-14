@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SSH_EnemyProjectile : MonoBehaviour, IEnemyProjectile
+public class BossEnemyProjectile : MonoBehaviour, IEnemyProjectile
 {
 
     [SerializeField]private int _damage;
@@ -48,7 +48,7 @@ public class SSH_EnemyProjectile : MonoBehaviour, IEnemyProjectile
         if (other == null || other.gameObject == _owner) return;
         if ((_targetMask.value & (1 << other.gameObject.layer)) == 0) return;
 
-        if (other.TryGetComponent(out Jaein_ObjectBase target))
+        if (other.TryGetComponent(out EntityBase target))
         {
             target.TakeDamage(_damage);
             Debug.Log($"Boss 투사체 타격, 데미지: {_damage}");

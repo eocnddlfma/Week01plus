@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class fbdfbd_EnemyMelee : fbdfbd_EnemyBase
+public class EnemyMelee : EnemyBase
 {
     protected override bool CanAttack(float distanceToTarget) => false;
 

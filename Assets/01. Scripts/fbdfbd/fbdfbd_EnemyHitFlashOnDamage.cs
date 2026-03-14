@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class fbdfbd_EnemyHitFlashOnDamage : MonoBehaviour
+public class EnemyHitFlash : MonoBehaviour
 {
-    [SerializeField] private fbdfbd_EnemyBase _enemy;
+    [SerializeField] private EnemyBase _enemy;
     [SerializeField] private SpriteRenderer[] _renderers;
     [SerializeField] private Color _flashColor = Color.white;
     [SerializeField, Range(0f, 1f)] private float _flashBlend = 1f;
@@ -15,7 +15,7 @@ public class fbdfbd_EnemyHitFlashOnDamage : MonoBehaviour
 
     private void Awake()
     {
-        if (_enemy == null) _enemy = GetComponent<fbdfbd_EnemyBase>();
+        if (_enemy == null) _enemy = GetComponent<EnemyBase>();
         if (_renderers == null || _renderers.Length == 0)
             _renderers = GetComponentsInChildren<SpriteRenderer>(true);
 

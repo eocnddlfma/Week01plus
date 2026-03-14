@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ryeol_EnemySpawner : MonoBehaviour
+public class WaveManager : MonoBehaviour
 {
-    [SerializeField] private List<Ryeol_WaveData> _waveDatas;
+    [SerializeField] private List<WaveData> _waveDatas;
 
     [SerializeField] private float spawnRadius = 10f; // 플레이어에게서 해당 수치만큼 떨어진 곳에서 스폰.
     
@@ -15,7 +15,7 @@ public class Ryeol_EnemySpawner : MonoBehaviour
 
     private Transform _enemyContainer;
     private int _currentWaveIndex = 0;
-    private Ryeol_WaveData _currentWaveData;
+    private WaveData _currentWaveData;
     private int _spawnIndex = 0; // 현재 스폰된 몹의 인덱스
     private bool _isChangingWave = false;
     private int _currentWaveKilledCount = 0;
@@ -30,15 +30,15 @@ public class Ryeol_EnemySpawner : MonoBehaviour
         _currentWaveData = _waveDatas[0];
         _enemyContainer = new GameObject("Enemies").transform;
 
-        Ryeol_GameManager.Instance.OnEnemyUnregistered += CheckNextWave;
+        GameManager.Instance.OnEnemyUnregistered += CheckNextWave;
 
         StartCoroutine(CoSpawnEnemy());
     }
 
     private void OnDestroy()
     {
-        if (Ryeol_GameManager.Instance != null)
-            Ryeol_GameManager.Instance.OnEnemyUnregistered -= CheckNextWave;
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnEnemyUnregistered -= CheckNextWave;
     }
 
     private IEnumerator CoSpawnEnemy()
@@ -48,7 +48,7 @@ public class Ryeol_EnemySpawner : MonoBehaviour
             float randomInterval = UnityEngine.Random.Range(_currentWaveData.minSpawnInterval, _currentWaveData.maxSpawnInterval);
             yield return new WaitForSeconds(randomInterval);
 
-            if (Ryeol_GameManager.Instance.CurrentState == Ryeol_GameManager.GameState.Playing
+            if (GameManager.Instance.CurrentState == GameManager.GameState.Playing
             && !_isChangingWave
             && ShouldSpawnEnemy())
             {
@@ -67,7 +67,7 @@ public class Ryeol_EnemySpawner : MonoBehaviour
     {
         if (_isChangingWave) return; // 이미 넘어가는 중이면 무시
 
-        if (Ryeol_GameManager.Instance.CurrentState != Ryeol_GameManager.GameState.Playing) return;
+        if (GameManager.Instance.CurrentState != GameManager.GameState.Playing) return;
 
         _currentWaveKilledCount++; 
 
@@ -99,7 +99,7 @@ public class Ryeol_EnemySpawner : MonoBehaviour
         {
             // 게임 클리어
             Debug.Log("All waves cleared!");
-            Ryeol_GameManager.Instance.GameClear();
+            GameManager.Instance.GameClear();
 
 
             return;
@@ -137,7 +137,7 @@ public class Ryeol_EnemySpawner : MonoBehaviour
 
         // 적 생성
         GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-        enemy.GetComponent<fbdfbd_EnemyBase>().SetTarget(_player.transform); // 적 타겟 주입
+        enemy.GetComponent<EnemyBase>().SetTarget(_player.transform); // 적 타겟 주입
         enemy.transform.SetParent(_enemyContainer);
     }
 

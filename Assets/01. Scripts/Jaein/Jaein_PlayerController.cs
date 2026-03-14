@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.UI;
 
-public class Jaein_PlayerController : Jaein_PlayerBase
+public class PlayerController : PlayerBase
 {
     [Header("Data")]
     [SerializeField] private PlayerStatsData _statsData;
@@ -12,7 +12,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     [SerializeField] private Transform _playerBody;
 
     [Header("Weapon System")]
-    [SerializeField] private Jaein_BatWeaponManager _weaponSystem;
+    [SerializeField] private BatWeaponManager _weaponSystem;
 
     public Vector2 FacingDirection => _playerBody != null ? (Vector2)_playerBody.right : Vector2.right;
 
@@ -33,7 +33,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
     [SerializeField] private float _boundarySkin = 0.05f;
 
     [Header("Camera Effect by WooSung")]
-    [SerializeField] private WS_ChargeCameraEffect cameraEffect;
+    [SerializeField] private ChargeCameraEffect cameraEffect;
 
     private Vector2 _inputVec;
     private Camera _mainCamera;
@@ -47,7 +47,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         _mainCamera = Camera.main;
 
         if (_weaponSystem == null)
-            _weaponSystem = GetComponentInChildren<Jaein_BatWeaponManager>();
+            _weaponSystem = GetComponentInChildren<BatWeaponManager>();
 
         InitFromStatsData();
     }
@@ -222,7 +222,7 @@ public class Jaein_PlayerController : Jaein_PlayerBase
         }
     }
 
-    // 투사체 처리 (무기와의 충돌은 Jaein_BatWeaponManager에서 처리)
+    // 투사체 처리 (무기와의 충돌은 BatWeaponManager에서 처리)
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<IEnemyProjectile>(out _))

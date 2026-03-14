@@ -4,18 +4,18 @@ using UnityEngine;
 
 namespace SSH.Boss
 {
-    public class SSH_BossSkillPhase1Stab : fbdfbd_BossSkillBase
+    public class SSH_BossSkillPhase1Stab : BossSkillBase
     {
         [SerializeField] private SSH_SOBossSkillStab _so;
         [SerializeField] private Transform[]         _movePoints;
 
-        private SSH_BossPhase1 _boss;
+        private BossPhase1 _boss;
         private bool           _patternFinished = false;
         private Vector3[]      _cachedPositions;
 
         private void Awake()
         {
-            _boss = GetComponent<SSH_BossPhase1>();
+            _boss = GetComponent<BossPhase1>();
 
             if (_movePoints != null)
             {
@@ -28,7 +28,7 @@ namespace SSH.Boss
         IEnumerator Pattern()
         {
             // 무기를 보스 자식으로 생성 (보스와 함께 이동)
-            SSH_StabAttack stab = null;
+            StabAttack stab = null;
             if (_so?.WeaponPrefab == null)
             {
                 Debug.LogError("[Stab] WeaponPrefab이 SO에 할당되지 않았습니다.");
@@ -39,9 +39,9 @@ namespace SSH.Boss
                                                    transform.position + _so.WeaponOffset,
                                                    Quaternion.identity,
                                                    transform);
-                stab = weaponObj.GetComponent<SSH_StabAttack>();
+                stab = weaponObj.GetComponent<StabAttack>();
                 if (stab == null)
-                    Debug.LogError($"[Stab] WeaponPrefab '{_so.WeaponPrefab.name}'에 SSH_StabAttack 컴포넌트가 없습니다.");
+                    Debug.LogError($"[Stab] WeaponPrefab '{_so.WeaponPrefab.name}'에 StabAttack 컴포넌트가 없습니다.");
                 else
                     stab.Init(_so.WarningDuration, _so.Damage, _so.TargetMask, _so.WarningPrefab);
             }

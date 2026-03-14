@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-public class Jaein_PlayerBase : Jaein_ObjectBase
+public class PlayerBase : EntityBase
 {
     [Header("Player Visuals")]
     [SerializeField] protected SpriteRenderer _spriteRenderer;
@@ -55,7 +55,7 @@ public class Jaein_PlayerBase : Jaein_ObjectBase
 
 
         //종료 처리
-        Ryeol_GameManager.Instance.GameOver();
+        GameManager.Instance.GameOver();
     }
 
     // PlayerController에서 대쉬 시 무적 코루틴 호출

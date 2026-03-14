@@ -9,10 +9,10 @@ public class SSH_Switch : MonoBehaviour
 
     public bool IsOn { get; private set; } = false;
 
-    private SSH_BossPhase1 _boss;
+    private BossPhase1 _boss;
     private SpriteRenderer _spriteRenderer;
 
-    public void SetBoss(SSH_BossPhase1 boss) { _boss = boss; }
+    public void SetBoss(BossPhase1 boss) { _boss = boss; }
 
     private void Awake()
     {
@@ -27,7 +27,7 @@ public class SSH_Switch : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (IsOn) return;
-        if (other.GetComponent<Jaein_OrbitalWeapon>() == null) return;
+        if (other.GetComponent<OrbitalWeapon>() == null) return;
 
         IsOn = true;
         UpdateVisual();

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class fbdfbd_ContactDamageDealer : MonoBehaviour
+public class ContactDamageDealer : MonoBehaviour
 {
     [SerializeField] private int damage = 1;
     [SerializeField] private float tickInterval = 0.5f;
@@ -12,7 +12,7 @@ public class fbdfbd_ContactDamageDealer : MonoBehaviour
     private void OnTriggerStay2D(Collider2D other)
     {
         if ((targetMask.value & (1 << other.gameObject.layer)) == 0) return;
-        if (!other.TryGetComponent(out Jaein_ObjectBase target)) return;
+        if (!other.TryGetComponent(out EntityBase target)) return;
 
         int id = other.GetInstanceID();
         if (nextHitTime.TryGetValue(id, out float t) && Time.time < t) return;

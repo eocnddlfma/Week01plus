@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WS_BallGetter : MonoBehaviour
 {
-    [SerializeField] private Ryeol_EnemySpawner _spawner;
+    [SerializeField] private WaveManager _spawner;
 
     [Header("Ball")]
     [SerializeField] private GameObject[] _ballLists;
@@ -32,7 +32,7 @@ public class WS_BallGetter : MonoBehaviour
     private void GetBall(bool isBoss)
     {
         //TODO: 지워야 할 로직
-        //_player.GetComponent<Jaein_PlayerController>().Heal(1);
+        //_player.GetComponent<PlayerController>().Heal(1);
 
         if (_ballLists == null || _ballLists.Length == 0)
         {

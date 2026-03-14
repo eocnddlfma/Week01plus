@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 public class WS_HPEffect : MonoBehaviour
 {
     [Header("Reference")]
-    [SerializeField] private Jaein_PlayerController _player;
+    [SerializeField] private PlayerController _player;
     [SerializeField] private Volume _targetVolume;
 
     [Header("Vignette")]

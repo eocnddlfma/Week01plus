@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class fbdfbd_BossSkillBase : MonoBehaviour
+public abstract class BossSkillBase : MonoBehaviour
 {
     /// <summary>
     /// 스킬 시전 전 동작

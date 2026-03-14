@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class WS_EffectParticle : MonoBehaviour
+public class EffectParticle : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _particle;
     [SerializeField] private ParticleSystem _particleBoom;

@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class fbdfbd_BossSkillMineShot : fbdfbd_BossSkillBase
+public class fbdfbd_BossSkillMineShot : BossSkillBase
 {
     [Header("Skill Data")]
     [SerializeField] private fbdfbd_SOBossSkillMineShot _data;
@@ -11,13 +11,13 @@ public class fbdfbd_BossSkillMineShot : fbdfbd_BossSkillBase
     [FormerlySerializedAs("_firePos")]
     [SerializeField] private Transform _firePoint;
 
-    private fbdfbd_EnemyBase _owner;
+    private EnemyBase _owner;
     private Coroutine _fireRoutine;
     private float _wobbleSeed;
 
     private void Awake()
     {
-        _owner = GetComponent<fbdfbd_EnemyBase>();
+        _owner = GetComponent<EnemyBase>();
 
         if (_firePoint == null)
             _firePoint = transform;
@@ -74,7 +74,7 @@ public class fbdfbd_BossSkillMineShot : fbdfbd_BossSkillBase
             float speedScale = Random.Range(1f - _data.SpeedRandomPercent, 1f + _data.SpeedRandomPercent);
             float speed = Mathf.Max(0f, _data.ProjectileSpeed * speedScale);
 
-            fbdfbd_EnemyBossMineProjectile mine =
+            EnemyBossMineProjectile mine =
                 Instantiate(_data.MineProjectilePrefab, origin, Quaternion.identity);
 
             mine.Init(

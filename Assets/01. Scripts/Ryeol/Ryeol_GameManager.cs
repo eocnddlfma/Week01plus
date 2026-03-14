@@ -3,9 +3,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
-public class Ryeol_GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    public static Ryeol_GameManager Instance;
+    public static GameManager Instance;
 
     #region GameState
     public enum GameState

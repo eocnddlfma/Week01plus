@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /// - 물리 기반 회전
 /// - 충돌 처리
 /// </summary>
-public class Jaein_BatWeaponManager : MonoBehaviour
+public class BatWeaponManager : MonoBehaviour
 {
     [System.Serializable]
     public class ChargeLevel
@@ -31,8 +31,8 @@ public class Jaein_BatWeaponManager : MonoBehaviour
         public enum TargetType { Ball, Enemy }
 
         public TargetType targetType;
-        public Jaein_OrbitalWeapon ball;
-        public fbdfbd_EnemyBase enemy;
+        public OrbitalWeapon ball;
+        public EnemyBase enemy;
         public float angleToHit; // 시계방향 각도(0~360)
         public float distanceToPivot; // 피봇~대상 거리
         public Vector2 targetPosition;
@@ -71,7 +71,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
     private float _currentKnockbackForce = 3f;
 
     private float _currentRotationAngle = 0f; // 현재 회전 각도 추적
-    private HashSet<Jaein_OrbitalWeapon> _hitBallsThisAttack = new HashSet<Jaein_OrbitalWeapon>(); // 이번 공격에 타격한 공 추적
+    private HashSet<OrbitalWeapon> _hitBallsThisAttack = new HashSet<OrbitalWeapon>(); // 이번 공격에 타격한 공 추적
 
     private Vector3 _initialWeaponScale;
     private Vector3 _initialWeaponPosition; // Weapon의 초기 로컬 위치
@@ -83,7 +83,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
     private Vector2 PlayerPosition => (Vector2)transform.root.position;
 
     private List<HitTarget> _hitTargetsThisAttack = new List<HitTarget>(); // 이번 공격의 타격 대상 목록 (공, 적)
-    private HashSet<fbdfbd_EnemyBase> _hitEnemiesThisAttack = new HashSet<fbdfbd_EnemyBase>(); // 이번 공격에 타격한 적 추적
+    private HashSet<EnemyBase> _hitEnemiesThisAttack = new HashSet<EnemyBase>(); // 이번 공격에 타격한 적 추적
 
     private void Awake()
     {
@@ -331,7 +331,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
 
             // 히트스탑 발동 (차지 레벨에 따른 듀레이션 멀티플라이어 적용)
             float hitStopDurationMult = Mathf.Lerp(_chargeLevels[0].hitStopDurationMult, _chargeLevels[3].hitStopDurationMult, _currentChargePercentForAttack);
-            WS_HitStopController hitStop = GetComponent<WS_HitStopController>();
+            HitStopController hitStop = GetComponent<HitStopController>();
             if (hitStop != null)
                 hitStop.TryPlayWithChargeAndHitCount(_currentChargePercentForAttack, 1, hitStopDurationMult);
 
@@ -412,7 +412,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
     public void OnWeaponTriggerEnter2D(Collider2D collision)
     {
         // 공(OrbitalWeapon) 타격 처리 - 상태 상관없이 모든 공을 칠 수 있음
-        Jaein_OrbitalWeapon orbitalWeapon = collision.GetComponent<Jaein_OrbitalWeapon>();
+        OrbitalWeapon orbitalWeapon = collision.GetComponent<OrbitalWeapon>();
         if (orbitalWeapon != null)
         {
             orbitalWeapon.TriggerLaunchFromWeapon(_currentChargePercentForAttack);
@@ -437,7 +437,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             return;
         }
         // 적 타격 처리
-        fbdfbd_EnemyBase enemy = collision.GetComponent<fbdfbd_EnemyBase>();
+        EnemyBase enemy = collision.GetComponent<EnemyBase>();
         if (enemy != null && !_hitEnemiesThisAttack.Contains(enemy))
         {
             ApplyEnemyHit(enemy);
@@ -515,7 +515,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
     private void ReflectEnemyProjectile(IEnemyProjectile projectile)
     {
         // 이펙트 재생
-        WS_EffectParticle effect = _weaponTransform.GetComponentInChildren<WS_EffectParticle>();
+        EffectParticle effect = _weaponTransform.GetComponentInChildren<EffectParticle>();
         if (effect != null) effect.Play(_currentChargePercentForAttack);
 
         projectile.ReflectAsBatHit(_currentDamageAmount, _enemyReflectLayerMask, Color.white);
@@ -524,7 +524,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
     /// <summary>
     /// 적 타격 처리 (데미지, 슬로우, 넉백)
     /// </summary>
-    private void ApplyEnemyHit(fbdfbd_EnemyBase enemy)
+    private void ApplyEnemyHit(EnemyBase enemy)
     {
         Debug.Log($"[Weapon] 적 타격: {enemy.name}, 데미지: {_currentDamageAmount}");
         
@@ -535,7 +535,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
         }
 
         // 슬로우 효과 적용 (차지량에 따라)
-        WS_HitStopController hitStop = GetComponent<WS_HitStopController>();
+        HitStopController hitStop = GetComponent<HitStopController>();
         if (hitStop != null)
             hitStop.TryPlayWithCharge(_currentChargePercentForAttack);
         
@@ -574,13 +574,13 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             return rel;
         }
 
-        HashSet<Jaein_OrbitalWeapon> ballsAdded = new HashSet<Jaein_OrbitalWeapon>();
-        HashSet<fbdfbd_EnemyBase> enemiesAdded = new HashSet<fbdfbd_EnemyBase>();
+        HashSet<OrbitalWeapon> ballsAdded = new HashSet<OrbitalWeapon>();
+        HashSet<EnemyBase> enemiesAdded = new HashSet<EnemyBase>();
 
         foreach (Collider2D hit in hits)
         {
             // 공 감지 - 상태 상관없이 반지름 내에 있으면 항상 수집
-            Jaein_OrbitalWeapon orbitalWeapon = hit.GetComponent<Jaein_OrbitalWeapon>();
+            OrbitalWeapon orbitalWeapon = hit.GetComponent<OrbitalWeapon>();
             if (orbitalWeapon != null && !ballsAdded.Contains(orbitalWeapon))
             {
                 Vector2 dir = ((Vector2)orbitalWeapon.transform.position - (Vector2)pivot.position);
@@ -601,7 +601,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             }
 
             // 적 감지
-            fbdfbd_EnemyBase enemy = hit.GetComponent<fbdfbd_EnemyBase>();
+            EnemyBase enemy = hit.GetComponent<EnemyBase>();
             if (enemy != null && !enemiesAdded.Contains(enemy))
             {
                 if (enemy == null) continue;
@@ -666,13 +666,13 @@ public class Jaein_BatWeaponManager : MonoBehaviour
         }
 
         int addedCount = 0;
-        HashSet<Jaein_OrbitalWeapon> ballsAdded = new HashSet<Jaein_OrbitalWeapon>(_hitTargetsThisAttack.FindAll(t => t.targetType == HitTarget.TargetType.Ball).ConvertAll(t => t.ball));
-        HashSet<fbdfbd_EnemyBase> enemiesAdded = new HashSet<fbdfbd_EnemyBase>(_hitTargetsThisAttack.FindAll(t => t.targetType == HitTarget.TargetType.Enemy).ConvertAll(t => t.enemy));
+        HashSet<OrbitalWeapon> ballsAdded = new HashSet<OrbitalWeapon>(_hitTargetsThisAttack.FindAll(t => t.targetType == HitTarget.TargetType.Ball).ConvertAll(t => t.ball));
+        HashSet<EnemyBase> enemiesAdded = new HashSet<EnemyBase>(_hitTargetsThisAttack.FindAll(t => t.targetType == HitTarget.TargetType.Enemy).ConvertAll(t => t.enemy));
 
         foreach (Collider2D hit in hits)
         {
             // 공 감지 - 상태 상관없이 수집
-            Jaein_OrbitalWeapon orbitalWeapon = hit.GetComponent<Jaein_OrbitalWeapon>();
+            OrbitalWeapon orbitalWeapon = hit.GetComponent<OrbitalWeapon>();
             if (orbitalWeapon != null && !ballsAdded.Contains(orbitalWeapon))
             {
                 Vector2 dir = ((Vector2)orbitalWeapon.transform.position - (Vector2)pivot.position);
@@ -697,7 +697,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             }
 
             // 적 감지
-            fbdfbd_EnemyBase enemy = hit.GetComponent<fbdfbd_EnemyBase>();
+            EnemyBase enemy = hit.GetComponent<EnemyBase>();
             if (enemy != null && !enemiesAdded.Contains(enemy))
             {
                 if (enemy == null) continue;
@@ -836,7 +836,7 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
             if (i == 0)
             {
-                WS_HitStopController hitStop = GetComponent<WS_HitStopController>();
+                HitStopController hitStop = GetComponent<HitStopController>();
                 if (hitStop != null)
                     hitStop.TryPlayWithChargeAndHitCount(_currentChargePercentForAttack, 1);
             }

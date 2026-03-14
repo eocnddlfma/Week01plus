@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace SSH.Boss
 {
-    public abstract class SSH_BossSkillPhase2Base : fbdfbd_BossSkillBase
+    public abstract class SSH_BossSkillPhase2Base : BossSkillBase
     {
-        protected SSH_BossPhase2 _boss;
+        protected BossPhase2 _boss;
         protected bool           _patternFinished = false;
 
         protected virtual void Awake()
         {
-            _boss = GetComponent<SSH_BossPhase2>();
+            _boss = GetComponent<BossPhase2>();
         }
 
         public override void Enter()

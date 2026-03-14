@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class fbdfbd_EnemyProjectile : MonoBehaviour, IEnemyProjectile
+public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
 {
     [SerializeField] private Rigidbody2D _rb;
 
@@ -50,7 +50,7 @@ public class fbdfbd_EnemyProjectile : MonoBehaviour, IEnemyProjectile
         if ((_targetMask.value & (1 << other.gameObject.layer)) == 0) return;
 
 
-        if (other.TryGetComponent(out Jaein_ObjectBase dmg))
+        if (other.TryGetComponent(out EntityBase dmg))
         {
             dmg.TakeDamage(_damage);
         }

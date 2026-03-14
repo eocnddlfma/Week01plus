@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-public class WS_DamageTextManager : MonoBehaviour
+public class DamageTextManager : MonoBehaviour
 {
-    public static WS_DamageTextManager I { get; private set; }
+    public static DamageTextManager I { get; private set; }
 
     [Tooltip("인스펙터에 할당 해야함")][Header("References")]
     [SerializeField] private Canvas _canvas;
     [SerializeField] private Camera _worldCamera;
-    [SerializeField] private WS_DamageTextPool _pool;
+    [SerializeField] private DamageTextPool _pool;
 
     private void Awake()
     {
@@ -30,7 +30,7 @@ public class WS_DamageTextManager : MonoBehaviour
 
         if (_pool == null)
         {
-            Debug.LogError($"{name}: WS_DamageTextPool 참조가 없습니다.");
+            Debug.LogError($"{name}: DamageTextPool 참조가 없습니다.");
             return;
         }
 

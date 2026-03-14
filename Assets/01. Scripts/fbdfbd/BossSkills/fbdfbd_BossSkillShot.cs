@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class fbdfbd_BossSkillShot : fbdfbd_BossSkillBase
+public class fbdfbd_BossSkillShot : BossSkillBase
 {
     [Header("Skill Data")]
     [SerializeField] private fbdfbd_SOBossSkillShot _data;
@@ -9,13 +9,13 @@ public class fbdfbd_BossSkillShot : fbdfbd_BossSkillBase
     [Header("Runtime Reference")]
     [SerializeField] private Transform _firePoint;
 
-    private fbdfbd_EnemyBase _owner;
+    private EnemyBase _owner;
     private int _shotStep;
     private float _castStartTime;
 
     private void Awake()
     {
-        _owner = GetComponent<fbdfbd_EnemyBase>();
+        _owner = GetComponent<EnemyBase>();
         if (_firePoint == null)
             _firePoint = transform;
     }
@@ -73,7 +73,7 @@ public class fbdfbd_BossSkillShot : fbdfbd_BossSkillBase
             float fanOffset = GetFanAngleOffset(i, count, _data.FanAngle);
             Vector2 finalDir = Rotate(baseDir, centerOffset + fanOffset);
 
-            fbdfbd_EnemyProjectile projectile = Instantiate(_data.ProjectilePrefab, origin, Quaternion.identity);
+            EnemyProjectile projectile = Instantiate(_data.ProjectilePrefab, origin, Quaternion.identity);
             projectile.Init(
                 _data.Damage,
                 finalDir,

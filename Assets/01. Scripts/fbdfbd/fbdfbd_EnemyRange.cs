@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class fbdfbd_EnemyRange : fbdfbd_EnemyBase
+public class EnemyRange : EnemyBase
 {
     [Header("Ranged")]
     [Min(0.1f)][SerializeField] private float _attackRange = 6f;
@@ -27,7 +27,7 @@ public class fbdfbd_EnemyRange : fbdfbd_EnemyBase
         Vector2 dir = GetTargetDirection(origin);
 
         GameObject go = Instantiate(_projectilePrefab, origin, Quaternion.identity);
-        fbdfbd_EnemyProjectile proj = go.GetComponent<fbdfbd_EnemyProjectile>();
+        EnemyProjectile proj = go.GetComponent<EnemyProjectile>();
         if (proj != null)
         {
             proj.Init(_damage, dir, _projectileSpeed, _projectileLifeTime, _targetMask, gameObject);

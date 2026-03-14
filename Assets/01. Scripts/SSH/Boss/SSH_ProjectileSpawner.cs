@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SSH_ProjectileSpawner : MonoBehaviour
+public class ProjectileSpawner : MonoBehaviour
 {
     [Header("Projectile")]
     [SerializeField] private GameObject _projectilePrefab;
@@ -75,10 +75,10 @@ public class SSH_ProjectileSpawner : MonoBehaviour
         foreach (Vector3 pos in positions)
         {
             GameObject obj = Instantiate(_projectilePrefab, pos, transform.rotation, transform);
-            SSH_EnemyProjectile proj = obj.GetComponent<SSH_EnemyProjectile>();
+            EnemyProjectile proj = obj.GetComponent<EnemyProjectile>();
             if (proj != null)
             {
-                proj.Init(_damage, _speed, _targetMask, gameObject);
+                proj.Init(_damage, new Vector2(0, -1), _speed, 10f, _targetMask, gameObject);
             }
         }
     }

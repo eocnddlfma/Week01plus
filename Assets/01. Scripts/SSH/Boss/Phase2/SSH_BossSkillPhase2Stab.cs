@@ -8,7 +8,7 @@ namespace SSH.Boss
     {
         [SerializeField] private SSH_SOBossSkillStab _so;
 
-        private SSH_StabAttack _stab;
+        private StabAttack _stab;
 
         IEnumerator Pattern()
         {
@@ -18,7 +18,7 @@ namespace SSH.Boss
                                                transform.position + _so.WeaponOffset,
                                                Quaternion.identity,
                                                transform);
-            _stab = weaponObj.GetComponent<SSH_StabAttack>();
+            _stab = weaponObj.GetComponent<StabAttack>();
             _stab?.Init(_so.WarningDuration, _so.Damage, _so.TargetMask, _so.WarningPrefab);
             _stab?.UpdateFacing();
 

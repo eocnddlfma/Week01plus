@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class WS_HitStopController : MonoBehaviour
+public class HitStopController : MonoBehaviour
 {
     [SerializeField] private float _defaultDuration = 0.035f;
     [SerializeField] private float _slowedTimeScale = 0.08f;

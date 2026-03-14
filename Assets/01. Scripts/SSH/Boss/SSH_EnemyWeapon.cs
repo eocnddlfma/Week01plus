@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SSH_EnemyWeapon : MonoBehaviour
+public class EnemyWeapon : MonoBehaviour
 {
     [SerializeField] private int       _damage;
     [SerializeField] private float     _speed;
@@ -43,7 +43,7 @@ public class SSH_EnemyWeapon : MonoBehaviour
         if (other == null || other.gameObject == _owner) return;
         if ((_targetMask.value & (1 << other.gameObject.layer)) == 0) return;
 
-        if (other.TryGetComponent(out Jaein_ObjectBase target))
+        if (other.TryGetComponent(out EntityBase target))
             target.TakeDamage(_damage);
 
         _usage--;

@@ -25,7 +25,7 @@ namespace SSH.Boss
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (_isOpening) return;
-            Jaein_OrbitalWeapon orbital = other.GetComponent<Jaein_OrbitalWeapon>();
+            OrbitalWeapon orbital = other.GetComponent<OrbitalWeapon>();
             if (orbital == null) return;
 
             Vector2 normal = ((Vector2)other.transform.position - (Vector2)transform.position).normalized;

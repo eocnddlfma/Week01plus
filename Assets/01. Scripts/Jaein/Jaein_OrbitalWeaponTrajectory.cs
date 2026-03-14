@@ -1,9 +1,9 @@
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class Jaein_OrbitalWeaponTrajectory : MonoBehaviour
+public class OrbitalTrajectory : MonoBehaviour
 {
-    [SerializeField] private Jaein_OrbitalWeapon _weapon;
+    [SerializeField] private OrbitalWeapon _weapon;
 
     [Header("Simulation")]
     [SerializeField] private int _simulationSteps = 500;

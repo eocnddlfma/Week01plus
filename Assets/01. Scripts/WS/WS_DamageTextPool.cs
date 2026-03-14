@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class WS_DamageTextPool : MonoBehaviour
+public class DamageTextPool : MonoBehaviour
 {
     [Header("Pool")]
-    [SerializeField] private WS_TextFloating _textPrefab;
+    [SerializeField] private TextFloating _textPrefab;
     [SerializeField] private int _initialCount = 20;
     [SerializeField] private bool _canExpand = true;
 
-    private readonly List<WS_TextFloating> _pool = new List<WS_TextFloating>();
+    private readonly List<TextFloating> _pool = new List<TextFloating>();
 
     private void Awake()
     {
@@ -19,7 +19,7 @@ public class WS_DamageTextPool : MonoBehaviour
     {
         if (_textPrefab == null)
         {
-            Debug.LogError($"{name}: WS_TextFloating 프리팹이 연결되지 않았습니다.");
+            Debug.LogError($"{name}: TextFloating 프리팹이 연결되지 않았습니다.");
             return;
         }
 
@@ -29,15 +29,15 @@ public class WS_DamageTextPool : MonoBehaviour
         }
     }
 
-    private WS_TextFloating CreateItem()
+    private TextFloating CreateItem()
     {
-        WS_TextFloating item = Instantiate(_textPrefab, transform);
+        TextFloating item = Instantiate(_textPrefab, transform);
         item.gameObject.SetActive(false);
         _pool.Add(item);
         return item;
     }
 
-    private WS_TextFloating GetAvailableItem()
+    private TextFloating GetAvailableItem()
     {
         for (int i = 0; i < _pool.Count; i++)
         {
@@ -53,7 +53,7 @@ public class WS_DamageTextPool : MonoBehaviour
 
     public void Show(int damage, Vector2 anchoredPosition, bool isCharge)
     {
-        WS_TextFloating item = GetAvailableItem();
+        TextFloating item = GetAvailableItem();
 
         if (item == null)
         {

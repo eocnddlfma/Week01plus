@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.CullingGroup;
 
-public class Ryeol_UI_Lives : MonoBehaviour
+public class UI_HealthBar : MonoBehaviour
 {
     [SerializeField] private GameObject _lifePrefab;
     [SerializeField] private Transform _livesContainer;
 
-    [SerializeField] private Jaein_PlayerBase _player;
+    [SerializeField] private PlayerBase _player;
 
     private List<Image> _lifeImages; // 연출을 위해 트래킹
 
@@ -20,19 +20,19 @@ public class Ryeol_UI_Lives : MonoBehaviour
 
     private void Start()
     {
-        Ryeol_GameManager.Instance.OnStateChanged += HandleStateChanged;
+        GameManager.Instance.OnStateChanged += HandleStateChanged;
         _player.OnDamaged += TakeDamage;
     }
 
     private void OnDestroy()
     {
-        Ryeol_GameManager.Instance.OnStateChanged -= HandleStateChanged;
+        GameManager.Instance.OnStateChanged -= HandleStateChanged;
         _player.OnDamaged -= TakeDamage;
     }
 
-    void HandleStateChanged(Ryeol_GameManager.GameState state)
+    void HandleStateChanged(GameManager.GameState state)
     {
-        if (state == Ryeol_GameManager.GameState.Playing)
+        if (state == GameManager.GameState.Playing)
             SpawnLives(_player.MaxHp);
     }
 

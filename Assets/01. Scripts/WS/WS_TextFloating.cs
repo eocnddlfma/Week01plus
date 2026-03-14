@@ -3,7 +3,7 @@ using UnityEngine;
 using DG.Tweening;
 
 [RequireComponent(typeof(TMP_Text))]
-public class WS_TextFloating : MonoBehaviour
+public class TextFloating : MonoBehaviour
 {
     [Header("Move")]
     [SerializeField] private float _moveY = 60f;

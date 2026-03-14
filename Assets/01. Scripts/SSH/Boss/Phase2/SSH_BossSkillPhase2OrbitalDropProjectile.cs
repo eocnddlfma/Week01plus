@@ -4,7 +4,7 @@ using UnityEngine;
 //   _orbitRadius       ~0.5   (플레이어 근접 판정 거리)
 //   _returnStrength    20~30  (플레이어 방향 끌어당기는 힘)
 //   _orbitAssistStrength 0    (수평 보조 불필요)
-public class SSH_BossSkillPhase2OrbitalDropProjectile : Jaein_OrbitalWeapon
+public class SSH_BossSkillPhase2OrbitalDropProjectile : OrbitalWeapon
 {
     [Header("Damage")]
     [SerializeField] private int       _damage        = 1;
@@ -70,7 +70,7 @@ public class SSH_BossSkillPhase2OrbitalDropProjectile : Jaein_OrbitalWeapon
                 Debug.LogWarning("[OrbitalDrop] _bossTransform이 null! Init이 호출됐는지 확인 필요");
             }
 
-            other.GetComponentInChildren<WS_EffectParticle>()?.Play(0f);
+            other.GetComponentInChildren<EffectParticle>()?.Play(0f);
             return;
         }
 

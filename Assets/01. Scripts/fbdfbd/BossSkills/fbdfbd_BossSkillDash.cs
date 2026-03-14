@@ -1,18 +1,18 @@
 using System.Collections;
 using UnityEngine;
 
-public class fbdfbd_BossSkillDash : fbdfbd_BossSkillBase
+public class fbdfbd_BossSkillDash : BossSkillBase
 {
     [Header("Skill Data")]
     [SerializeField] private fbdfbd_SOBossSkillDash _data;
 
-    private fbdfbd_EnemyBase _owner;
+    private EnemyBase _owner;
     private bool _isDashing;
     private static readonly WaitForFixedUpdate _waitFixed = new WaitForFixedUpdate();
 
     private void Awake()
     {
-        _owner = GetComponent<fbdfbd_EnemyBase>();
+        _owner = GetComponent<EnemyBase>();
     }
 
     public override void Enter()
