@@ -5,6 +5,9 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
 {
+    [Header("Data")]
+    [SerializeField] protected EnemyStatsData _statsData;
+
     [Header("Target")]
     [SerializeField] private Transform _target;
 
@@ -55,6 +58,8 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
 
         Rb.freezeRotation = true;
 
+        InitFromStatsData();
+
         _noiseSeed = Random.Range(0f, 1000f);
         _personalOffset = Random.insideUnitCircle * _targetOffsetRadius;
 
@@ -65,6 +70,14 @@ public abstract class fbdfbd_EnemyBase : Jaein_ObjectBase
             Ryeol_GameManager.Instance.RegisterEnemy();
             _isEnemyCountRegistered = true;
         }
+    }
+
+    private void InitFromStatsData()
+    {
+        if (_statsData == null) return;
+        _moveSpeed = _statsData.moveSpeed;
+        _stopDistance = _statsData.stopDistance;
+        // hp는 Jaein_ObjectBase에서 설정하므로 생략 (필요시 추가)
     }
 
     protected virtual void Update()

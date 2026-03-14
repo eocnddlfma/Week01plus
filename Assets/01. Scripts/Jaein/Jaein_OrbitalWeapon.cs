@@ -9,6 +9,9 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         Returning
     }
 
+    [Header("Data")]
+    [SerializeField] protected OrbitalStatsData _statsData;
+
     [Header("Center Reference")]
     [SerializeField] protected Transform _center;
 
@@ -76,6 +79,24 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         _playerController = FindAnyObjectByType<Jaein_PlayerController>();
         _center = _playerController.transform;
         if (_playerController == null) print("따라갈 대상 못찾음");
+
+        InitFromStatsData();
+    }
+
+    private void InitFromStatsData()
+    {
+        if (_statsData == null) return;
+        _orbitRadius = _statsData.orbitRadius;
+        _orbitAngularSpeed = _statsData.orbitAngularSpeed;
+        _launchSpeed = _statsData.launchSpeed;
+        _launchDuration = _statsData.launchDuration;
+        _randomAngleOffset = _statsData.randomAngleOffset;
+        _returnStrength = _statsData.returnStrength;
+        _returnStrengthMax = _statsData.returnStrengthMax;
+        _maxReturnSpeed = _statsData.maxReturnSpeed;
+        _baseDamage = _statsData.baseDamage;
+        _maxChargeDamage = _statsData.maxChargeDamage;
+        _varianceRange = _statsData.varianceRange;
     }
 
     protected virtual void Start()

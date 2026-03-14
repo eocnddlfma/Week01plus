@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8955683214036b148a0df8d98ebe7132, type: 3}
+  m_Name: WeaponStats_Default
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponStatsData
+  chargeCooldown: 0.3
+  maxChargeTime: 1.2
+  chargeThreshold: 0.2
+  chargeLevels:
+  - levelName: 
+    rotationAngle: 180
+    attackPower: 1
+    rotationDuration: 0.3
+    weaponColor: {r: 1, g: 1, b: 1, a: 1}
+    weaponSizeMultiplier: 1
+    knockbackForce: 5
+    damageAmount: 1
+    hitStopDurationMult: 1
+  - levelName: 
+    rotationAngle: 180
+    attackPower: 1
+    rotationDuration: 0.3
+    weaponColor: {r: 1, g: 1, b: 1, a: 1}
+    weaponSizeMultiplier: 1
+    knockbackForce: 5
+    damageAmount: 1
+    hitStopDurationMult: 1
+  - levelName: 
+    rotationAngle: 180
+    attackPower: 1
+    rotationDuration: 0.3
+    weaponColor: {r: 1, g: 1, b: 1, a: 1}
+    weaponSizeMultiplier: 1
+    knockbackForce: 5
+    damageAmount: 1
+    hitStopDurationMult: 1
+  - levelName: 
+    rotationAngle: 180
+    attackPower: 1
+    rotationDuration: 0.3
+    weaponColor: {r: 1, g: 1, b: 1, a: 1}
+    weaponSizeMultiplier: 1
+    knockbackForce: 5
+    damageAmount: 1
+    hitStopDurationMult: 1

@@ -5,9 +5,8 @@ using UnityEngine.Rendering.UI;
 
 public class Jaein_PlayerController : Jaein_PlayerBase
 {
-    [Header("Movement Settings")]
-    [SerializeField] private float _moveSpeed = 5f;
-    [SerializeField] private float _rotationSpeed = 10f;
+    [Header("Data")]
+    [SerializeField] private PlayerStatsData _statsData;
 
     [Header("References")]
     [SerializeField] private Transform _playerBody;
@@ -17,11 +16,15 @@ public class Jaein_PlayerController : Jaein_PlayerBase
 
     public Vector2 FacingDirection => _playerBody != null ? (Vector2)_playerBody.right : Vector2.right;
 
-    [Header("Dash Settings")]
+    [Header("Input")]
     [SerializeField] private KeyCode _dashKey = KeyCode.Space;
-    [SerializeField] private float _dashSpeed = 25f;
-    [SerializeField] private float _dashDuration = 0.15f;
-    [SerializeField] private float _dashCooldown = 0.75f;
+
+    // 런타임 값 (SO에서 초기화)
+    private float _moveSpeed = 5f;
+    private float _rotationSpeed = 10f;
+    private float _dashSpeed = 25f;
+    private float _dashDuration = 0.15f;
+    private float _dashCooldown = 0.75f;
 
     [Header("Boundary Settings")]
     [SerializeField] private Vector2 _boundaryCenter = Vector2.zero;
@@ -45,6 +48,18 @@ public class Jaein_PlayerController : Jaein_PlayerBase
 
         if (_weaponSystem == null)
             _weaponSystem = GetComponentInChildren<Jaein_BatWeaponManager>();
+
+        InitFromStatsData();
+    }
+
+    private void InitFromStatsData()
+    {
+        if (_statsData == null) return;
+        _moveSpeed = _statsData.moveSpeed;
+        _rotationSpeed = _statsData.rotationSpeed;
+        _dashSpeed = _statsData.dashSpeed;
+        _dashDuration = _statsData.dashDuration;
+        _dashCooldown = _statsData.dashCooldown;
     }
 
     void Update()

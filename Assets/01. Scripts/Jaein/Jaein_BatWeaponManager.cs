@@ -38,6 +38,9 @@ public class Jaein_BatWeaponManager : MonoBehaviour
         public Vector2 targetPosition;
     }
 
+    [Header("Data")]
+    [SerializeField] private WeaponStatsData _statsData;
+
     [Header("Charge Levels")]
     [SerializeField] private ChargeLevel[] _chargeLevels = new ChargeLevel[4];
 
@@ -105,19 +108,46 @@ public class Jaein_BatWeaponManager : MonoBehaviour
             _pivotParent = pivot.parent; // PlayerBody
         }
 
-
         SetupLevels();
+        InitFromStatsData();
+    }
+
+    private void InitFromStatsData()
+    {
+        if (_statsData == null) return;
+        _chargeCooldown = _statsData.chargeCooldown;
+        _maxChargeTime = _statsData.maxChargeTime;
+        _chargeThreshold = _statsData.chargeThreshold;
     }
 
     private void SetupLevels()
     {
-        // 이미 Inspector에서 설정한 경우 건너뛰기
-        if (_chargeLevels != null && _chargeLevels.Length == 4 && _chargeLevels[0] != null)
-            return;
-
         if (_chargeLevels == null || _chargeLevels.Length == 0)
             _chargeLevels = new ChargeLevel[4];
 
+        // SO 데이터 사용 (있으면)
+        if (_statsData != null && _statsData.chargeLevels != null && _statsData.chargeLevels.Length >= 4)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                WeaponStatsData.ChargeLevelData soData = _statsData.chargeLevels[i];
+                _chargeLevels[i] = new ChargeLevel
+                {
+                    levelName = soData.levelName,
+                    rotationAngle = soData.rotationAngle,
+                    attackPower = soData.attackPower,
+                    rotationDuration = soData.rotationDuration,
+                    weaponColor = soData.weaponColor,
+                    weaponSizeMultiplier = soData.weaponSizeMultiplier,
+                    knockbackForce = soData.knockbackForce,
+                    damageAmount = soData.damageAmount,
+                    hitStopDurationMult = soData.hitStopDurationMult
+                };
+            }
+            return;
+        }
+
+        // 기본값 사용 (SO가 없으면)
         // Level 0: 기본 휘두르기 (차지 없이 바로 공격)
         _chargeLevels[0] = new ChargeLevel
         {
