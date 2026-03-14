@@ -9,7 +9,6 @@ public class PlayerBase : EntityBase
     [SerializeField] private float _invincibleDuration = 1.0f;
     [SerializeField] private float _flashInterval = 0.1f;
 
-    [Header("Action by Woosung")]
     public event Action<int> OnDamaged; //받은 데미지가 아니라, 남은 체력을 보내야함.
 
     private bool _isInvincible = false;

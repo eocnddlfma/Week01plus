@@ -23,7 +23,8 @@
       "Bash(git show:*)",
       "Bash(ls -la \"Assets/01. Scripts/Jaein/Weapon\"*.cs)",
       "Bash(sleep 5 && mcp__UnityMCP__read_console)",
-      "Bash(grep -r \"\\\\\"m_Script.*\\\\}: {fileID: 0}\" \"Assets/02. Prefab\" --include=\"*.prefab\" 2>/dev/null | head -20)"
+      "Bash(grep -r \"\\\\\"m_Script.*\\\\}: {fileID: 0}\" \"Assets/02. Prefab\" --include=\"*.prefab\" 2>/dev/null | head -20)",
+      "mcp__ide__getDiagnostics"
     ]
   }
 }
