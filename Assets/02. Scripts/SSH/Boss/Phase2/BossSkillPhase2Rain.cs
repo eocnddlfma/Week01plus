@@ -12,7 +12,7 @@ namespace SSH.Boss
 
         IEnumerator Pattern()
         {
-            if (_so?.ProjectilePrefab == null || _so.Phases == null)
+            if (_so?.Phases == null)
             {
                 _patternFinished = true;
                 yield break;
@@ -24,14 +24,19 @@ namespace SSH.Boss
                 var phase = _so.Phases[p];
                 for (int i = 0; i < phase.count; i++)
                 {
+                    // Phase 7: 풀에서 투사체 획득
+                    if (EnemyProjectilePool.Instance == null) yield break;
+
                     float   x        = Random.Range(-_so.RangeWidth * 0.5f, _so.RangeWidth * 0.5f);
                     Vector3 spawnPos = new Vector3(x, _so.SpawnY, 0f);
-                    GameObject proj  = Instantiate(_so.ProjectilePrefab, spawnPos, Quaternion.identity);
-                    proj.transform.localScale = phase.scale;
-
-                    EnemyProjectile script = proj.GetComponent<EnemyProjectile>();
+                    EnemyProjectile script = EnemyProjectilePool.Instance.Get();
                     if (script != null)
+                    {
+                        script.transform.position = spawnPos;
+                        script.transform.rotation = Quaternion.identity;
+                        script.transform.localScale = phase.scale;
                         script.Init(_so.Damage, new Vector2(0, -1), phase.speed, 10f, _so.TargetMask, gameObject);
+                    }
 
                     yield return new WaitForSeconds(phase.spawnDelay);
                 }

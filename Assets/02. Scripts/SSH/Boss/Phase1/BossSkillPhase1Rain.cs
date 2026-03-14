@@ -18,14 +18,18 @@ namespace SSH.Boss
             {
                 for (int i = 0; i < phase.count; i++)
                 {
-                    float x = Random.Range(-_so.RangeWidth * 0.5f, _so.RangeWidth * 0.5f);
-                    GameObject obj = Instantiate(_so.ProjectilePrefab,
-                                                 new Vector3(x, _so.SpawnY, 0f),
-                                                 Quaternion.identity);
-                    obj.transform.localScale = phase.scale;
+                    // Phase 7: 풀에서 투사체 획득
+                    if (EnemyProjectilePool.Instance == null) yield break;
 
-                    EnemyProjectile proj = obj.GetComponent<EnemyProjectile>();
-                    if (proj != null) proj.Init(_so.Damage, new Vector2(0, -1), phase.speed, 10f, _so.TargetMask, gameObject);
+                    float x = Random.Range(-_so.RangeWidth * 0.5f, _so.RangeWidth * 0.5f);
+                    EnemyProjectile proj = EnemyProjectilePool.Instance.Get();
+                    if (proj != null)
+                    {
+                        proj.transform.position = new Vector3(x, _so.SpawnY, 0f);
+                        proj.transform.rotation = Quaternion.identity;
+                        proj.transform.localScale = phase.scale;
+                        proj.Init(_so.Damage, new Vector2(0, -1), phase.speed, 10f, _so.TargetMask, gameObject);
+                    }
 
                     yield return new WaitForSeconds(phase.spawnDelay);
                 }

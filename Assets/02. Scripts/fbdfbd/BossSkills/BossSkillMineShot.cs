@@ -30,7 +30,7 @@ public class fbdfbd_BossSkillMineShot : BossSkillBase
 
     public override void Execute()
     {
-        if (_data == null || _data.MineProjectilePrefab == null)
+        if (_data == null)
             return;
 
         if (_fireRoutine != null)
@@ -74,20 +74,25 @@ public class fbdfbd_BossSkillMineShot : BossSkillBase
             float speedScale = Random.Range(1f - _data.SpeedRandomPercent, 1f + _data.SpeedRandomPercent);
             float speed = Mathf.Max(0f, _data.ProjectileSpeed * speedScale);
 
-            EnemyBossMineProjectile mine =
-                Instantiate(_data.MineProjectilePrefab, origin, Quaternion.identity);
-
-            mine.Init(
-                _data.Damage,
-                dir,
-                speed,
-                _data.Deceleration,
-                _data.StopSpeedThreshold,
-                _data.BlinkDuration,
-                _data.ExplodeDelay,
-                _data.TargetMask,
-                gameObject,
-                _owner != null ? _owner.Target : null);
+            // Phase 7: 풀에서 투사체 획득
+            if (EnemyBossMineProjectilePool.Instance == null) yield break;
+            EnemyBossMineProjectile mine = EnemyBossMineProjectilePool.Instance.Get();
+            if (mine != null)
+            {
+                mine.transform.position = origin;
+                mine.transform.rotation = Quaternion.identity;
+                mine.Init(
+                    _data.Damage,
+                    dir,
+                    speed,
+                    _data.Deceleration,
+                    _data.StopSpeedThreshold,
+                    _data.BlinkDuration,
+                    _data.ExplodeDelay,
+                    _data.TargetMask,
+                    gameObject,
+                    _owner != null ? _owner.Target : null);
+            }
 
             if (_data.ProjectileInterval > 0f && i < count - 1)
                 yield return new WaitForSeconds(_data.ProjectileInterval);

@@ -27,7 +27,7 @@ public class fbdfbd_BossSkillShot : BossSkillBase
 
     public override void Execute()
     {
-        if (_owner == null || _data == null || _data.ProjectilePrefab == null)
+        if (_owner == null || _data == null)
             return;
 
         int waveIndex = _shotStep;
@@ -73,14 +73,21 @@ public class fbdfbd_BossSkillShot : BossSkillBase
             float fanOffset = GetFanAngleOffset(i, count, _data.FanAngle);
             Vector2 finalDir = Rotate(baseDir, centerOffset + fanOffset);
 
-            EnemyProjectile projectile = Instantiate(_data.ProjectilePrefab, origin, Quaternion.identity);
-            projectile.Init(
-                _data.Damage,
-                finalDir,
-                _data.ProjectileSpeed,
-                _data.ProjectileLifeTime,
-                _data.TargetMask,
-                gameObject);
+            // Phase 7: 풀에서 투사체 획득
+            if (EnemyProjectilePool.Instance == null) return;
+            EnemyProjectile projectile = EnemyProjectilePool.Instance.Get();
+            if (projectile != null)
+            {
+                projectile.transform.position = origin;
+                projectile.transform.rotation = Quaternion.identity;
+                projectile.Init(
+                    _data.Damage,
+                    finalDir,
+                    _data.ProjectileSpeed,
+                    _data.ProjectileLifeTime,
+                    _data.TargetMask,
+                    gameObject);
+            }
         }
     }
 

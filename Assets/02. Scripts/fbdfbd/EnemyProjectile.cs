@@ -40,7 +40,7 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
 
         if (_lifeTime > 0f && Time.time - _spawnTime >= _lifeTime)
         {
-            Destroy(gameObject);
+            ReturnToPool();
         }
     }
 
@@ -55,7 +55,7 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
             dmg.TakeDamage(_damage);
         }
 
-        Destroy(gameObject);
+        ReturnToPool();
     }
 
     public void ReflectAsBatHit(int overrideDamage, LayerMask enemyMask, Color hitColor)
@@ -66,5 +66,31 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
         _targetMask = enemyMask;
         var sr = GetComponent<SpriteRenderer>();
         if (sr != null) sr.color = hitColor;
+    }
+
+    /// <summary>
+    /// 풀에 반납 (Phase 7)
+    /// </summary>
+    private void ReturnToPool()
+    {
+        if (EnemyProjectilePool.Instance != null)
+            EnemyProjectilePool.Instance.Return(this);
+        else
+            Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// 풀 반납 시 상태 리셋 (Phase 7)
+    /// </summary>
+    private void OnDisable()
+    {
+        // ReflectAsBatHit이 색상 변경 → 복원
+        var sr = GetComponent<SpriteRenderer>();
+        if (sr != null)
+            sr.color = Color.white;
+
+        // BossSkillPhase1Rain이 localScale 변경 → 복원
+        if (transform.localScale != Vector3.one)
+            transform.localScale = Vector3.one;
     }
 }

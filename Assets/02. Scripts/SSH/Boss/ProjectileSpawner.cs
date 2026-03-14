@@ -5,7 +5,6 @@ using UnityEngine;
 public class ProjectileSpawner : MonoBehaviour
 {
     [Header("Projectile")]
-    [SerializeField] private GameObject _projectilePrefab;
     [SerializeField] private int _damage = 10;
     [SerializeField] private float _speed = 5f;
     [SerializeField] private LayerMask _targetMask;
@@ -70,14 +69,16 @@ public class ProjectileSpawner : MonoBehaviour
 
     private void SpawnProjectiles(List<Vector3> positions)
     {
-        if (_projectilePrefab == null) return;
+        // Phase 7: 풀에서 투사체 획득
+        if (EnemyProjectilePool.Instance == null) return;
 
         foreach (Vector3 pos in positions)
         {
-            GameObject obj = Instantiate(_projectilePrefab, pos, transform.rotation, transform);
-            EnemyProjectile proj = obj.GetComponent<EnemyProjectile>();
+            EnemyProjectile proj = EnemyProjectilePool.Instance.Get();
             if (proj != null)
             {
+                proj.transform.position = pos;
+                proj.transform.rotation = transform.rotation;
                 proj.Init(_damage, new Vector2(0, -1), _speed, 10f, _targetMask, gameObject);
             }
         }

@@ -192,7 +192,7 @@ public class EnemyBossMineProjectile : MonoBehaviour
         if (delay > 0f)
             yield return new WaitForSeconds(delay);
 
-        Destroy(gameObject);
+        ReturnToPool();  // Phase 7: 풀에 반납
     }
 
     private void OnBlinkStartFx()
@@ -252,6 +252,41 @@ public class EnemyBossMineProjectile : MonoBehaviour
             value = curve.curveMultiplier;
 
         return Mathf.Max(0f, value);
+    }
+
+    /// <summary>
+    /// 풀에 반납 (Phase 7)
+    /// </summary>
+    private void ReturnToPool()
+    {
+        if (EnemyBossMineProjectilePool.Instance != null)
+            EnemyBossMineProjectilePool.Instance.Return(this);
+        else
+            Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// 풀 반납 시 상태 리셋 (Phase 7)
+    /// 코루틴 중단 필수 - 누락 시 재사용 시 이전 코루틴 잔재로 오동작
+    /// </summary>
+    private void OnDisable()
+    {
+        // 모든 코루틴 중단
+        StopAllCoroutines();
+        _stopRoutine = null;
+
+        // 파티클 시스템 정리
+        if (_explodeParticle != null)
+            _explodeParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+        // 스프라이트 표시 복원
+        if (_spriteRenderer != null)
+            _spriteRenderer.enabled = true;
+
+        // 상태 초기화
+        _isInitialized = false;
+        _isStopped = false;
+        _isExploded = false;
     }
 
 #if UNITY_EDITOR

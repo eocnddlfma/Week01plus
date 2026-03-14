@@ -5,7 +5,6 @@ public class EnemyRange : EnemyBase
     [Header("Ranged")]
     [Min(0.1f)][SerializeField] private float _attackRange = 6f;
     [SerializeField] private Transform _firePoint;
-    [SerializeField] private GameObject _projectilePrefab;
     [Min(0.1f)][SerializeField] private float _projectileSpeed = 6f;
     [Min(0.1f)][SerializeField] private float _projectileLifeTime = 2f;
     [Min(1)][SerializeField] private int _damage = 1;
@@ -21,15 +20,17 @@ public class EnemyRange : EnemyBase
 
     protected override void DoAttack()
     {
-        if (_projectilePrefab == null) return;
+        // Phase 7: 풀에서 투사체 획득
+        if (EnemyProjectilePool.Instance == null) return;
 
         Vector2 origin = _firePoint != null ? (Vector2)_firePoint.position : Rb.position;
         Vector2 dir = GetTargetDirection(origin);
 
-        GameObject go = Instantiate(_projectilePrefab, origin, Quaternion.identity);
-        EnemyProjectile proj = go.GetComponent<EnemyProjectile>();
+        EnemyProjectile proj = EnemyProjectilePool.Instance.Get();
         if (proj != null)
         {
+            proj.transform.position = origin;
+            proj.transform.rotation = Quaternion.identity;
             proj.Init(_damage, dir, _projectileSpeed, _projectileLifeTime, _targetMask, gameObject);
         }
     }
