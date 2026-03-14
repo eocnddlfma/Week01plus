@@ -4391,7 +4391,7 @@ MonoBehaviour:
     knockbackEnemies: 1
     knockbackForce: 5
     damageAmount: 2
-    hitStopDurationMult: 1
+    hitStopDurationMult: 0.1
   - levelName: 
     rotationAngle: 220
     attackPower: 10
@@ -4401,7 +4401,7 @@ MonoBehaviour:
     knockbackEnemies: 1
     knockbackForce: 9
     damageAmount: 5
-    hitStopDurationMult: 1.5
+    hitStopDurationMult: 1
   - levelName: 
     rotationAngle: 250
     attackPower: 15
@@ -4411,17 +4411,17 @@ MonoBehaviour:
     knockbackEnemies: 1
     knockbackForce: 14
     damageAmount: 7
-    hitStopDurationMult: 3
+    hitStopDurationMult: 5
   - levelName: 
     rotationAngle: 300
     attackPower: 20
-    rotationDuration: 0.3
+    rotationDuration: 0.2
     weaponColor: {r: 1, g: 0, b: 0, a: 1}
     weaponSizeMultiplier: 5
     knockbackEnemies: 1
     knockbackForce: 22
     damageAmount: 10
-    hitStopDurationMult: 5
+    hitStopDurationMult: 10
   _weaponTransform: {fileID: 0}
   _weaponSpriteRenderer: {fileID: 0}
   _endpointTransform: {fileID: 0}
@@ -4480,7 +4480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b05d987e2a54b524bbdc87709b66c459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WS_HitStopController
-  _defaultDuration: 0.2
+  _defaultDuration: 0.1
   _slowedTimeScale: 0.05
 --- !u!1 &8329097454644803893
 GameObject:

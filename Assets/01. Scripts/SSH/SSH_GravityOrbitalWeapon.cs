@@ -16,7 +16,7 @@ public class SSH_GravityOrbitalWeapon : Jaein_OrbitalWeapon
 
     private void FixedUpdate()
     {
-        if (_state == BallState.Orbit) return;
+        if (!ShouldApplyGravity()) return;
         ApplyGravity();
     }
 
@@ -35,11 +35,11 @@ public class SSH_GravityOrbitalWeapon : Jaein_OrbitalWeapon
         {
             Collider2D col = _nearbyColliders[i];
 
-            // 공 체크 (Orbit 상태 제외)
+            // 공 체크 (중력 적용 불가 상태 제외)
             Jaein_OrbitalWeapon ball = col.GetComponentInParent<Jaein_OrbitalWeapon>();
             if (ball != null)
             {
-                if (ball == this || ball.State == BallState.Orbit) continue;
+                if (ball == this || !ball.ShouldApplyGravity()) continue;
 
                 Vector2 toBallMe = (Vector2)transform.position - (Vector2)ball.transform.position;
                 if (toBallMe.sqrMagnitude <= 0.001f) continue;

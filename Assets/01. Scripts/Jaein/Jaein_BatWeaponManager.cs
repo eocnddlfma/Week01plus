@@ -381,20 +381,19 @@ public class Jaein_BatWeaponManager : MonoBehaviour
     /// </summary>
     public void OnWeaponTriggerEnter2D(Collider2D collision)
     {
-        if (!_isAttacking) return;
-
-        // 공(OrbitalWeapon) 타격 처리
+        // 공(OrbitalWeapon) 타격 처리 - 상태 상관없이 모든 공을 칠 수 있음
         Jaein_OrbitalWeapon orbitalWeapon = collision.GetComponent<Jaein_OrbitalWeapon>();
         if (orbitalWeapon != null)
         {
-            if (!_hitBallsThisAttack.Contains(orbitalWeapon))
-            {
-                orbitalWeapon.TriggerLaunchFromWeapon(_currentChargePercentForAttack);
-                orbitalWeapon.PlayWeaponEffect(_weaponTransform, _currentChargePercentForAttack);
+            orbitalWeapon.TriggerLaunchFromWeapon(_currentChargePercentForAttack);
+            orbitalWeapon.PlayWeaponEffect(_weaponTransform, _currentChargePercentForAttack);
+            if (_isAttacking && !_hitBallsThisAttack.Contains(orbitalWeapon))
                 _hitBallsThisAttack.Add(orbitalWeapon);
-            }
             return;
         }
+
+        // 공격 중이 아니면 나머지 처리 제외
+        if (!_isAttacking) return;
 
         // 차지 단계 계산 (0~3)
         int chargeLevel = Mathf.FloorToInt(_currentChargePercentForAttack * 4f);
@@ -550,9 +549,9 @@ public class Jaein_BatWeaponManager : MonoBehaviour
 
         foreach (Collider2D hit in hits)
         {
-            // 공 감지 - 각도 범위 상관없이 반지름 내에 있으면 항상 수집
+            // 공 감지 - 상태 상관없이 반지름 내에 있으면 항상 수집
             Jaein_OrbitalWeapon orbitalWeapon = hit.GetComponent<Jaein_OrbitalWeapon>();
-            if (orbitalWeapon != null && orbitalWeapon.State == Jaein_OrbitalWeapon.BallState.Orbit && !ballsAdded.Contains(orbitalWeapon))
+            if (orbitalWeapon != null && !ballsAdded.Contains(orbitalWeapon))
             {
                 Vector2 dir = ((Vector2)orbitalWeapon.transform.position - (Vector2)pivot.position);
                 float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -642,9 +641,9 @@ public class Jaein_BatWeaponManager : MonoBehaviour
 
         foreach (Collider2D hit in hits)
         {
-            // 공 감지
+            // 공 감지 - 상태 상관없이 수집
             Jaein_OrbitalWeapon orbitalWeapon = hit.GetComponent<Jaein_OrbitalWeapon>();
-            if (orbitalWeapon != null && orbitalWeapon.State == Jaein_OrbitalWeapon.BallState.Orbit && !ballsAdded.Contains(orbitalWeapon))
+            if (orbitalWeapon != null && !ballsAdded.Contains(orbitalWeapon))
             {
                 Vector2 dir = ((Vector2)orbitalWeapon.transform.position - (Vector2)pivot.position);
                 float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;

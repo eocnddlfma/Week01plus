@@ -46,7 +46,7 @@ public class Jaein_OrbitalWeaponTrajectory : MonoBehaviour
         for (int i = 0; i < positions.Length; i++)
             _lineRenderer.SetPosition(i, (Vector3)positions[i]);
 
-        Gradient color = _weapon.State == Jaein_OrbitalWeapon.BallState.Returning ? _returnColor : _launchColor;
+        Gradient color = _weapon.IsReturning() ? _returnColor : _launchColor;
         if (color != null)
             _lineRenderer.colorGradient = color;
 

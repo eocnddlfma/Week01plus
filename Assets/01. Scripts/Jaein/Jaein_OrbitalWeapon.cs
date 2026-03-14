@@ -59,7 +59,7 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
     private Jaein_PlayerController _playerController;
 
     protected BallState _state = BallState.Orbit;
-    public BallState State => _state;
+    protected BallState State => _state;
     private float _angleDeg;
     protected float _stateTimer;
     protected float _returnTimeElapsed;
@@ -375,6 +375,22 @@ public class Jaein_OrbitalWeapon : MonoBehaviour
         WS_EffectParticle effect = weaponTransform.GetComponentInChildren<WS_EffectParticle>();
         if (effect != null)
             effect.Play(chargePercent);
+    }
+
+    /// <summary>
+    /// 그래비티 적용 여부 반환 (Orbit 상태가 아닐 때 적용)
+    /// </summary>
+    public bool ShouldApplyGravity()
+    {
+        return _state != BallState.Orbit;
+    }
+
+    /// <summary>
+    /// 궤적 색상 타입 반환 (Returning 또는 Launch)
+    /// </summary>
+    public bool IsReturning()
+    {
+        return _state == BallState.Returning;
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
