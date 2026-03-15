@@ -12,9 +12,11 @@ public class BossEnemyProjectile : MonoBehaviour, IEnemyProjectile
     private float _spawnTime;
     [SerializeField] private LayerMask _targetMask;
     private GameObject _owner;
+    private bool _isReflected;
 
     public Rigidbody2D Rb => _rb;
     public float Speed => _speed;
+    public bool IsReflected => _isReflected;
 
     private void Awake()
     {
@@ -65,6 +67,7 @@ public class BossEnemyProjectile : MonoBehaviour, IEnemyProjectile
         _damage = overrideDamage;
         _owner = null;
         _targetMask = enemyMask;
+        _isReflected = true;
         var sr = GetComponent<SpriteRenderer>();
         if (sr != null) sr.color = Color.white;
     }

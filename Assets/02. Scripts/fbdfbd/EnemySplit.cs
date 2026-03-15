@@ -34,6 +34,7 @@ public class EnemySplit : EnemyBase
     {
         base.Awake();
         _baseCloneCount = _splitEnemyCloneCount;
+        _baseSplitInterval = _splitInterval;
         _baseCycleInterval = _splitCycleInterval;
     }
 
@@ -41,6 +42,7 @@ public class EnemySplit : EnemyBase
     {
         base.ApplyWaveScaling(waveIndex);
         _splitEnemyCloneCount = Mathf.Max(1, Mathf.RoundToInt(_baseCloneCount * (1f + waveIndex * _cloneCountScalePerWave)));
+        _splitInterval = _baseSplitInterval / (1f + waveIndex * _splitIntervalReducePerWave);
         _splitCycleInterval = _baseCycleInterval / (1f + waveIndex * _cycleIntervalReducePerWave);
     }
 

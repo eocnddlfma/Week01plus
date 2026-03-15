@@ -36,6 +36,8 @@ public class WeaponSwingSystem : MonoBehaviour
     private WeaponChargeSystem.ChargeLevel[] _chargeLevels;
     private HitStopController _hitStopController;
     private WeaponHitProcessor _hitProcessor;
+    private float _swingChargePercent;
+    private float _swingAttackPower;
 
     public event System.Action OnSwingComplete;
 
@@ -81,6 +83,9 @@ public class WeaponSwingSystem : MonoBehaviour
         float dynamicKnockbackForce = Mathf.Lerp(minLevel.knockbackForce, maxLevel.knockbackForce, chargePercent) * kbMult;
         int chargeLevel = Mathf.Min(3, Mathf.FloorToInt(chargePercent * 4f));
         float dynamicAttackPower = _chargeLevels[chargeLevel].attackPower;
+
+        _swingChargePercent = chargePercent;
+        _swingAttackPower = dynamicAttackPower;
 
         _hitProcessor.SetAttackState(true, chargePercent, dynamicDamageAmount, dynamicKnockbackForce, dynamicAttackPower);
 
@@ -190,8 +195,8 @@ public class WeaponSwingSystem : MonoBehaviour
     {
         if (target.targetType == HitTarget.TargetType.Ball)
         {
-            target.ball.TriggerLaunchFromWeapon(1f);
-            target.ball.PlayWeaponEffect(_weaponTransform, 1f);
+            target.ball.TriggerLaunchFromWeapon(_swingChargePercent, _swingAttackPower);
+            target.ball.PlayWeaponEffect(_weaponTransform, _swingChargePercent);
         }
         else if (target.targetType == HitTarget.TargetType.Enemy)
         {
@@ -267,7 +272,7 @@ public class WeaponSwingSystem : MonoBehaviour
             }
 
             IEnemyProjectile projectile = hit.GetComponent<IEnemyProjectile>();
-            if (projectile != null && !projectilesAdded.Contains(projectile))
+            if (projectile != null && !projectile.IsReflected && !projectilesAdded.Contains(projectile))
             {
                 Vector2 dir = ((Vector2)hit.transform.position - (Vector2)pivot.position);
                 float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;

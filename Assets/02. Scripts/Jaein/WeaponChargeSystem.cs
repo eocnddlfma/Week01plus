@@ -247,4 +247,6 @@ public class WeaponChargeSystem : MonoBehaviour
     public float ChargePercent => _chargePercent;
     public int CurrentChargeLevel => _currentChargeLevel;
     public ChargeLevel[] ChargeLevels => _chargeLevels;
+    public float OrbitalChargeSpeedBoostMax => _statsData != null ? _statsData.orbitalChargeSpeedBoostMax : 2f;
+    public float OrbitalChargeClusterStrength => _statsData != null ? _statsData.orbitalChargeClusterStrength : 2f;
 }

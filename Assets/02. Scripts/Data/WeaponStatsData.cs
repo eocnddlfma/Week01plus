@@ -7,6 +7,8 @@ public class WeaponStatsData : ScriptableObject
     public float chargeCooldown = 0.3f;
     public float maxChargeTime = 1.2f;
     public float chargeThreshold = 0.2f;
+    public float orbitalChargeSpeedBoostMax = 2f;
+    public float orbitalChargeClusterStrength = 2f;
 
     [Header("차지 레벨 (4단계)")]
     public ChargeLevelData[] chargeLevels = new ChargeLevelData[4];

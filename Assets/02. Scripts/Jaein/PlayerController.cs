@@ -49,6 +49,20 @@ public class PlayerController : PlayerBase
         if (_dash == null) _dash = gameObject.AddComponent<PlayerDash>();
 
         InitFromStatsData();
+
+        _dash.OnDashStateChanged += OnDashStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        if (_dash != null)
+            _dash.OnDashStateChanged -= OnDashStateChanged;
+    }
+
+    private void OnDashStateChanged(bool isDashing, float duration)
+    {
+        if (isDashing)
+            StartInvincible(duration, flash: true);
     }
 
     private void InitFromStatsData()

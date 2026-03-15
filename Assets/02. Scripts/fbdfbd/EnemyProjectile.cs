@@ -15,6 +15,9 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
     private LayerMask _targetMask;
     private GameObject _owner;
     private Color _originalColor;
+    private bool _isReflected;
+
+    public bool IsReflected => _isReflected;
 
     private void Awake()
     {
@@ -34,6 +37,7 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
         this._targetMask = targetMask;
         this._owner = owner;
         _spawnTime = Time.time;
+        _isReflected = false;
     }
 
     private void FixedUpdate()
@@ -66,6 +70,7 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
         _damage = overrideDamage;
         _owner = null;
         _targetMask = enemyMask;
+        _isReflected = true;
         var sr = GetComponent<SpriteRenderer>();
         if (sr != null) sr.color = Color.white;
         _lifeTime+=10f;

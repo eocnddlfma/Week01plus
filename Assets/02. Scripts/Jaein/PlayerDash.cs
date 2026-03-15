@@ -20,7 +20,7 @@ public class PlayerDash : MonoBehaviour
 
     public bool IsDashing => _isDashing;
 
-    public event System.Action<bool> OnDashStateChanged;
+    public event System.Action<bool, float> OnDashStateChanged;
 
     private void Awake()
     {
@@ -73,12 +73,14 @@ public class PlayerDash : MonoBehaviour
             _rb.linearDamping = originalDrag;
             _isDashing = false;
             _movement.SetDashingState(false);
-            OnDashStateChanged?.Invoke(false);
+            OnDashStateChanged?.Invoke(false, 0f);
             yield break;
         }
 
         float actualDashDuration = allowedDashDistance / _dashSpeed;
         _rb.linearVelocity = dir * _dashSpeed;
+
+        OnDashStateChanged?.Invoke(true, actualDashDuration);
 
         yield return new WaitForSeconds(actualDashDuration);
 
@@ -89,7 +91,7 @@ public class PlayerDash : MonoBehaviour
 
         _isDashing = false;
         _movement.SetDashingState(false);
-        OnDashStateChanged?.Invoke(false);
+        OnDashStateChanged?.Invoke(false, 0f);
     }
 
 }

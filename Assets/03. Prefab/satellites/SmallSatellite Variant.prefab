@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: _statsData
+      value: 
+      objectReference: {fileID: 11400000, guid: b909ff4a4bd1f7647b87ff7732ea7932, type: 2}
+    - target: {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: _startAngle
       value: 12
       objectReference: {fileID: 0}
@@ -97,6 +101,22 @@ PrefabInstance:
     - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: satelliteName
       value: SmallBall
+      objectReference: {fileID: 0}
+    - target: {fileID: 2125266342259857812, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 0.26455557
+      objectReference: {fileID: 0}
+    - target: {fileID: 2125266342259857812, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].inSlope
+      value: -0.9989866
+      objectReference: {fileID: 0}
+    - target: {fileID: 2125266342259857812, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].outSlope
+      value: -0.9989866
+      objectReference: {fileID: 0}
+    - target: {fileID: 2125266342259857812, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].outWeight
+      value: 0.11524407
       objectReference: {fileID: 0}
     - target: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_Name

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class OrbitalWeapon : MonoBehaviour
 {
@@ -56,11 +57,17 @@ public class OrbitalWeapon : MonoBehaviour
     [SerializeField] private float _varianceRange = 0.1f;
     [SerializeField] private float _knockbackForce = 4f;
 
+    [Header("Charge Orbit Effect")]
+    [SerializeField] private float _chargeBoostRampDuration = 0.5f;
+
     [Header("Debug")]
     [SerializeField] private bool _drawOrbitGizmo = true;
     [SerializeField] private float _stateGizmoRadius = 0.5f;
 
+    private static readonly List<OrbitalWeapon> _allOrbitals = new List<OrbitalWeapon>();
+
     private PlayerController _playerController;
+    private BatWeaponManager _weaponManager;
 
     protected BallState _state = BallState.Orbit;
     protected BallState State => _state;
@@ -70,6 +77,7 @@ public class OrbitalWeapon : MonoBehaviour
     protected Vector2 _velocity;
     private float _snapTimer;
     private float _snapStartRadius;
+    private float _chargeBoostRampTimer;
     private BallState _prevState = BallState.Orbit;
 
     // 발사 시 저장된 차지 퍼센트 (Orbit 복귀 시 초기화)
@@ -82,7 +90,15 @@ public class OrbitalWeapon : MonoBehaviour
         _center = _playerController.transform;
         if (_playerController == null) print("따라갈 대상 못찾음");
 
+        _weaponManager = FindAnyObjectByType<BatWeaponManager>();
+        _allOrbitals.Add(this);
+
         InitFromStatsData();
+    }
+
+    protected virtual void OnDestroy()
+    {
+        _allOrbitals.Remove(this);
     }
 
     private void InitFromStatsData()
@@ -91,11 +107,21 @@ public class OrbitalWeapon : MonoBehaviour
         _orbitRadius = _statsData.orbitRadius;
         _orbitAngularSpeed = _statsData.orbitAngularSpeed;
         _launchSpeed = _statsData.launchSpeed;
+        _launchSpeedOffset = _statsData.launchSpeedOffset;
         _launchDuration = _statsData.launchDuration;
+        _launchDurationOffset = _statsData.launchDurationOffset;
         _randomAngleOffset = _statsData.randomAngleOffset;
         _returnStrength = _statsData.returnStrength;
+        _returnDamping = _statsData.returnDamping;
         _returnStrengthMax = _statsData.returnStrengthMax;
+        _returnEscalationTime = _statsData.returnEscalationTime;
+        _orbitAssistStrength = _statsData.orbitAssistStrength;
+        _useCounterClockwiseAssist = _statsData.useCounterClockwiseAssist;
         _maxReturnSpeed = _statsData.maxReturnSpeed;
+        _rejoinDistanceToOrbit = _statsData.rejoinDistanceToOrbit;
+        _rejoinVelocityLimit = _statsData.rejoinVelocityLimit;
+        _rejoinBrakeDamping = _statsData.rejoinBrakeDamping;
+        _snapDuration = _statsData.snapDuration;
         _baseDamage = _statsData.baseDamage;
         _maxChargeDamage = _statsData.maxChargeDamage;
         _varianceRange = _statsData.varianceRange;
@@ -148,7 +174,25 @@ public class OrbitalWeapon : MonoBehaviour
 
     private void UpdateOrbitState(float dt)
     {
-        _angleDeg += _orbitAngularSpeed * dt;
+        float chargePercent = (_weaponManager != null && _weaponManager.IsCharging)
+            ? _weaponManager.ChargePercent : 0f;
+
+        _chargeBoostRampTimer = Mathf.Min(_chargeBoostRampTimer + dt, _chargeBoostRampDuration);
+        float ramp = _chargeBoostRampDuration > 0f
+            ? _chargeBoostRampTimer / _chargeBoostRampDuration
+            : 1f;
+
+        float speedBoost = _weaponManager != null ? _weaponManager.OrbitalChargeSpeedBoostMax : 2f;
+        _angleDeg += _orbitAngularSpeed * (1f + chargePercent * speedBoost * ramp) * dt;
+
+        if (chargePercent > 0f && _allOrbitals.Count > 0 && _allOrbitals[0] != this && _allOrbitals[0]._state == BallState.Orbit)
+        {
+            float clusterStrength = _weaponManager != null ? _weaponManager.OrbitalChargeClusterStrength : 2f;
+            float anchorAngle = _allOrbitals[0]._angleDeg;
+            float diff = Mathf.DeltaAngle(_angleDeg, anchorAngle);
+            _angleDeg += diff * chargePercent * clusterStrength * dt;
+        }
+
         NormalizeAngle();
 
         float radius = _orbitRadius;
@@ -270,6 +314,7 @@ public class OrbitalWeapon : MonoBehaviour
         _snapStartRadius = fromCenter.magnitude;
         _snapTimer = _snapDuration;
         _velocity = Vector2.zero;
+        _chargeBoostRampTimer = 0f;
         _state = BallState.Orbit;
 
         // Orbit 복귀 시 차지 퍼센트 초기화
@@ -380,6 +425,7 @@ public class OrbitalWeapon : MonoBehaviour
         while (_angleDeg >= 360.0f) _angleDeg -= 360.0f;
         while (_angleDeg < 0.0f) _angleDeg += 360.0f;
     }
+
 
     /// <summary>
     /// 무기 충돌로부터 발사 요청 (BatWeaponManager에서 호출)

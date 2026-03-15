@@ -67,7 +67,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: b2c3d4e5f6a74a89b0c1d2e3f4a5b6c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -172,6 +172,10 @@ MonoBehaviour:
   _noiseSpeed: 1.2
   _attackIntervalMin: 1
   _attackIntervalMax: 2
+  _hpScalePerWave: 0.1
+  _speedScalePerWave: 0.05
+  _stopDistanceScalePerWave: 0.05
+  _attackIntervalReducePerWave: 0.05
   _stopMoveWhileCasting: 0
   _skillSlots: []
 --- !u!114 &9169955409725018282

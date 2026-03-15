@@ -43,20 +43,10 @@ public class BatWeaponManager : MonoBehaviour
         _chargeSystem.HandleAttackInput(pressed, held, released);
     }
 
-    // Unity 물리 콜백 — 무기 콜라이더(isTrigger)가 다른 오브젝트에 닿을 때
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        _hitProcessor.OnWeaponTriggerEnter2D(collision);
-    }
-
-    // 외부에서 직접 호출하는 퍼블릭 인터페이스 (하위 호환)
-    public void OnWeaponTriggerEnter2D(Collider2D collision)
-    {
-        _hitProcessor.OnWeaponTriggerEnter2D(collision);
-    }
-
     public bool IsAttacking => _hitProcessor.IsAttacking;
     public bool IsCharging => _chargeSystem.IsCharging;
     public float ChargePercent => _chargeSystem.ChargePercent;
     public int CurrentChargeLevel => _chargeSystem.CurrentChargeLevel;
+    public float OrbitalChargeSpeedBoostMax => _chargeSystem.OrbitalChargeSpeedBoostMax;
+    public float OrbitalChargeClusterStrength => _chargeSystem.OrbitalChargeClusterStrength;
 }

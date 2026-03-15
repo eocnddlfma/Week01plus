@@ -31,7 +31,6 @@ public class WeaponHitProcessor : MonoBehaviour
     private float _currentAttackPower = 1f;
     private bool _isAttacking = false;
 
-    private HashSet<OrbitalWeapon> _hitBallsThisAttack = new HashSet<OrbitalWeapon>();
     private HashSet<EnemyBase> _hitEnemiesThisAttack = new HashSet<EnemyBase>();
     private Vector2 PlayerPosition => (Vector2)transform.root.position;
 
@@ -55,38 +54,6 @@ public class WeaponHitProcessor : MonoBehaviour
         if (!attacking)
         {
             _hitEnemiesThisAttack.Clear();
-            _hitBallsThisAttack.Clear();
-        }
-    }
-
-    public void OnWeaponTriggerEnter2D(Collider2D collision)
-    {
-        OrbitalWeapon orbitalWeapon = collision.GetComponent<OrbitalWeapon>();
-        if (orbitalWeapon != null)
-        {
-            orbitalWeapon.TriggerLaunchFromWeapon(_currentChargePercentForAttack, _currentAttackPower);
-            orbitalWeapon.PlayWeaponEffect(_weaponTransform, _currentChargePercentForAttack);
-            if (_isAttacking && !_hitBallsThisAttack.Contains(orbitalWeapon))
-                _hitBallsThisAttack.Add(orbitalWeapon);
-            return;
-        }
-
-        if (!_isAttacking) return;
-
-        int chargeLevel = Mathf.FloorToInt(_currentChargePercentForAttack * 4f);
-        chargeLevel = Mathf.Clamp(chargeLevel, 0, 3);
-
-        IEnemyProjectile projectile = collision.GetComponent<IEnemyProjectile>();
-        if (projectile != null)
-        {
-            HandleEnemyProjectile(projectile, chargeLevel);
-            return;
-        }
-
-        EnemyBase enemy = collision.GetComponent<EnemyBase>();
-        if (enemy != null && !_hitEnemiesThisAttack.Contains(enemy))
-        {
-            ApplyEnemyHit(enemy);
         }
     }
 

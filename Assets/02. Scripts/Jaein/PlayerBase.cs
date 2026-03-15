@@ -35,7 +35,8 @@ public class PlayerBase : EntityBase
         }
         else
         {
-            StartCoroutine(InvincibleRoutine(true));
+            float dur = _invincibleDuration * (PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.InvincibilityMult : 1f);
+            StartInvincible(dur, flash: true);
         }
     }
     protected override void OnDeath()
@@ -54,31 +55,30 @@ public class PlayerBase : EntityBase
         GameManager.Instance.GameOver();
     }
 
-    // PlayerController에서 대쉬 시 무적 코루틴 호출
-    protected IEnumerator InvincibleRoutine(bool isHit)
+    public void StartInvincible(float duration, bool flash = true)
+    {
+        StartCoroutine(InvincibleRoutine(duration, flash));
+    }
+
+    private IEnumerator InvincibleRoutine(float duration, bool flash)
     {
         _isInvincible = true;
-        float duration = _invincibleDuration * (PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.InvincibilityMult : 1f);
 
-        if (isHit)
+        if (flash)
         {
-            // [피격 시] 깜빡임 효과 수행
             float elapsed = 0f;
             while (elapsed < duration)
             {
                 if (_spriteRenderer != null)
                 {
                     Color c = _spriteRenderer.color;
-                    // 투명도를 0.2f와 1f 사이에서 토글
                     c.a = (c.a == 1f) ? 0.2f : 1f;
                     _spriteRenderer.color = c;
                 }
-
                 yield return new WaitForSeconds(_flashInterval);
                 elapsed += _flashInterval;
             }
 
-            // 루프 종료 후 불투명도 원상복구
             if (_spriteRenderer != null)
             {
                 Color finalColor = _spriteRenderer.color;
@@ -88,7 +88,7 @@ public class PlayerBase : EntityBase
         }
         else
         {
-            // [피격 아님] 깜빡임 없이 시간만 대기 (예: 아이템 획득 무적 등)
+            // 깜빡임 없이 시간만 대기 (예: 아이템 획득 무적 등)
             yield return new WaitForSeconds(duration);
         }
 
