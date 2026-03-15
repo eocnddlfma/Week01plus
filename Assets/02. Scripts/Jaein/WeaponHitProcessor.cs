@@ -20,6 +20,10 @@ public class WeaponHitProcessor : MonoBehaviour
     [SerializeField] private Transform _weaponTransform;
     [SerializeField] private Transform _endpointTransform;
 
+    [Header("Knockback Duration")]
+    [SerializeField] private float _knockbackMaxForce = 15f;
+    [SerializeField] private float _knockbackMaxDuration = 1f;
+
     private float _currentDamageAmount = 1;
     private float _currentKnockbackForce = 3f;
     private float _currentChargePercentForAttack = 0f;
@@ -103,14 +107,7 @@ public class WeaponHitProcessor : MonoBehaviour
 
     private void PushEnemyProjectile(IEnemyProjectile projectile)
     {
-        Rigidbody2D rb = projectile.Rb;
-        if (rb == null) return;
-
-        Vector2 direction = (PlayerPosition - rb.position).normalized;
-        if (direction.sqrMagnitude < 0.001f) direction = Vector2.right;
-
-        float speed = rb.linearVelocity.magnitude;
-        rb.linearVelocity = direction * speed * _currentKnockbackForce;
+        projectile.ReflectAsBatHit(0, _enemyReflectLayerMask);
     }
 
     private void ReflectEnemyProjectile(IEnemyProjectile projectile)
@@ -141,7 +138,9 @@ public class WeaponHitProcessor : MonoBehaviour
         _hitEnemiesThisAttack.Add(enemy);
 
         Vector2 knockbackDir = ((Vector2)enemy.transform.position - PlayerPosition).normalized;
-        enemy.AddExternalVelocity(knockbackDir * _currentKnockbackForce);
+        float t = Mathf.Clamp01(_currentKnockbackForce / _knockbackMaxForce);
+        float duration = (1f - (1f - t) * (1f - t) * (1f - t)) * _knockbackMaxDuration;
+        enemy.AddExternalVelocity(knockbackDir * _currentKnockbackForce, duration);
     }
 
     public bool IsAttacking => _isAttacking;

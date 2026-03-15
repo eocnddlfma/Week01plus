@@ -23,6 +23,12 @@ public class EnemySplit : EnemyBase
 
     protected override void FixedUpdate()
     {
+        if (IsKnockedBack)
+        {
+            base.FixedUpdate();
+            return;
+        }
+
         if (_isSplitting)
         {
             Rb.linearVelocity = Vector2.zero;

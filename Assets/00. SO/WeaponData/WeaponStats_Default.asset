@@ -32,7 +32,7 @@ MonoBehaviour:
     weaponColor: {r: 0.8113208, g: 0.4477572, b: 0.4477572, a: 1}
     weaponSizeMultiplier: 1
     knockbackForce: 5
-    damageAmount: 2
+    damageAmount: 5
     hitStopDurationMult: 1.21
   - levelName: 
     rotationAngle: 266.3
@@ -41,14 +41,14 @@ MonoBehaviour:
     weaponColor: {r: 0.8113208, g: 0.14925243, b: 0.14925243, a: 1}
     weaponSizeMultiplier: 2.18
     knockbackForce: 6.89
-    damageAmount: 90
+    damageAmount: 10
     hitStopDurationMult: 4.39
   - levelName: 
     rotationAngle: 307.7
     attackPower: 4
     rotationDuration: 0.3
     weaponColor: {r: 1, g: 0, b: 0, a: 1}
-    weaponSizeMultiplier: 3.22
-    knockbackForce: 10.05
-    damageAmount: 106
+    weaponSizeMultiplier: 4.09
+    knockbackForce: 36.19
+    damageAmount: 15
     hitStopDurationMult: 3.38

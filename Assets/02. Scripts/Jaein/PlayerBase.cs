@@ -6,8 +6,8 @@ public class PlayerBase : EntityBase
 {
     [Header("Player Visuals")]
     [SerializeField] protected SpriteRenderer _spriteRenderer;
-    [SerializeField] private float _invincibleDuration = 1.0f;
-    [SerializeField] private float _flashInterval = 0.1f;
+    [SerializeField] protected float _invincibleDuration = 1.0f;
+    [SerializeField] protected float _flashInterval = 0.1f;
 
     private bool _isInvincible = false;
 

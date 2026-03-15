@@ -55,6 +55,10 @@ public class PlayerController : PlayerBase
     {
         if (_statsData == null) return;
 
+        _maxHp = _statsData.maxHp;
+        _hp = _maxHp;
+        _invincibleDuration = _statsData.invincibleDuration;
+        _flashInterval = _statsData.flashInterval;
         _movement.SetStats(_statsData.moveSpeed, _statsData.rotationSpeed);
         _dash.SetStats(_statsData.dashSpeed, _statsData.dashDuration, _statsData.dashCooldown);
     }

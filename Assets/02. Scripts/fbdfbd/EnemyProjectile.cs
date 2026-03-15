@@ -5,6 +5,7 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
     [SerializeField] private Rigidbody2D _rb;
 
     public Rigidbody2D Rb => _rb;
+    public float Speed => _speed;
 
     private int _damage;
     private float _speed;
@@ -90,9 +91,5 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
         var sr = GetComponent<SpriteRenderer>();
         if (sr.color == Color.white)
             sr.color = _originalColor;
-
-        // BossSkillPhase1Rain이 localScale 변경 → 복원
-        if (transform.localScale != Vector3.one)
-            transform.localScale = Vector3.one;
     }
 }

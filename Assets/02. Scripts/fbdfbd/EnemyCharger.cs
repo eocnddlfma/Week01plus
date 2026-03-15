@@ -79,6 +79,12 @@ public class EnemyCharger : EnemyBase
             return;
         }
 
+        if (IsKnockedBack)
+        {
+            base.FixedUpdate();
+            return;
+        }
+
         switch (_state)
         {
             case MoveState.Approach:

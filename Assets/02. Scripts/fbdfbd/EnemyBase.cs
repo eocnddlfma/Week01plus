@@ -38,8 +38,17 @@ public abstract class EnemyBase : EntityBase
     public Transform Target => _target;
     public event Action<int> OnDamaged;
 
-    private Vector2 _externalVelocity;
-    public void AddExternalVelocity(Vector2 vel) => _externalVelocity += vel;
+    private Vector2 _knockbackVelocity;
+    private float _knockbackStartTime = -1f;
+    private float _knockbackDuration = 0f;
+    protected bool IsKnockedBack => Time.time < _knockbackStartTime + _knockbackDuration;
+
+    public void AddExternalVelocity(Vector2 vel, float duration = 0f)
+    {
+        _knockbackVelocity = vel;
+        _knockbackStartTime = Time.time;
+        _knockbackDuration = duration;
+    }
 
     // Range Enemy에서 사용
     protected Vector2 LastDir { get; private set; } = Vector2.down;
@@ -77,7 +86,8 @@ public abstract class EnemyBase : EntityBase
         if (_statsData == null) return;
         _moveSpeed = _statsData.moveSpeed;
         _stopDistance = _statsData.stopDistance;
-        // hp는 EntityBase에서 설정하므로 생략 (필요시 추가)
+        _hp = _statsData.hp;
+        _maxHp = _statsData.hp;
     }
 
     protected virtual void Update()
@@ -119,6 +129,14 @@ public abstract class EnemyBase : EntityBase
             return;
         }
 
+        if (IsKnockedBack)
+        {
+            float t = Mathf.Clamp01((Time.time - _knockbackStartTime) / _knockbackDuration);
+            Rb.linearVelocity = Vector2.Lerp(_knockbackVelocity, Vector2.zero, t);
+            _currentVelocity = Vector2.zero;
+            return;
+        }
+
         Vector2 realTargetPos = (Vector2)_target.position;
         Vector2 toRealTarget = realTargetPos - Rb.position;
         float distToRealTarget = toRealTarget.magnitude;
@@ -140,8 +158,7 @@ public abstract class EnemyBase : EntityBase
             targetVelocity,
             _moveLerpSpeed * Time.fixedDeltaTime);
 
-        Rb.linearVelocity = _currentVelocity + _externalVelocity;
-        _externalVelocity = Vector2.zero;
+        Rb.linearVelocity = _currentVelocity;
     }
 
     private Vector2 CalculateMoveDirection()
@@ -243,7 +260,7 @@ public abstract class EnemyBase : EntityBase
         // 적이 죽을 때 직접 이벤트 호출
         GameEvents.RaiseEnemyKilled(this);
 
-        GameManager.Instance.AddScore(100);
+        GameManager.Instance.AddScore(_statsData != null ? _statsData.scoreReward : 100);
         ReturnToPool();
     }
 
@@ -257,9 +274,11 @@ public abstract class EnemyBase : EntityBase
     {
         // 기본 상태 리셋
         _isDead = false;
-        _hp = 1;
+        _hp = _maxHp;
         _currentVelocity = Vector2.zero;
-        _externalVelocity = Vector2.zero;
+        _knockbackVelocity = Vector2.zero;
+        _knockbackStartTime = -1f;
+        _knockbackDuration = 0f;
         Rb.linearVelocity = Vector2.zero;
         _target = null;
         _isEnemyCountRegistered = false;

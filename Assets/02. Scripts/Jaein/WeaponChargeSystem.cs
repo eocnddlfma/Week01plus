@@ -15,7 +15,6 @@ public class WeaponChargeSystem : MonoBehaviour
         public float rotationDuration = 0.3f;
         public Color weaponColor = Color.white;
         public float weaponSizeMultiplier = 1f;
-        public bool knockbackEnemies = true;
         public float knockbackForce = 5f;
         public int damageAmount = 1;
         public float hitStopDurationMult = 1f;

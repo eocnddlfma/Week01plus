@@ -14,6 +14,7 @@ public class BossEnemyProjectile : MonoBehaviour, IEnemyProjectile
     private GameObject _owner;
 
     public Rigidbody2D Rb => _rb;
+    public float Speed => _speed;
 
     private void Awake()
     {
