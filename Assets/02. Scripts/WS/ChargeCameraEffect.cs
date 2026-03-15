@@ -38,7 +38,12 @@ public class ChargeCameraEffect : MonoBehaviour
     [SerializeField] private float _damagedKickDistance = 0.18f;
     [SerializeField] private bool _useDamageKickBack = true;
 
+    [Header("Dynamic Follow")]
+    [SerializeField] private float _playerWeight = 4f;
+    [SerializeField] private float _orbitalWeight = 6f;
+
     private PlayerController _playerController;
+    private OrbitalWeapon[] _orbitalWeapons;
 
     private bool _isCharging;
     private float _baseSize;
@@ -84,6 +89,7 @@ public class ChargeCameraEffect : MonoBehaviour
         }
 
         CachePlayerController();
+        _orbitalWeapons = FindObjectsByType<OrbitalWeapon>(FindObjectsSortMode.None);
     }
 
     private void OnEnable()
@@ -106,7 +112,8 @@ public class ChargeCameraEffect : MonoBehaviour
         if (_targetCamera == null)
             return;
 
-        Vector3 targetBasePos = _basePosition + positionOffset;
+        Vector3 dynamicXY = GetWeightedCenter();
+        Vector3 targetBasePos = new Vector3(dynamicXY.x, dynamicXY.y, _basePosition.z) + positionOffset;
         float targetSize = _baseSize + sizeOffset;
 
         if (_isCharging && _player != null)
@@ -255,6 +262,34 @@ public class ChargeCameraEffect : MonoBehaviour
     private void HandleDamaged(int currentHp)
     {
         _damagedShakeTimer = _damagedShakeDuration;
+    }
+
+    private Vector3 GetWeightedCenter()
+    {
+        if (_player == null) return _basePosition;
+
+        Vector2 playerPos = _player.position;
+
+        // 활성화된 공들의 평균 위치 계산
+        Vector2 orbitalAvg = playerPos;
+        int activeCount = 0;
+        if (_orbitalWeapons != null)
+        {
+            Vector2 sum = Vector2.zero;
+            foreach (var orb in _orbitalWeapons)
+            {
+                if (orb != null && orb.gameObject.activeInHierarchy)
+                {
+                    sum += (Vector2)orb.transform.position;
+                    activeCount++;
+                }
+            }
+            if (activeCount > 0) orbitalAvg = sum / activeCount;
+        }
+
+        float totalWeight = _playerWeight + _orbitalWeight;
+        Vector2 weighted = (playerPos * _playerWeight + orbitalAvg * _orbitalWeight) / totalWeight;
+        return new Vector3(weighted.x, weighted.y, 0f);
     }
 
     private Vector3 GetPlayerDirFromCenter()
