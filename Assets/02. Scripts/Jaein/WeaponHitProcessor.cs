@@ -35,12 +35,14 @@ public class WeaponHitProcessor : MonoBehaviour
     private Vector2 PlayerPosition => (Vector2)transform.root.position;
 
     private HitStopController _hitStopController;
+    private BatWeaponManager _weaponManager;
 
     private void Awake()
     {
         if (_weaponTransform == null) _weaponTransform = transform;
         if (_endpointTransform == null) _endpointTransform = transform.Find("EndPoint");
         _hitStopController = GetComponent<HitStopController>();
+        _weaponManager = GetComponentInParent<BatWeaponManager>();
     }
 
     public void SetAttackState(bool attacking, float chargePercent, int damageAmount, float knockbackForce, float attackPower = 1f)
@@ -77,7 +79,9 @@ public class WeaponHitProcessor : MonoBehaviour
 
     private void PushEnemyProjectile(IEnemyProjectile projectile)
     {
-        projectile.Deflect();
+        float duration = _weaponManager != null ? _weaponManager.ProjectileDeflectDuration : 0.12f;
+        float speed = _weaponManager != null ? _weaponManager.ProjectileDeflectSpeed : 8f;
+        projectile.Deflect(duration, speed);
     }
 
     private void ReflectEnemyProjectile(IEnemyProjectile projectile)

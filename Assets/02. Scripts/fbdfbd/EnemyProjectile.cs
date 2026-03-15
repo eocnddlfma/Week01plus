@@ -12,6 +12,7 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
     private float _spawnTime;
     private Vector2 _direction;
     private Vector2 _originalDirection;
+    private float _originalSpeed;
     private float _deflectTimer;
     private LayerMask _targetMask;
     private GameObject _owner;
@@ -48,7 +49,10 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
         {
             _deflectTimer -= Time.fixedDeltaTime;
             if (_deflectTimer <= 0f)
+            {
                 _direction = _originalDirection;
+                _speed = _originalSpeed;
+            }
         }
 
         _rb.position += _direction * _speed * Time.fixedDeltaTime;
@@ -68,10 +72,12 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
         ReturnToPool();
     }
 
-    public void Deflect(float duration)
+    public void Deflect(float duration, float speed)
     {
         _originalDirection = _direction;
+        _originalSpeed = _speed;
         _direction = -_direction;
+        _speed = speed;
         _deflectTimer = duration;
     }
 

@@ -12,6 +12,7 @@ public class BossEnemyProjectile : MonoBehaviour, IEnemyProjectile
     private GameObject _owner;
     private bool _isReflected;
     private float _deflectTimer;
+    private float _originalSpeed;
 
     public Rigidbody2D Rb => _rb;
     public float Speed => _speed;
@@ -43,7 +44,10 @@ public class BossEnemyProjectile : MonoBehaviour, IEnemyProjectile
         {
             _deflectTimer -= Time.fixedDeltaTime;
             if (_deflectTimer <= 0f)
-                transform.Rotate(0f, 0f, 180f); // 원래 방향 복귀
+            {
+                transform.Rotate(0f, 0f, 180f);
+                _speed = _originalSpeed;
+            }
         }
 
         _rb.position += (Vector2)(-transform.up) * _speed * Time.fixedDeltaTime;
@@ -67,9 +71,11 @@ public class BossEnemyProjectile : MonoBehaviour, IEnemyProjectile
         if (usage <= 0) Destroy(gameObject);
     }
 
-    public void Deflect(float duration)
+    public void Deflect(float duration, float speed)
     {
+        _originalSpeed = _speed;
         transform.Rotate(0f, 0f, 180f);
+        _speed = speed;
         _deflectTimer = duration;
     }
 
