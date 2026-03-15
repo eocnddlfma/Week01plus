@@ -21,4 +21,5 @@ public class OrbitalStatsData : ScriptableObject
     public int baseDamage = 2;
     public int maxChargeDamage = 20;
     public float varianceRange = 0.1f;
+    public float knockbackForce = 0.4f;
 }

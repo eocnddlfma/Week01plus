@@ -20,13 +20,15 @@ public class WeaponHitProcessor : MonoBehaviour
     [SerializeField] private Transform _weaponTransform;
     [SerializeField] private Transform _endpointTransform;
 
-    [Header("Knockback Duration")]
+    [Header("Knockback")]
+    [SerializeField] private float _knockbackSpeedMult = 2f;
     [SerializeField] private float _knockbackMaxForce = 15f;
-    [SerializeField] private float _knockbackMaxDuration = 1f;
+    [SerializeField] private float _knockbackMaxDuration = 0.25f;
 
     private float _currentDamageAmount = 1;
     private float _currentKnockbackForce = 3f;
     private float _currentChargePercentForAttack = 0f;
+    private float _currentAttackPower = 1f;
     private bool _isAttacking = false;
 
     private HashSet<OrbitalWeapon> _hitBallsThisAttack = new HashSet<OrbitalWeapon>();
@@ -42,12 +44,13 @@ public class WeaponHitProcessor : MonoBehaviour
         _hitStopController = GetComponent<HitStopController>();
     }
 
-    public void SetAttackState(bool attacking, float chargePercent, int damageAmount, float knockbackForce)
+    public void SetAttackState(bool attacking, float chargePercent, int damageAmount, float knockbackForce, float attackPower = 1f)
     {
         _isAttacking = attacking;
         _currentChargePercentForAttack = chargePercent;
         _currentDamageAmount = damageAmount;
         _currentKnockbackForce = knockbackForce;
+        _currentAttackPower = attackPower;
 
         if (!attacking)
         {
@@ -61,7 +64,7 @@ public class WeaponHitProcessor : MonoBehaviour
         OrbitalWeapon orbitalWeapon = collision.GetComponent<OrbitalWeapon>();
         if (orbitalWeapon != null)
         {
-            orbitalWeapon.TriggerLaunchFromWeapon(_currentChargePercentForAttack);
+            orbitalWeapon.TriggerLaunchFromWeapon(_currentChargePercentForAttack, _currentAttackPower);
             orbitalWeapon.PlayWeaponEffect(_weaponTransform, _currentChargePercentForAttack);
             if (_isAttacking && !_hitBallsThisAttack.Contains(orbitalWeapon))
                 _hitBallsThisAttack.Add(orbitalWeapon);
@@ -140,7 +143,7 @@ public class WeaponHitProcessor : MonoBehaviour
         Vector2 knockbackDir = ((Vector2)enemy.transform.position - PlayerPosition).normalized;
         float t = Mathf.Clamp01(_currentKnockbackForce / _knockbackMaxForce);
         float duration = (1f - (1f - t) * (1f - t) * (1f - t)) * _knockbackMaxDuration;
-        enemy.AddExternalVelocity(knockbackDir * _currentKnockbackForce, duration);
+        enemy.AddExternalVelocity(knockbackDir * (_currentKnockbackForce * _knockbackSpeedMult), duration);
     }
 
     public bool IsAttacking => _isAttacking;

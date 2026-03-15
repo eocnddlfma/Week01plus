@@ -26,7 +26,11 @@
       "Bash(grep -r \"\\\\\"m_Script.*\\\\}: {fileID: 0}\" \"Assets/02. Prefab\" --include=\"*.prefab\" 2>/dev/null | head -20)",
       "mcp__ide__getDiagnostics",
       "Bash(find:*)",
-      "mcp__UnityMCP__find_gameobjects"
+      "mcp__UnityMCP__find_gameobjects",
+      "Bash(mv AugmentData.cs.meta UpgradeData.cs.meta)",
+      "Bash(mv AugmentManager.cs.meta UpgradeManager.cs.meta)",
+      "Bash(mv AugmentUI.cs.meta UpgradeUI.cs.meta)",
+      "Bash(mv AugmentCard.cs.meta UpgradeCard.cs.meta)"
     ]
   }
 }

@@ -4,16 +4,16 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// 증강 선택 카드 UI 컴포넌트.
+/// 업그레이드 선택 카드 UI 컴포넌트.
 ///
 /// 카드 프리팹 구조:
-///   Card (Image + Button + AugmentCard)
+///   Card (Image + Button + UpgradeCard)
 ///   ├── RarityBorder (Image) - 등급 색상 테두리
-///   ├── Icon (Image) - 증강 아이콘 (선택사항)
-///   ├── NameText (TextMeshProUGUI) - 증강 이름
-///   └── DescriptionText (TextMeshProUGUI) - 증강 설명
+///   ├── Icon (Image) - 업그레이드 아이콘 (선택사항)
+///   ├── NameText (TextMeshProUGUI) - 업그레이드 이름
+///   └── DescriptionText (TextMeshProUGUI) - 업그레이드 설명
 /// </summary>
-public class AugmentCard : MonoBehaviour
+public class UpgradeCard : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] private Image _background;
@@ -28,16 +28,16 @@ public class AugmentCard : MonoBehaviour
     [SerializeField] private Color _rareColor = new Color(0.2f, 0.5f, 1f);
     [SerializeField] private Color _epicColor = new Color(0.75f, 0.2f, 1f);
 
-    private AugmentData _data;
-    private Action<AugmentData> _onClick;
+    private UpgradeData _data;
+    private Action<UpgradeData> _onClick;
 
-    public void Setup(AugmentData data, Action<AugmentData> onClick)
+    public void Setup(UpgradeData data, Action<UpgradeData> onClick)
     {
         _data = data;
         _onClick = onClick;
 
         if (_nameText != null)
-            _nameText.text = data.augmentName;
+            _nameText.text = data.upgradeName;
 
         if (_descriptionText != null)
             _descriptionText.text = data.description;
@@ -61,9 +61,9 @@ public class AugmentCard : MonoBehaviour
         {
             _rarityBorder.color = data.rarity switch
             {
-                AugmentRarity.Common => _commonColor,
-                AugmentRarity.Rare => _rareColor,
-                AugmentRarity.Epic => _epicColor,
+                UpgradeRarity.Common => _commonColor,
+                UpgradeRarity.Rare => _rareColor,
+                UpgradeRarity.Epic => _epicColor,
                 _ => _commonColor
             };
         }

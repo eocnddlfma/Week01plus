@@ -78,8 +78,10 @@ public class WeaponSwingSystem : MonoBehaviour
         float kbMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.KnockbackMult : 1f;
         int dynamicDamageAmount = Mathf.RoundToInt(Mathf.Lerp(minLevel.damageAmount, maxLevel.damageAmount, chargePercent) * batDmgMult);
         float dynamicKnockbackForce = Mathf.Lerp(minLevel.knockbackForce, maxLevel.knockbackForce, chargePercent) * kbMult;
+        int chargeLevel = Mathf.Min(3, Mathf.FloorToInt(chargePercent * 4f));
+        float dynamicAttackPower = _chargeLevels[chargeLevel].attackPower;
 
-        _hitProcessor.SetAttackState(true, chargePercent, dynamicDamageAmount, dynamicKnockbackForce);
+        _hitProcessor.SetAttackState(true, chargePercent, dynamicDamageAmount, dynamicKnockbackForce, dynamicAttackPower);
 
         Transform pivot = transform.parent;
         if (pivot == null)

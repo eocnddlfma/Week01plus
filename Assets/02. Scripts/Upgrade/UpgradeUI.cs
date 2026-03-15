@@ -4,35 +4,35 @@ using UnityEngine;
 using DG.Tweening;
 
 /// <summary>
-/// 증강 선택 UI 패널.
+/// 업그레이드 선택 UI 패널.
 ///
 /// 프리팹 구조:
-///   AugmentUI (CanvasGroup + AugmentUI)
+///   UpgradeUI (CanvasGroup + UpgradeUI)
 ///   ├── Overlay (Image, 검정 반투명)
 ///   └── Panel (RectTransform)
-///       ├── TitleText (TextMeshProUGUI) - "증강 선택" (선택사항)
+///       ├── TitleText (TextMeshProUGUI) - "업그레이드 선택" (선택사항)
 ///       └── CardContainer
-///           ├── Card0 (AugmentCard)
-///           ├── Card1 (AugmentCard)
-///           └── Card2 (AugmentCard)
+///           ├── Card0 (UpgradeCard)
+///           ├── Card1 (UpgradeCard)
+///           └── Card2 (UpgradeCard)
 ///
 /// Canvas에 부착하고 CanvasGroup 컴포넌트가 필요합니다.
 /// </summary>
-public class AugmentUI : MonoBehaviour
+public class UpgradeUI : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private RectTransform _panel;
-    [SerializeField] private AugmentCard[] _cards;
+    [SerializeField] private UpgradeCard[] _cards;
 
     [Header("애니메이션 설정")]
     [SerializeField] private float _fadeInDuration = 0.3f;
     [SerializeField] private float _cardAppearDelay = 0.1f;
     [SerializeField] private float _fadeOutDuration = 0.2f;
 
-    private Action<AugmentData> _onSelected;
+    private Action<UpgradeData> _onSelected;
 
-    public void Show(List<AugmentData> choices, Action<AugmentData> onSelected)
+    public void Show(List<UpgradeData> choices, Action<UpgradeData> onSelected)
     {
         _onSelected = onSelected;
         gameObject.SetActive(true);
@@ -84,7 +84,7 @@ public class AugmentUI : MonoBehaviour
         }
     }
 
-    private void OnCardClicked(AugmentData data)
+    private void OnCardClicked(UpgradeData data)
     {
         // 중복 클릭 방지
         foreach (var card in _cards)

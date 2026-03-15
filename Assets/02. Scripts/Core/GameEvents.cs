@@ -39,11 +39,11 @@ public static class GameEvents
     /// </summary>
     public static event Action<bool> OnWaveCleared;
 
-    // ============= 증강 시스템 =============
+    // ============= 업그레이드 시스템 =============
     /// <summary>
-    /// 증강이 선택/적용될 때 발화
+    /// 업그레이드가 선택/적용될 때 발화
     /// </summary>
-    public static event Action<AugmentData> OnAugmentApplied;
+    public static event Action<UpgradeData> OnUpgradeApplied;
 
     // ============= Raise 메서드 =============
     public static void RaiseGameStateChanged(GameManager.GameState state) => OnGameStateChanged?.Invoke(state);
@@ -52,5 +52,5 @@ public static class GameEvents
     public static void RaisePlayerDamaged(int remainingHp) => OnPlayerDamaged?.Invoke(remainingHp);
     public static void RaiseWaveStarted(int waveIndex) => OnWaveStarted?.Invoke(waveIndex);
     public static void RaiseWaveCleared(bool isBoss) => OnWaveCleared?.Invoke(isBoss);
-    public static void RaiseAugmentApplied(AugmentData data) => OnAugmentApplied?.Invoke(data);
+    public static void RaiseUpgradeApplied(UpgradeData data) => OnUpgradeApplied?.Invoke(data);
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// 플레이어 스탯 수정자 (싱글톤).
 /// 증강 시스템에서 이 값을 변경하면 기존 시스템들이 자동으로 반영합니다.
-/// 플레이어 루트 오브젝트에 부착하거나, AugmentManager가 자동으로 추가합니다.
+/// 플레이어 루트 오브젝트에 부착하거나, UpgradeManager가 자동으로 추가합니다.
 /// </summary>
 public class PlayerStatModifier : MonoBehaviour
 {

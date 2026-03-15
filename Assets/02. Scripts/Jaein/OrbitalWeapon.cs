@@ -54,6 +54,7 @@ public class OrbitalWeapon : MonoBehaviour
     [SerializeField] private int _baseDamage = 2;
     [SerializeField] private int _maxChargeDamage = 20;
     [SerializeField] private float _varianceRange = 0.1f;
+    [SerializeField] private float _knockbackForce = 4f;
 
     [Header("Debug")]
     [SerializeField] private bool _drawOrbitGizmo = true;
@@ -73,6 +74,7 @@ public class OrbitalWeapon : MonoBehaviour
 
     // 발사 시 저장된 차지 퍼센트 (Orbit 복귀 시 초기화)
     private float _chargePercent = 0f;
+    private float _attackPower = 1f;
 
     protected virtual void Awake()
     {
@@ -97,6 +99,7 @@ public class OrbitalWeapon : MonoBehaviour
         _baseDamage = _statsData.baseDamage;
         _maxChargeDamage = _statsData.maxChargeDamage;
         _varianceRange = _statsData.varianceRange;
+        _knockbackForce = _statsData.knockbackForce;
     }
 
     protected virtual void Start()
@@ -381,9 +384,10 @@ public class OrbitalWeapon : MonoBehaviour
     /// <summary>
     /// 무기 충돌로부터 발사 요청 (BatWeaponManager에서 호출)
     /// </summary>
-    public void TriggerLaunchFromWeapon(float chargePercent)
+    public void TriggerLaunchFromWeapon(float chargePercent, float attackPower = 1f)
     {
         _chargePercent = chargePercent;
+        _attackPower = attackPower;
         Launch(_chargePercent);
     }
 
@@ -422,18 +426,57 @@ public class OrbitalWeapon : MonoBehaviour
         {
             if (_state == BallState.Orbit) return;
 
-            int finalDamage = CalculateDamage(_chargePercent);
+            int finalDamage = CalculateDamage(_chargePercent, _attackPower);
+            bool isFullCharge = _chargePercent >= 0.999f;
+            _chargePercent = 0f;
+            _attackPower = 1f;
 
-            enemy.TakeDamage(finalDamage, _chargePercent >= 0.999f);
+            enemy.TakeDamage(finalDamage, isFullCharge);
+            ApplyKnockback(enemy);
 
-            return; 
+            return;
         }
     }
 
-    private int CalculateDamage(float chargePercent)
+    private void ApplyKnockback(EnemyBase enemy)
+    {
+        if (_knockbackForce <= 0f || _center == null) return;
+
+        Vector2 ballDir = _velocity.normalized;
+        if (ballDir.sqrMagnitude < 0.001f) return;
+
+        Vector2 toPlayer = ((Vector2)_center.position - (Vector2)transform.position).normalized;
+        float dot = Vector2.Dot(ballDir, toPlayer);
+
+        Vector2 knockbackDir;
+        if (dot > 0f)
+        {
+            // 플레이어 쪽으로 향하는 중 → 수직 방향으로 보정
+            Vector2 sideways = ballDir - dot * toPlayer;
+            if (sideways.sqrMagnitude > 0.001f)
+                knockbackDir = Vector2.Lerp(ballDir, sideways.normalized, dot).normalized;
+            else
+                knockbackDir = Vector2.Perpendicular(toPlayer).normalized;
+        }
+        else
+        {
+            // 플레이어 반대 방향으로 향하는 중 → 진행 방향 그대로
+            knockbackDir = ballDir;
+        }
+
+        float kbMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.KnockbackMult : 1f;
+        float force = _velocity.magnitude * _knockbackForce * kbMult;
+
+        float t = Mathf.Clamp01(force / 15f);
+        float duration = (1f - (1f - t) * (1f - t) * (1f - t)) * 0.25f;
+
+        enemy.AddExternalVelocity(knockbackDir * force, duration);
+    }
+
+    private int CalculateDamage(float chargePercent, float attackPower = 1f)
     {
         float ballDmgMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.BallDamageMult : 1f;
-        float rawDamage = Mathf.Lerp(_baseDamage, _maxChargeDamage, chargePercent) * ballDmgMult;
+        float rawDamage = Mathf.Lerp(_baseDamage, _maxChargeDamage, chargePercent) * attackPower * ballDmgMult;
         float variance = rawDamage * _varianceRange;
 
         float finalDamage = Random.Range(rawDamage - variance, rawDamage + variance);
