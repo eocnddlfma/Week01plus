@@ -151,7 +151,8 @@ public abstract class EnemyBase : EntityBase
         if (IsKnockedBack)
         {
             float t = Mathf.Clamp01((Time.time - _knockbackStartTime) / _knockbackDuration);
-            Rb.linearVelocity = Vector2.Lerp(_knockbackVelocity, Vector2.zero, t);
+            float eased = 1f - (1f - t) * (1f - t);
+            Rb.linearVelocity = Vector2.Lerp(_knockbackVelocity, Vector2.zero, eased);
             _currentVelocity = Vector2.zero;
             return;
         }

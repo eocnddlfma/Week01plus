@@ -2156,11 +2156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f033b8ee06e9674f89f51d9a51a43d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveComingText
---- !u!4 &1083152894 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2915721794408734461, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-  m_PrefabInstance: {fileID: 1224314245}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1118066830
 GameObject:
   m_ObjectHideFlags: 0
@@ -2240,79 +2235,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1224314245
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1259080503}
-    m_Modifications:
-    - target: {fileID: 2915721794408734461, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.13626
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915721794408734461, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.07873
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915721794408734461, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915721794408734461, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915721794408734461, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915721794408734461, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915721794408734461, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915721794408734461, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915721794408734461, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915721794408734461, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3087696142412877349, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: _defaultDuration
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 3087696142412877349, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: _slowedTimeScale
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6826353832150469783, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_Name
-      value: NormalSatellite Variant (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7671693700863470669, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_GravityScale
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7671693700863470669, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
-      propertyPath: m_AngularDamping
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4c11bb84371a20d41ba5c367faeac42e, type: 3}
 --- !u!1 &1259080502
 GameObject:
   m_ObjectHideFlags: 0
@@ -2343,7 +2265,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1262049637}
-  - {fileID: 1083152894}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1262049637 stripped

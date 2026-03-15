@@ -9,6 +9,9 @@ public class WeaponStatsData : ScriptableObject
     public float chargeThreshold = 0.2f;
     public float orbitalChargeSpeedBoostMax = 2f;
     public float orbitalChargeClusterStrength = 2f;
+    public float orbitalChargeBoostRampDuration = 0.5f;
+    public float projectileDeflectDuration = 0.12f;
+    public float projectileDeflectSpeed = 8f;
 
     [Header("차지 레벨 (4단계)")]
     public ChargeLevelData[] chargeLevels = new ChargeLevelData[4];

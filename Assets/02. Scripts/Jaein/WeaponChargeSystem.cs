@@ -249,4 +249,7 @@ public class WeaponChargeSystem : MonoBehaviour
     public ChargeLevel[] ChargeLevels => _chargeLevels;
     public float OrbitalChargeSpeedBoostMax => _statsData != null ? _statsData.orbitalChargeSpeedBoostMax : 2f;
     public float OrbitalChargeClusterStrength => _statsData != null ? _statsData.orbitalChargeClusterStrength : 2f;
+    public float OrbitalChargeBoostRampDuration => _statsData != null ? _statsData.orbitalChargeBoostRampDuration : 0.5f;
+    public float ProjectileDeflectDuration => _statsData != null ? _statsData.projectileDeflectDuration : 0.12f;
+    public float ProjectileDeflectSpeed => _statsData != null ? _statsData.projectileDeflectSpeed : 8f;
 }

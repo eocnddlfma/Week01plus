@@ -23,7 +23,7 @@ public class WeaponHitProcessor : MonoBehaviour
     [Header("Knockback")]
     [SerializeField] private float _knockbackSpeedMult = 2f;
     [SerializeField] private float _knockbackMaxForce = 15f;
-    [SerializeField] private float _knockbackMaxDuration = 0.25f;
+    [SerializeField] private float _knockbackMaxDuration = 0.15f;
 
     private float _currentDamageAmount = 1;
     private float _currentKnockbackForce = 3f;
@@ -67,7 +67,7 @@ public class WeaponHitProcessor : MonoBehaviour
                 PushEnemyProjectile(projectile);
                 break;
             case 2:
-                Destroy((projectile as Component).gameObject);
+                projectile.DisableProjectile();
                 break;
             case 3:
                 ReflectEnemyProjectile(projectile);
@@ -77,7 +77,7 @@ public class WeaponHitProcessor : MonoBehaviour
 
     private void PushEnemyProjectile(IEnemyProjectile projectile)
     {
-        projectile.ReflectAsBatHit(0, _enemyReflectLayerMask);
+        projectile.Deflect();
     }
 
     private void ReflectEnemyProjectile(IEnemyProjectile projectile)

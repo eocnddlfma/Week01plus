@@ -58,7 +58,6 @@ public class OrbitalWeapon : MonoBehaviour
     [SerializeField] private float _knockbackForce = 4f;
 
     [Header("Charge Orbit Effect")]
-    [SerializeField] private float _chargeBoostRampDuration = 0.5f;
 
     [Header("Debug")]
     [SerializeField] private bool _drawOrbitGizmo = true;
@@ -177,10 +176,9 @@ public class OrbitalWeapon : MonoBehaviour
         float chargePercent = (_weaponManager != null && _weaponManager.IsCharging)
             ? _weaponManager.ChargePercent : 0f;
 
-        _chargeBoostRampTimer = Mathf.Min(_chargeBoostRampTimer + dt, _chargeBoostRampDuration);
-        float ramp = _chargeBoostRampDuration > 0f
-            ? _chargeBoostRampTimer / _chargeBoostRampDuration
-            : 1f;
+        float rampDuration = _weaponManager != null ? _weaponManager.OrbitalChargeBoostRampDuration : 0.5f;
+        _chargeBoostRampTimer = Mathf.Min(_chargeBoostRampTimer + dt, rampDuration);
+        float ramp = rampDuration > 0f ? _chargeBoostRampTimer / rampDuration : 1f;
 
         float speedBoost = _weaponManager != null ? _weaponManager.OrbitalChargeSpeedBoostMax : 2f;
         _angleDeg += _orbitAngularSpeed * (1f + chargePercent * speedBoost * ramp) * dt;
@@ -215,6 +213,7 @@ public class OrbitalWeapon : MonoBehaviour
         if (_stateTimer <= 0.0f)
         {
             _returnTimeElapsed = 0.0f;
+            _chargePercent *= 0.5f;
             _state = BallState.Returning;
         }
     }
@@ -474,8 +473,6 @@ public class OrbitalWeapon : MonoBehaviour
 
             int finalDamage = CalculateDamage(_chargePercent, _attackPower);
             bool isFullCharge = _chargePercent >= 0.999f;
-            _chargePercent = 0f;
-            _attackPower = 1f;
 
             enemy.TakeDamage(finalDamage, isFullCharge);
             ApplyKnockback(enemy);
@@ -514,7 +511,7 @@ public class OrbitalWeapon : MonoBehaviour
         float force = _velocity.magnitude * _knockbackForce * kbMult;
 
         float t = Mathf.Clamp01(force / 15f);
-        float duration = (1f - (1f - t) * (1f - t) * (1f - t)) * 0.25f;
+        float duration = (1f - (1f - t) * (1f - t) * (1f - t)) * 0.15f;
 
         enemy.AddExternalVelocity(knockbackDir * force, duration);
     }

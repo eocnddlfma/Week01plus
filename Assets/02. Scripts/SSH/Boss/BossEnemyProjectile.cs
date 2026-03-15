@@ -2,17 +2,16 @@ using UnityEngine;
 
 public class BossEnemyProjectile : MonoBehaviour, IEnemyProjectile
 {
-
-    [SerializeField]private int _damage;
+    [SerializeField] private int _damage;
     [SerializeField] private float _speed;
     [SerializeField] private float LifeTime = 4f;
     [SerializeField] private int usage = 1;
-
     private Rigidbody2D _rb;
     private float _spawnTime;
     [SerializeField] private LayerMask _targetMask;
     private GameObject _owner;
     private bool _isReflected;
+    private float _deflectTimer;
 
     public Rigidbody2D Rb => _rb;
     public float Speed => _speed;
@@ -34,16 +33,23 @@ public class BossEnemyProjectile : MonoBehaviour, IEnemyProjectile
         this._targetMask = targetMask;
         this._owner = owner;
         _spawnTime = Time.time;
+        _isReflected = false;
+        _deflectTimer = 0f;
     }
 
     private void FixedUpdate()
     {
+        if (_deflectTimer > 0f)
+        {
+            _deflectTimer -= Time.fixedDeltaTime;
+            if (_deflectTimer <= 0f)
+                transform.Rotate(0f, 0f, 180f); // 원래 방향 복귀
+        }
+
         _rb.position += (Vector2)(-transform.up) * _speed * Time.fixedDeltaTime;
 
         if (Time.time - _spawnTime >= LifeTime)
-        {
             Destroy(gameObject);
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -61,8 +67,20 @@ public class BossEnemyProjectile : MonoBehaviour, IEnemyProjectile
         if (usage <= 0) Destroy(gameObject);
     }
 
+    public void Deflect(float duration)
+    {
+        transform.Rotate(0f, 0f, 180f);
+        _deflectTimer = duration;
+    }
+
+    public void DisableProjectile()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void ReflectAsBatHit(int overrideDamage, LayerMask enemyMask)
     {
+        _deflectTimer = 0f;
         transform.Rotate(0f, 0f, 180f);
         _damage = overrideDamage;
         _owner = null;

@@ -3,7 +3,6 @@ using UnityEngine;
 public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
 {
     [SerializeField] private Rigidbody2D _rb;
-
     public Rigidbody2D Rb => _rb;
     public float Speed => _speed;
 
@@ -12,6 +11,8 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
     private float _lifeTime;
     private float _spawnTime;
     private Vector2 _direction;
+    private Vector2 _originalDirection;
+    private float _deflectTimer;
     private LayerMask _targetMask;
     private GameObject _owner;
     private Color _originalColor;
@@ -38,16 +39,22 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
         this._owner = owner;
         _spawnTime = Time.time;
         _isReflected = false;
+        _deflectTimer = 0f;
     }
 
     private void FixedUpdate()
     {
+        if (_deflectTimer > 0f)
+        {
+            _deflectTimer -= Time.fixedDeltaTime;
+            if (_deflectTimer <= 0f)
+                _direction = _originalDirection;
+        }
+
         _rb.position += _direction * _speed * Time.fixedDeltaTime;
 
         if (_lifeTime > 0f && Time.time - _spawnTime >= _lifeTime)
-        {
             ReturnToPool();
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -55,30 +62,38 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
         if (other == null || other.gameObject == _owner) return;
         if ((_targetMask.value & (1 << other.gameObject.layer)) == 0) return;
 
-
         if (other.TryGetComponent(out EntityBase dmg))
-        {
             dmg.TakeDamage(_damage);
-        }
 
+        ReturnToPool();
+    }
+
+    public void Deflect(float duration)
+    {
+        _originalDirection = _direction;
+        _direction = -_direction;
+        _deflectTimer = duration;
+    }
+
+    public void DisableProjectile()
+    {
         ReturnToPool();
     }
 
     public void ReflectAsBatHit(int overrideDamage, LayerMask enemyMask)
     {
         _direction = -_direction;
+        _originalDirection = _direction;
+        _deflectTimer = 0f;
         _damage = overrideDamage;
         _owner = null;
         _targetMask = enemyMask;
         _isReflected = true;
         var sr = GetComponent<SpriteRenderer>();
         if (sr != null) sr.color = Color.white;
-        _lifeTime+=10f;
+        _lifeTime += 10f;
     }
 
-    /// <summary>
-    /// 풀에 반납 (Phase 7)
-    /// </summary>
     private void ReturnToPool()
     {
         if (EnemyProjectilePool.Instance != null)
@@ -87,14 +102,11 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
             Destroy(gameObject);
     }
 
-    /// <summary>
-    /// 풀 반납 시 상태 리셋 (Phase 7)
-    /// </summary>
     private void OnDisable()
     {
-        // ReflectAsBatHit이 색상 변경 → 복원
+        _deflectTimer = 0f;
+        _isReflected = false;
         var sr = GetComponent<SpriteRenderer>();
-        if (sr.color == Color.white)
-            sr.color = _originalColor;
+        if (sr != null) sr.color = _originalColor;
     }
 }
