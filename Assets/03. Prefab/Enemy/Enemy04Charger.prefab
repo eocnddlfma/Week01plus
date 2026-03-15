@@ -126,6 +126,8 @@ MonoBehaviour:
   _noiseSpeed: 1.2
   _attackIntervalMin: 1
   _attackIntervalMax: 2
+  _hpScalePerWave: 0.1
+  _speedScalePerWave: 0.05
   _approachSpeedMultiplier: 0.55
   _recoverSpeedMultiplier: 0.7
   _chargeSpeed: 20
@@ -135,6 +137,8 @@ MonoBehaviour:
   _recoverDuration: 0.3
   _chargeCooldownMin: 1.2
   _chargeCooldownMax: 2
+  _chargeSpeedScalePerWave: 0.05
+  _cooldownReducePerWave: 0.01
   _windupRenderers: []
   _hitFlash: {fileID: 0}
   _windupColor: {r: 0.3170516, g: 0.6150943, b: 0.23095044, a: 1}

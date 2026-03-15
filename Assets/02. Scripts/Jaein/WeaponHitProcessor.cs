@@ -121,6 +121,14 @@ public class WeaponHitProcessor : MonoBehaviour
         projectile.ReflectAsBatHit((int)_currentDamageAmount, _enemyReflectLayerMask);
     }
 
+    // SwingSystem의 OverlapCircleAll에서 수집한 적 총알에게 호출
+    public void ProcessProjectileHit(IEnemyProjectile projectile)
+    {
+        int chargeLevel = Mathf.FloorToInt(_currentChargePercentForAttack * 4f);
+        chargeLevel = Mathf.Clamp(chargeLevel, 0, 3);
+        HandleEnemyProjectile(projectile, chargeLevel);
+    }
+
     // SwingSystem의 OverlapCircleAll에서 수집한 적에게 호출
     public void ProcessEnemyHit(EnemyBase enemy)
     {

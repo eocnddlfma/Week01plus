@@ -256,6 +256,8 @@ MonoBehaviour:
   _noiseSpeed: 1.2
   _attackIntervalMin: 1
   _attackIntervalMax: 2
+  _hpScalePerWave: 0.1
+  _speedScalePerWave: 0.01
   _targetMask:
     serializedVersion: 2
     m_Bits: 0
@@ -264,6 +266,8 @@ MonoBehaviour:
   _spawnPosList: []
   _splitInterval: 0.3
   _splitCycleInterval: 2
+  _cloneCountScalePerWave: 0.3
+  _cycleIntervalReducePerWave: 0.01
 --- !u!114 &1953790235574256340
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,12 +10,36 @@ public class EnemyRange : EnemyBase
     [Min(1)][SerializeField] private int _damage = 1;
     [SerializeField] private LayerMask _targetMask;
 
+    [Header("Wave Scaling (Ranged)")]
+    [Min(0f)][SerializeField] private float _damageScalePerWave = 0.1f;
+    [Min(0f)][SerializeField] private float _attackRangeScalePerWave = 0.08f;
+    [Min(0f)][SerializeField] private float _projectileSpeedScalePerWave = 0.05f;
+    [Min(0f)][SerializeField] private float _projectileLifeTimeScalePerWave = 0.05f;
+
+    private int _baseDamage;
+    private float _baseAttackRange;
+    private float _baseProjectileSpeed;
+    private float _baseProjectileLifeTime;
+
     protected override bool CanAttack(float distanceToTarget) => distanceToTarget <= _attackRange;
 
     protected override void Awake()
     {
         base.Awake();
         if (_firePoint == null) _firePoint = transform;
+        _baseDamage = _damage;
+        _baseAttackRange = _attackRange;
+        _baseProjectileSpeed = _projectileSpeed;
+        _baseProjectileLifeTime = _projectileLifeTime;
+    }
+
+    protected override void ApplyWaveScaling(int waveIndex)
+    {
+        base.ApplyWaveScaling(waveIndex);
+        _damage = Mathf.Max(1, Mathf.RoundToInt(_baseDamage * (1f + waveIndex * _damageScalePerWave)));
+        _attackRange = _baseAttackRange * (1f + waveIndex * _attackRangeScalePerWave);
+        _projectileSpeed = _baseProjectileSpeed * (1f + waveIndex * _projectileSpeedScalePerWave);
+        _projectileLifeTime = _baseProjectileLifeTime * (1f + waveIndex * _projectileLifeTimeScalePerWave);
     }
 
     protected override void DoAttack()

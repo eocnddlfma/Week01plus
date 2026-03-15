@@ -7,10 +7,11 @@ public class WeaponSwingSystem : MonoBehaviour
     [System.Serializable]
     private class HitTarget
     {
-        public enum TargetType { Ball, Enemy }
+        public enum TargetType { Ball, Enemy, Projectile }
         public TargetType targetType;
         public OrbitalWeapon ball;
         public EnemyBase enemy;
+        public IEnemyProjectile projectile;
         public float angleToHit;
         public float distanceToPivot;
         public Vector2 targetPosition;
@@ -196,6 +197,10 @@ public class WeaponSwingSystem : MonoBehaviour
         {
             _hitProcessor.ProcessEnemyHit(target.enemy);
         }
+        else if (target.targetType == HitTarget.TargetType.Projectile)
+        {
+            _hitProcessor.ProcessProjectileHit(target.projectile);
+        }
     }
 
     private void CollectHitTargets(Transform pivot, float radius, float startAngle, float endAngle)
@@ -216,6 +221,7 @@ public class WeaponSwingSystem : MonoBehaviour
 
         HashSet<OrbitalWeapon> ballsAdded = new HashSet<OrbitalWeapon>();
         HashSet<EnemyBase> enemiesAdded = new HashSet<EnemyBase>();
+        HashSet<IEnemyProjectile> projectilesAdded = new HashSet<IEnemyProjectile>();
 
         foreach (Collider2D hit in hits)
         {
@@ -257,6 +263,28 @@ public class WeaponSwingSystem : MonoBehaviour
                         targetPosition = enemy.transform.position
                     });
                     enemiesAdded.Add(enemy);
+                }
+            }
+
+            IEnemyProjectile projectile = hit.GetComponent<IEnemyProjectile>();
+            if (projectile != null && !projectilesAdded.Contains(projectile))
+            {
+                Vector2 dir = ((Vector2)hit.transform.position - (Vector2)pivot.position);
+                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                angle = NormalizeAngle(angle);
+                float relAngle = ToRelativeAngle(angle);
+                float distance = dir.magnitude;
+                if (IsAngleInRange(angle, startAngle, endAngle))
+                {
+                    _hitTargetsThisAttack.Add(new HitTarget
+                    {
+                        targetType = HitTarget.TargetType.Projectile,
+                        projectile = projectile,
+                        angleToHit = relAngle,
+                        distanceToPivot = distance,
+                        targetPosition = hit.transform.position
+                    });
+                    projectilesAdded.Add(projectile);
                 }
             }
         }

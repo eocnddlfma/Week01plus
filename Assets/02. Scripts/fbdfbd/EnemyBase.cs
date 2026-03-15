@@ -29,6 +29,18 @@ public abstract class EnemyBase : EntityBase
     [Min(0f)][SerializeField] private float _attackIntervalMin = 1.0f;
     [Min(0f)][SerializeField] private float _attackIntervalMax = 2.0f;
 
+    [Header("Wave Scaling")]
+    [Min(0f)][SerializeField] private float _hpScalePerWave = 0.1f;
+    [Min(0f)][SerializeField] private float _speedScalePerWave = 0.05f;
+    [Min(0f)][SerializeField] private float _stopDistanceScalePerWave = 0.05f;
+    [Min(0f)][SerializeField] private float _attackIntervalReducePerWave = 0.05f; // 공격 간격 감소율
+
+    private int _baseHp;
+    private float _baseMoveSpeed;
+    private float _baseStopDistance;
+    private float _baseAttackIntervalMin;
+    private float _baseAttackIntervalMax;
+
     private float _nextAttackTime;
     private Vector2 _currentVelocity;
     private Vector2 _personalOffset;
@@ -68,6 +80,13 @@ public abstract class EnemyBase : EntityBase
         Rb.freezeRotation = true;
 
         InitFromStatsData();
+        _baseHp = _maxHp;
+        _baseMoveSpeed = _moveSpeed;
+        _baseStopDistance = _stopDistance;
+        _baseAttackIntervalMin = _attackIntervalMin;
+        _baseAttackIntervalMax = _attackIntervalMax;
+
+        GameEvents.OnWaveStarted += ApplyWaveScaling;
 
         _noiseSeed = Random.Range(0f, 1000f);
         _personalOffset = Random.insideUnitCircle * _targetOffsetRadius;
@@ -264,6 +283,11 @@ public abstract class EnemyBase : EntityBase
         ReturnToPool();
     }
 
+    protected virtual void OnDestroy()
+    {
+        GameEvents.OnWaveStarted -= ApplyWaveScaling;
+    }
+
     // Phase 7: 에너미 풀링
     protected virtual void OnDisable()
     {
@@ -328,12 +352,27 @@ public abstract class EnemyBase : EntityBase
         OnDamaged?.Invoke(damage);
     }
 
+    protected virtual void ApplyWaveScaling(int waveIndex)
+    {
+        float hpMult = 1f + waveIndex * _hpScalePerWave;
+        _maxHp = Mathf.Max(1, Mathf.RoundToInt(_baseHp * hpMult));
+        _hp = _maxHp;
+
+        _moveSpeed = _baseMoveSpeed * (1f + waveIndex * _speedScalePerWave);
+        _stopDistance = _baseStopDistance * (1f + waveIndex * _stopDistanceScalePerWave);
+
+        float intervalMult = 1f / (1f + waveIndex * _attackIntervalReducePerWave);
+        _attackIntervalMin = _baseAttackIntervalMin * intervalMult;
+        _attackIntervalMax = _baseAttackIntervalMax * intervalMult;
+    }
+
     /// <summary>
     /// 생성할 때 타겟 주입 필요
     /// </summary>
     public virtual void SetTarget(Transform player)
     {
         _target = player;
+        ApplyWaveScaling(WaveManager.CurrentWaveIndex);
     }
 
     public void UnregisterFromEnemyCount()

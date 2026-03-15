@@ -127,9 +127,10 @@ MonoBehaviour:
   _noiseSpeed: 1.2
   _attackIntervalMin: 1
   _attackIntervalMax: 2
+  _hpScalePerWave: 0.1
+  _speedScalePerWave: 0.05
   _attackRange: 6
   _shotPoint: {fileID: 0}
-  _mineProjectilePrefab: {fileID: 0}
   _damage: 1
   _projectileSpeed: 7
   _deceleration: 5
@@ -139,6 +140,8 @@ MonoBehaviour:
   _targetMask:
     serializedVersion: 2
     m_Bits: 0
+  _damageScalePerWave: 0.1
+  _projectileSpeedScalePerWave: 0.01
 --- !u!114 &2867312897229914824
 MonoBehaviour:
   m_ObjectHideFlags: 0

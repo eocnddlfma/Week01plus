@@ -26,6 +26,20 @@ public class EnemyCharger : EnemyBase
     [Min(0f)][SerializeField] private float _chargeCooldownMin = 1.2f;
     [Min(0f)][SerializeField] private float _chargeCooldownMax = 2f;
 
+    [Header("Wave Scaling (Charger)")]
+    [Min(0f)][SerializeField] private float _chargeSpeedScalePerWave = 0.08f;
+    [Min(0f)][SerializeField] private float _chargeStartDistanceScalePerWave = 0.06f;
+    [Min(0f)][SerializeField] private float _chargeDurationScalePerWave = 0.05f;
+    [Min(0f)][SerializeField] private float _windupReducePerWave = 0.05f; // 와인드업 시간 감소 (피하기 어려워짐)
+    [Min(0f)][SerializeField] private float _cooldownReducePerWave = 0.05f; // 쿨타임 감소율
+
+    private float _baseChargeSpeed;
+    private float _baseChargeStartDistance;
+    private float _baseChargeDuration;
+    private float _baseWindupDuration;
+    private float _baseCooldownMin;
+    private float _baseCooldownMax;
+
     [Header("Windup Visual")]
     [SerializeField] private SpriteRenderer[] _windupRenderers;
     [SerializeField] private EnemyHitFlash _hitFlash;
@@ -50,8 +64,26 @@ public class EnemyCharger : EnemyBase
     {
         base.Awake();
         if (_hitFlash == null) _hitFlash = GetComponent<EnemyHitFlash>();
+        _baseChargeSpeed = _chargeSpeed;
+        _baseChargeStartDistance = _chargeStartDistance;
+        _baseChargeDuration = _chargeDuration;
+        _baseWindupDuration = _windupDuration;
+        _baseCooldownMin = _chargeCooldownMin;
+        _baseCooldownMax = _chargeCooldownMax;
         InitWindupVisual();
         ScheduleNextCharge();
+    }
+
+    protected override void ApplyWaveScaling(int waveIndex)
+    {
+        base.ApplyWaveScaling(waveIndex);
+        _chargeSpeed = _baseChargeSpeed * (1f + waveIndex * _chargeSpeedScalePerWave);
+        _chargeStartDistance = _baseChargeStartDistance * (1f + waveIndex * _chargeStartDistanceScalePerWave);
+        _chargeDuration = _baseChargeDuration * (1f + waveIndex * _chargeDurationScalePerWave);
+        _windupDuration = _baseWindupDuration / (1f + waveIndex * _windupReducePerWave);
+        float cooldownMult = 1f / (1f + waveIndex * _cooldownReducePerWave);
+        _chargeCooldownMin = _baseCooldownMin * cooldownMult;
+        _chargeCooldownMax = _baseCooldownMax * cooldownMult;
     }
 
     private void OnDisable()

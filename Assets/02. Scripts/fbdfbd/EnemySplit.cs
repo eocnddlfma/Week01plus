@@ -14,12 +14,35 @@ public class EnemySplit : EnemyBase
     [Min(0f)][SerializeField] private float _splitInterval = 0.3f;
     [Min(0f)][SerializeField] private float _splitCycleInterval = 2f;
 
+    [Header("Wave Scaling (Split)")]
+    [Min(0f)][SerializeField] private float _cloneCountScalePerWave = 0.15f; // 클론 수 증가율
+    [Min(0f)][SerializeField] private float _splitIntervalReducePerWave = 0.05f; // 클론 소환 간격 감소율
+    [Min(0f)][SerializeField] private float _cycleIntervalReducePerWave = 0.05f; // 사이클 주기 감소율
+
+    private int _baseCloneCount;
+    private float _baseSplitInterval;
+    private float _baseCycleInterval;
+
     private Coroutine _splitRoutine;
     private bool _isSplitting = false;
 
     protected override bool CanAttack(float distanceToTarget) => false;
 
     protected override void DoAttack() { }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _baseCloneCount = _splitEnemyCloneCount;
+        _baseCycleInterval = _splitCycleInterval;
+    }
+
+    protected override void ApplyWaveScaling(int waveIndex)
+    {
+        base.ApplyWaveScaling(waveIndex);
+        _splitEnemyCloneCount = Mathf.Max(1, Mathf.RoundToInt(_baseCloneCount * (1f + waveIndex * _cloneCountScalePerWave)));
+        _splitCycleInterval = _baseCycleInterval / (1f + waveIndex * _cycleIntervalReducePerWave);
+    }
 
     protected override void FixedUpdate()
     {
@@ -108,8 +131,9 @@ public class EnemySplit : EnemyBase
         StopSplitRoutine();
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         StopSplitRoutine();
     }
 
