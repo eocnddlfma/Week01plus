@@ -80,7 +80,7 @@ public class WeaponHitProcessor : MonoBehaviour
     private void PushEnemyProjectile(IEnemyProjectile projectile)
     {
         float duration = _weaponManager != null ? _weaponManager.ProjectileDeflectDuration : 0.12f;
-        float speed = _weaponManager != null ? _weaponManager.ProjectileDeflectSpeed : 8f;
+        float speed = _currentKnockbackForce * _knockbackSpeedMult;
         projectile.Deflect(duration, speed);
     }
 

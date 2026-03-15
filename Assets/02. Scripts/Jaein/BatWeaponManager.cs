@@ -51,5 +51,4 @@ public class BatWeaponManager : MonoBehaviour
     public float OrbitalChargeClusterStrength => _chargeSystem.OrbitalChargeClusterStrength;
     public float OrbitalChargeBoostRampDuration => _chargeSystem.OrbitalChargeBoostRampDuration;
     public float ProjectileDeflectDuration => _chargeSystem.ProjectileDeflectDuration;
-    public float ProjectileDeflectSpeed => _chargeSystem.ProjectileDeflectSpeed;
 }
