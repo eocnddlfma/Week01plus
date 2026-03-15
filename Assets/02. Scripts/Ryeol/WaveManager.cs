@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
+    public static int CurrentWaveIndex { get; private set; }
+
     [SerializeField] private List<WaveData> _waveDatas;
 
     [SerializeField] private float spawnRadius = 10f; // 플레이어에게서 해당 수치만큼 떨어진 곳에서 스폰.
@@ -24,6 +26,7 @@ public class WaveManager : MonoBehaviour
     {
         _waveDatas.Sort((a, b) => a.id.CompareTo(b.id)); // 혹시 모르니 정렬.
         _currentWaveData = _waveDatas[0];
+        CurrentWaveIndex = 0;
         _enemyContainer = new GameObject("Enemies").transform;
 
         if (_player == null)
@@ -40,6 +43,7 @@ public class WaveManager : MonoBehaviour
 
         GameEvents.OnEnemyKilled += CheckNextWave;  // Phase 6: GameManager 이벤트에서 GameEvents로 변경
 
+        GameEvents.RaiseWaveStarted(CurrentWaveIndex);
         StartCoroutine(CoSpawnEnemy());
     }
 
@@ -98,6 +102,7 @@ public class WaveManager : MonoBehaviour
         _isChangingWave = true;
 
         _currentWaveIndex++;
+        CurrentWaveIndex = _currentWaveIndex;
 
         if (_currentWaveIndex >= _waveDatas.Count)
         {
@@ -109,6 +114,7 @@ public class WaveManager : MonoBehaviour
         }
 
         _currentWaveData = _waveDatas[_currentWaveIndex];
+        GameEvents.RaiseWaveStarted(CurrentWaveIndex);
 
         // 다음 웨이브가 보스 웨이브일 때만 잡몹 제거
         if (_currentWaveData.isBoss)

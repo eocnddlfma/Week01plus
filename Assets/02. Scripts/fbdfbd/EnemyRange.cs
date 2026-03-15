@@ -6,7 +6,7 @@ public class EnemyRange : EnemyBase
     [Min(0.1f)][SerializeField] private float _attackRange = 6f;
     [SerializeField] private Transform _firePoint;
     [Min(0.1f)][SerializeField] private float _projectileSpeed = 6f;
-    [Min(0.1f)][SerializeField] private float _projectileLifeTime = 2f;
+    [Min(0.1f)][SerializeField] private float _projectileLifeTime = 12f;
     [Min(1)][SerializeField] private int _damage = 1;
     [SerializeField] private LayerMask _targetMask;
 

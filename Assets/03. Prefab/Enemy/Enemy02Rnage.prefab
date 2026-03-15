@@ -160,9 +160,8 @@ MonoBehaviour:
   _attackIntervalMax: 2
   _attackRange: 6
   _firePoint: {fileID: 0}
-  _projectilePrefab: {fileID: 0}
   _projectileSpeed: 6
-  _projectileLifeTime: 2
+  _projectileLifeTime: 12
   _damage: 1
   _targetMask:
     serializedVersion: 2

@@ -2522,6 +2522,8 @@ MonoBehaviour:
   _damagedShakeDuration: 0.18
   _damagedKickDistance: 0.18
   _useDamageKickBack: 1
+  _playerWeight: 8
+  _orbitalWeight: 2
   sizeOffset: 0
   positionOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &1448733733 stripped
@@ -3211,6 +3213,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a7b410c6b517bc43a4b61a814ced103, type: 3}
+--- !u!1 &2095096075
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2095096076}
+  m_Layer: 0
+  m_Name: UpgradeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2095096076
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095096075}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2104042903
 GameObject:
   m_ObjectHideFlags: 0
@@ -4460,6 +4493,9 @@ MonoBehaviour:
     m_Bits: 64
   _weaponTransform: {fileID: 0}
   _endpointTransform: {fileID: 0}
+  _knockbackSpeedMult: 2
+  _knockbackMaxForce: 15
+  _knockbackMaxDuration: 1
 --- !u!114 &8197585636916991919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4724,3 +4760,4 @@ SceneRoots:
   - {fileID: 458884992}
   - {fileID: 3746611}
   - {fileID: 969269117}
+  - {fileID: 2095096076}
