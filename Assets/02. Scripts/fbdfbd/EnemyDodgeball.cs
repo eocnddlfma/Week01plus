@@ -64,27 +64,9 @@ public class EnemyDodgeball : EnemyBase
         yield return new WaitForSeconds(step);
 
         // Step 2: 세로 라인 좌우 2개
-        SpawnPattern(center + Vector3.left  * line, Quaternion.identity);
-        SpawnPattern(center + Vector3.right * line, Quaternion.identity);
+        SpawnPattern(center, Quaternion.identity);
         yield return new WaitForSeconds(step);
 
-        // Step 3: 가로 상하 + 세로 좌우 (2배 거리)
-        SpawnPattern(center + Vector3.up    * line,       Quaternion.Euler(0f, 0f, 90f));
-        SpawnPattern(center + Vector3.down  * line,       Quaternion.Euler(0f, 0f, 90f));
-        SpawnPattern(center + Vector3.left  * line * 2f,  Quaternion.identity);
-        SpawnPattern(center + Vector3.right * line * 2f,  Quaternion.identity);
-        yield return new WaitForSeconds(step);
-
-        // Step 4: 원형 버스트 (보스보다 작은 반경)
-        int   burstCount  = _so.BurstCount;
-        float burstRadius = _so.BurstRadius * 0.4f;
-        float angleStep   = 360f / Mathf.Max(1, burstCount);
-        for (int i = 0; i < burstCount; i++)
-        {
-            float rad = angleStep * i * Mathf.Deg2Rad;
-            Vector3 offset = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * burstRadius;
-            SpawnPattern(center + offset, Quaternion.Euler(0f, 0f, angleStep * i));
-        }
         yield return new WaitForSeconds(step);
 
         _isAttacking = false;
