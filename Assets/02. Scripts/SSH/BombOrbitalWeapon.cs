@@ -10,7 +10,6 @@ public class BombOrbitalWeapon : OrbitalWeapon
 {
     [Header("Bomb Ability")]
     [SerializeField] private float _explosionRadius = 3f;
-    [SerializeField] private int _explosionDamage = 3;
     [SerializeField] private float _explosionForce = 8f;
     [SerializeField] private LayerMask _enemyLayer;
 
@@ -26,6 +25,7 @@ public class BombOrbitalWeapon : OrbitalWeapon
     private Color _originalColor;
     private bool _hasExploded = false;
     private Coroutine _autoExplodeRoutine;
+    private ParticleSystem _explosionEffect;
 
     protected override void Start()
     {
@@ -33,10 +33,13 @@ public class BombOrbitalWeapon : OrbitalWeapon
         _spriteRenderer = GetComponent<SpriteRenderer>();
         if (_spriteRenderer != null)
             _originalColor = _spriteRenderer.color;
+
+        _explosionEffect = GetComponentInChildren<ParticleSystem>(includeInactive: true);
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         if (AutoExplode && State == BallState.Launched && _autoExplodeRoutine == null)
             _autoExplodeRoutine = StartCoroutine(AutoExplodeRoutine());
     }
@@ -82,7 +85,7 @@ public class BombOrbitalWeapon : OrbitalWeapon
     private void Explode(Vector3 explosionCenter)
     {
         float effectiveRadius = _explosionRadius * UpgradeExplosionMult;
-        int effectiveDamage = Mathf.RoundToInt(_explosionDamage * UpgradeExplosionMult);
+        int effectiveDamage = Mathf.RoundToInt(CalculateDamage(ChargePercent, AttackPower) * UpgradeExplosionMult);
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(explosionCenter, effectiveRadius);
         foreach (var hit in hits)
@@ -94,6 +97,13 @@ public class BombOrbitalWeapon : OrbitalWeapon
                 Vector2 direction = ((Vector2)enemy.transform.position - (Vector2)explosionCenter).normalized;
                 enemy.AddExternalVelocity(direction * _explosionForce, 0.3f);
             }
+        }
+
+        if (_explosionEffect != null)
+        {
+            _explosionEffect.transform.position = explosionCenter;
+            _explosionEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            _explosionEffect.Play();
         }
 
         if (_spriteRenderer != null)

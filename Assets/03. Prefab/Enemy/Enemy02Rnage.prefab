@@ -158,7 +158,7 @@ MonoBehaviour:
   _noiseSpeed: 1.2
   _attackIntervalMin: 1
   _attackIntervalMax: 2
-  _hpScalePerWave: 0.1
+  _hpScalePerWave: 0.3
   _speedScalePerWave: 0.01
   _stopDistanceScalePerWave: 0.05
   _attackIntervalReducePerWave: 0.05
@@ -170,7 +170,7 @@ MonoBehaviour:
   _targetMask:
     serializedVersion: 2
     m_Bits: 0
-  _damageScalePerWave: 0.2
+  _damageScalePerWave: 0.1
   _attackRangeScalePerWave: 0.08
   _projectileSpeedScalePerWave: 0.01
   _projectileLifeTimeScalePerWave: 0.05

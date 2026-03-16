@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2145920254392513349
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2692734896093246427}
+    m_Modifications:
+    - target: {fileID: 126627973589171685, guid: 268d994456694e1479157f7dc76da147, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 126627973589171685, guid: 268d994456694e1479157f7dc76da147, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 126627973589171685, guid: 268d994456694e1479157f7dc76da147, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 126627973589171685, guid: 268d994456694e1479157f7dc76da147, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 126627973589171685, guid: 268d994456694e1479157f7dc76da147, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 126627973589171685, guid: 268d994456694e1479157f7dc76da147, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 126627973589171685, guid: 268d994456694e1479157f7dc76da147, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 126627973589171685, guid: 268d994456694e1479157f7dc76da147, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 126627973589171685, guid: 268d994456694e1479157f7dc76da147, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 126627973589171685, guid: 268d994456694e1479157f7dc76da147, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774481125776798943, guid: 268d994456694e1479157f7dc76da147, type: 3}
+      propertyPath: m_Name
+      value: ParticleBomb
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 268d994456694e1479157f7dc76da147, type: 3}
+--- !u!4 &2019310702456032928 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 126627973589171685, guid: 268d994456694e1479157f7dc76da147, type: 3}
+  m_PrefabInstance: {fileID: 2145920254392513349}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8798573742192467388
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -71,12 +133,20 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2019310702456032928}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       insertIndex: 3
       addedObject: {fileID: 6698029494726192618}
   m_SourcePrefab: {fileID: 100100000, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+--- !u!4 &2692734896093246427 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+  m_PrefabInstance: {fileID: 8798573742192467388}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6022483946288439729 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
@@ -119,6 +189,8 @@ MonoBehaviour:
   _maxChargeDamage: 20
   _varianceRange: 0.1
   _knockbackForce: 4
+  _maxSpinSpeed: 720
+  _spinDecay: 180
   _drawOrbitGizmo: 1
   _stateGizmoRadius: 0.5
   _explosionRadius: 3

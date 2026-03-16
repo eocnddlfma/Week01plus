@@ -25,8 +25,8 @@ MonoBehaviour:
   _blinkInterval: 0.2
   _burstCount: 16
   _burstRadius: 14
-  _rotCount: 45
-  _rotDelay: 0.25
-  _rotLaps: 2.1
-  _rotSpawnCount: 15
-  _rotSpeed: 200
+  _rotCount: 60
+  _rotDelay: 0.2
+  _rotLaps: 4
+  _rotSpawnCount: 20
+  _rotSpeed: 300

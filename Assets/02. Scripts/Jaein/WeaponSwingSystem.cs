@@ -72,8 +72,11 @@ public class WeaponSwingSystem : MonoBehaviour
     {
         chargePercent = Mathf.Clamp01(chargePercent);
 
+        int maxChargeLevel = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.MaxChargeLevel : 4;
+        int maxIdx = Mathf.Clamp(maxChargeLevel - 1, 0, 3);
+
         WeaponChargeSystem.ChargeLevel minLevel = _chargeLevels[0];
-        WeaponChargeSystem.ChargeLevel maxLevel = _chargeLevels[3];
+        WeaponChargeSystem.ChargeLevel maxLevel = _chargeLevels[maxIdx];
 
         float dynamicRotationAngle = Mathf.Lerp(minLevel.rotationAngle, maxLevel.rotationAngle, chargePercent);
         float dynamicRotationDuration = Mathf.Lerp(minLevel.rotationDuration, maxLevel.rotationDuration, chargePercent);
@@ -81,7 +84,7 @@ public class WeaponSwingSystem : MonoBehaviour
         float kbMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.KnockbackMult : 1f;
         int dynamicDamageAmount = Mathf.RoundToInt(Mathf.Lerp(minLevel.damageAmount, maxLevel.damageAmount, chargePercent) * batDmgMult);
         float dynamicKnockbackForce = Mathf.Lerp(minLevel.knockbackForce, maxLevel.knockbackForce, chargePercent) * kbMult;
-        int chargeLevel = Mathf.Min(3, Mathf.FloorToInt(chargePercent * 4f));
+        int chargeLevel = Mathf.Min(maxIdx, Mathf.FloorToInt(chargePercent * 4f));
         float dynamicAttackPower = _chargeLevels[chargeLevel].attackPower;
 
         _swingChargePercent = chargePercent;

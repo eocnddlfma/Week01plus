@@ -27,9 +27,22 @@ public class BatWeaponManager : MonoBehaviour
         _swingSystem.OnSwingComplete += OnSwingComplete;
     }
 
+    // chargePercent, batDamage, knockbackForce
+    public event System.Action<float, int, float> OnSwingStarted;
+
     private void OnChargeReleased(float chargePercent)
     {
         chargePercent = Mathf.Clamp01(chargePercent);
+
+        var levels = _chargeSystem.ChargeLevels;
+        int maxChargeLevel = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.MaxChargeLevel : 4;
+        int maxIdx = Mathf.Clamp(maxChargeLevel - 1, 0, 3);
+        float batDmgMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.BatDamageMult : 1f;
+        float kbMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.KnockbackMult : 1f;
+        int damage = Mathf.RoundToInt(Mathf.Lerp(levels[0].damageAmount, levels[maxIdx].damageAmount, chargePercent) * batDmgMult);
+        float knockback = Mathf.Lerp(levels[0].knockbackForce, levels[maxIdx].knockbackForce, chargePercent) * kbMult;
+
+        OnSwingStarted?.Invoke(chargePercent, damage, knockback);
         _swingSystem.ExecuteSwing(chargePercent, _chargeSystem.ChargeLevels);
     }
 

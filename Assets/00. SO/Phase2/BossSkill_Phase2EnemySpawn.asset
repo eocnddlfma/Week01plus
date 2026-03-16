@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SSH_SOBossSkillPhase2EnemySpawn
   _skillName: 
   _skillNumber: 0
-  _skillCooldown: 0
+  _skillCooldown: 0.1
   _skillCastTime: 0
   _skillRepeatCount: 0
   _bossSkillParticle: {fileID: 0}

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SSH_SOBossSkillRain
   _skillName: 
   _skillNumber: 0
-  _skillCooldown: 20
-  _skillCastTime: 3
+  _skillCooldown: 10
+  _skillCastTime: 1
   _skillRepeatCount: 0
   _bossSkillParticle: {fileID: 0}
   _projectilePrefab: {fileID: 705963780439117018, guid: 00a59d9b038bdb0459dd6d4bde5df1ab, type: 3}

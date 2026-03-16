@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SSH_SOBossSkillStab
   _skillName: 
   _skillNumber: 0
-  _skillCooldown: 15
-  _skillCastTime: 3.5
+  _skillCooldown: 5
+  _skillCastTime: 3
   _skillRepeatCount: 0
   _bossSkillParticle: {fileID: 0}
   _weaponPrefab: {fileID: 6786342706268129414, guid: 9c7e141d8971519438a26ab09a3dfa65, type: 3}
   _weaponOffset: {x: 0, y: -8, z: 0}
-  _damage: 1
+  _damage: 3
   _targetMask:
     serializedVersion: 2
     m_Bits: 0

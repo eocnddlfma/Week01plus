@@ -27,11 +27,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _phases:
-  - count: 250
-    spawnDelay: 0.04
-    speed: 7
+  - count: 700
+    spawnDelay: 0.01
+    speed: 9
     scale: {x: 0.35, y: 0.35, z: 0.35}
-  - count: 50
-    spawnDelay: 0.1
-    speed: 30
+  - count: 200
+    spawnDelay: 0.04
+    speed: 45
     scale: {x: 1, y: 1, z: 1}

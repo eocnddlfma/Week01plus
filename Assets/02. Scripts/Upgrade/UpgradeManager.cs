@@ -34,6 +34,7 @@ public class UpgradeManager : MonoBehaviour
 
     [Header("설정")]
     [SerializeField] private int _choiceCount = 3;
+    [SerializeField] private int _selectCount = 2;
     [SerializeField] private bool _showOnBossWaveOnly = false;
 
     private PlayerStatModifier _statModifier;
@@ -80,7 +81,6 @@ public class UpgradeManager : MonoBehaviour
 
     private void OnWaveClear(bool isBossWave)
     {
-        // 보스 웨이브만 옵션이 켜져 있으면 보스 웨이브가 아닐 때 스킵
         if (_showOnBossWaveOnly && !isBossWave) return;
         if (GameManager.Instance != null && GameManager.Instance.CurrentState != GameManager.GameState.Playing) return;
         if (_upgradePool == null || _upgradePool.Count == 0) return;
@@ -95,22 +95,20 @@ public class UpgradeManager : MonoBehaviour
         List<UpgradeData> choices = GetRandomUpgrades(_choiceCount);
 
         if (_upgradeUI != null)
-            _upgradeUI.Show(choices, OnUpgradeSelected);
+            _upgradeUI.Show(choices, OnUpgradeSelected, OnAllUpgradesSelected, _selectCount);
         else
-            Time.timeScale = 1f; // UI가 없으면 바로 재개
+            OnAllUpgradesSelected();
     }
 
     private void OnUpgradeSelected(UpgradeData selected)
     {
         ApplyUpgrade(selected);
         _appliedUpgrades.Add(selected);
-
-        if (_upgradeUI != null)
-            _upgradeUI.Hide();
-
         Debug.Log($"[Upgrade] 선택 완료: {selected.upgradeName}");
+    }
 
-        // 업그레이드 선택 후 공 선택 UI 표시
+    private void OnAllUpgradesSelected()
+    {
         if (_ballGetter != null)
             _ballGetter.ShowBallSelection();
         else
@@ -303,10 +301,7 @@ public class UpgradeManager : MonoBehaviour
 
     private HashSet<System.Type> GetAvailableBallTypes()
     {
-        var types = new HashSet<System.Type>();
-        foreach (var orbital in FindObjectsByType<OrbitalWeapon>(FindObjectsSortMode.None))
-            types.Add(orbital.GetType());
-        return types;
+        return WS_BallGetter.OwnedBallTypes;
     }
 
     private bool HasRequiredBall(UpgradeStatType statType, HashSet<System.Type> availableBalls)

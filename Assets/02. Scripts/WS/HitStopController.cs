@@ -68,11 +68,15 @@ public class HitStopController : MonoBehaviour
 
     private IEnumerator HitStopRoutine(float durationMult, float mult = 0f)
     {
+        // UI 등 외부에서 이미 게임을 멈춰놓은 상태면 히트스탑 스킵
+        if (Time.timeScale == 0f) { _routine = null; yield break; }
+
         float newTimeScale = _slowedTimeScale * mult;
         Time.timeScale = newTimeScale;
         yield return new WaitForSecondsRealtime(_defaultDuration * durationMult);
-        // UI 등 외부에서 timeScale을 0으로 내린 상태면 복원하지 않음
-        if (Time.timeScale <= newTimeScale)
+
+        // 대기 도중 외부에서 0으로 멈춘 상태면 복원하지 않음
+        if (Time.timeScale != 0f)
             Time.timeScale = 1f;
         _routine = null;
     }

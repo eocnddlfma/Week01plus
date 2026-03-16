@@ -130,10 +130,10 @@ public class UpgradeDataGenerator : MonoBehaviour
             new UpgradeInfo("가출", "궤도로 돌아오지 않고 계속 날아다닙니다", UpgradeStatType.WhirlNoReturn, 1f, UpgradeRarity.Rare, null),
             new UpgradeInfo("몰아치기", "충돌마다 데미지+1, 피격 시 초기화됩니다", UpgradeStatType.WhirlCollisionStack, 1f, UpgradeRarity.Epic, new[] { "가출" }),
 
-            // ── 차지 단계 해금 ──
-            new UpgradeInfo("차지 2단계", "배트 차지 최대 단계가 2단계로 해금됩니다. 최대 차지 시간 +0.5초", UpgradeStatType.UnlockChargeLevel, 1f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("차지 3단계", "배트 차지 최대 단계가 3단계로 해금됩니다. 최대 차지 시간 +0.5초", UpgradeStatType.UnlockChargeLevel, 1f, UpgradeRarity.Rare, new[] { "차지 2단계" }),
-            new UpgradeInfo("차지 4단계", "배트 차지 최대 단계가 4단계로 해금됩니다. 최대 차지 시간 +0.5초", UpgradeStatType.UnlockChargeLevel, 1f, UpgradeRarity.Epic, new[] { "차지 3단계" }),
+            // ── 차지 단계 해금 (시작은 0단계) ──
+            new UpgradeInfo("차지 1단계", "배트 차지 1단계가 해금됩니다. 최대 차지 시간 +0.5초", UpgradeStatType.UnlockChargeLevel, 1f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("차지 2단계", "배트 차지 2단계가 해금됩니다. 최대 차지 시간 +0.5초", UpgradeStatType.UnlockChargeLevel, 1f, UpgradeRarity.Rare, new[] { "차지 1단계" }),
+            new UpgradeInfo("차지 3단계", "배트 차지 3단계가 해금됩니다. 최대 차지 시간 +0.5초", UpgradeStatType.UnlockChargeLevel, 1f, UpgradeRarity.Epic, new[] { "차지 2단계" }),
         };
 
         // 1단계: 모든 업그레이드 생성

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SSH_SOBossSkillStab
   _skillName: 
   _skillNumber: 0
-  _skillCooldown: 12
+  _skillCooldown: 5
   _skillCastTime: 3
   _skillRepeatCount: 0
   _bossSkillParticle: {fileID: 0}

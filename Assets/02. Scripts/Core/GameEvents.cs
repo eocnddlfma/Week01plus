@@ -28,6 +28,11 @@ public static class GameEvents
     /// </summary>
     public static event Action<int> OnPlayerDamaged;
 
+    /// <summary>
+    /// 최대 체력이 증가될 때 발화 (새 최대 체력, 새 현재 체력)
+    /// </summary>
+    public static event Action<int, int> OnMaxHpIncreased;
+
     // ============= 웨이브 관리 =============
     /// <summary>
     /// 웨이브가 시작될 때 발화
@@ -50,6 +55,7 @@ public static class GameEvents
     public static void RaiseScoreChanged(int score) => OnScoreChanged?.Invoke(score);
     public static void RaiseEnemyKilled(EnemyBase enemy) => OnEnemyKilled?.Invoke(enemy);
     public static void RaisePlayerDamaged(int remainingHp) => OnPlayerDamaged?.Invoke(remainingHp);
+    public static void RaiseMaxHpIncreased(int newMaxHp, int newCurrentHp) => OnMaxHpIncreased?.Invoke(newMaxHp, newCurrentHp);
     public static void RaiseWaveStarted(int waveIndex) => OnWaveStarted?.Invoke(waveIndex);
     public static void RaiseWaveCleared(bool isBoss) => OnWaveCleared?.Invoke(isBoss);
     public static void RaiseUpgradeApplied(UpgradeData data) => OnUpgradeApplied?.Invoke(data);

@@ -346,14 +346,13 @@ MonoBehaviour:
   _maxChargeDamage: 20
   _varianceRange: 0.1
   _knockbackForce: 4
+  _maxSpinSpeed: 720
+  _spinDecay: 180
   _drawOrbitGizmo: 1
   _stateGizmoRadius: 0.5
   _swingRadius: 1.5
-  _enemyLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  _miniBatPivot: {fileID: 0}
-  _swingAngle: 180
+  _miniBatPivot: {fileID: 7805705310706582008}
+  _swingAngle: 360
   _swingDuration: 0.25
   _swingCurve:
     serializedVersion: 2
@@ -361,12 +360,12 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 4.6285715
+      outSlope: 4.6285715
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.041666668
     - serializedVersion: 3
       time: 1
       value: 1

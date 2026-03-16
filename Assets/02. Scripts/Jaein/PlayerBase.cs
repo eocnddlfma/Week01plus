@@ -127,6 +127,6 @@ public class PlayerBase : EntityBase
     {
         _maxHp += amount;
         _hp = Mathf.Min(_hp + amount, _maxHp);
-        GameEvents.RaisePlayerDamaged(_hp);
+        GameEvents.RaiseMaxHpIncreased(_maxHp, _hp);
     }
 }

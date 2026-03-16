@@ -30,11 +30,17 @@ public class UpgradeUI : MonoBehaviour
     [SerializeField] private float _cardAppearDelay = 0.1f;
     [SerializeField] private float _fadeOutDuration = 0.2f;
 
-    private Action<UpgradeData> _onSelected;
+    private Action<UpgradeData> _onEachSelected;
+    private Action _onAllDone;
+    private int _remainingPicks;
 
-    public void Show(List<UpgradeData> choices, Action<UpgradeData> onSelected)
+    // pickCount: 카드 중 몇 개를 고를지 (기본 1)
+    public void Show(List<UpgradeData> choices, Action<UpgradeData> onEachSelected, Action onAllDone = null, int pickCount = 1)
     {
-        _onSelected = onSelected;
+        _onEachSelected = onEachSelected;
+        _onAllDone = onAllDone;
+        _remainingPicks = pickCount;
+
         gameObject.SetActive(true);
 
         // 카드 설정
@@ -42,8 +48,9 @@ public class UpgradeUI : MonoBehaviour
         {
             if (i < choices.Count)
             {
+                var card = _cards[i];
                 _cards[i].gameObject.SetActive(true);
-                _cards[i].Setup(choices[i], OnCardClicked);
+                _cards[i].Setup(choices[i], (data) => OnCardClicked(data, card));
             }
             else
             {
@@ -72,6 +79,10 @@ public class UpgradeUI : MonoBehaviour
         }
     }
 
+    // 하위 호환: 기존 1개 선택 방식
+    public void Show(List<UpgradeData> choices, Action<UpgradeData> onSelected)
+        => Show(choices, onSelected, null, 1);
+
     public void Hide()
     {
         if (_canvasGroup != null)
@@ -88,12 +99,18 @@ public class UpgradeUI : MonoBehaviour
         }
     }
 
-    private void OnCardClicked(UpgradeData data)
+    private void OnCardClicked(UpgradeData data, UpgradeCard clickedCard)
     {
-        // 중복 클릭 방지
-        foreach (var card in _cards)
-            card.SetInteractable(false);
+        // 클릭한 카드만 숨김
+        clickedCard.gameObject.SetActive(false);
 
-        _onSelected?.Invoke(data);
+        _onEachSelected?.Invoke(data);
+        _remainingPicks--;
+
+        if (_remainingPicks <= 0)
+        {
+            _onAllDone?.Invoke();
+            Hide();
+        }
     }
 }

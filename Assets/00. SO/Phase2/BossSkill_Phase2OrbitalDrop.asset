@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SSH_SOBossSkillPhase2OrbitalDrop
   _skillName: 
   _skillNumber: 0
-  _skillCooldown: 10
+  _skillCooldown: 3
   _skillCastTime: 0
   _skillRepeatCount: 0
   _bossSkillParticle: {fileID: 0}

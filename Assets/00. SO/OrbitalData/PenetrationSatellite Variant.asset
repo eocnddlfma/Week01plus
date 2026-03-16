@@ -19,17 +19,17 @@ MonoBehaviour:
   launchDuration: 0.3
   launchDurationOffset: 0.05
   randomAngleOffset: 10
-  returnStrength: 28
+  returnStrength: 70
   returnDamping: 1
-  returnStrengthMax: 300
+  returnStrengthMax: 1058.2
   returnEscalationTime: 25
-  orbitAssistStrength: 34
+  orbitAssistStrength: 24
   useCounterClockwiseAssist: 1
-  maxReturnSpeed: 9999
+  maxReturnSpeed: 10877
   rejoinDistanceToOrbit: 0.2
   rejoinVelocityLimit: 8
   rejoinBrakeDamping: 8
-  snapDuration: 0.3
+  snapDuration: 0.54
   baseDamage: 2
   maxChargeDamage: 20
   varianceRange: 0.1

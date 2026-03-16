@@ -94,6 +94,9 @@ public class WS_BallGetter : MonoBehaviour
         SpawnBall(selected);
     }
 
+    // 플레이어가 실제로 획득한 공 타입 목록
+    public static HashSet<System.Type> OwnedBallTypes { get; private set; } = new HashSet<System.Type>();
+
     private void SpawnBall(BallData ballData)
     {
         if (ballData.BallPrefab == null)
@@ -111,6 +114,11 @@ public class WS_BallGetter : MonoBehaviour
 
         GameObject spawnedBall = Instantiate(ballData.BallPrefab, spawnPosition, Quaternion.identity, _container);
         SatelliteData satelliteData = spawnedBall.GetComponent<SatelliteData>();
+
+        // 획득한 공 타입 등록
+        OrbitalWeapon orbital = spawnedBall.GetComponent<OrbitalWeapon>();
+        if (orbital != null)
+            OwnedBallTypes.Add(orbital.GetType());
 
         if (_anim != null && satelliteData != null)
             _anim.Play(satelliteData.SatelliteName, spawnPosition);

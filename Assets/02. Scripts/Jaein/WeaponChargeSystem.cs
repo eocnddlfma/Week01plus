@@ -204,23 +204,25 @@ public class WeaponChargeSystem : MonoBehaviour
     {
         int maxLevel = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.MaxChargeLevel : 1;
         float effectiveMaxTime = _baseMaxChargeTime + (maxLevel - 1) * 0.5f;
-        float maxPercent = maxLevel / 4f;
 
         float chargeTime = _currentChargeTimer - _chargeThreshold;
-        _chargePercent = Mathf.Clamp(chargeTime / (effectiveMaxTime - _chargeThreshold), 0f, maxPercent);
+        _chargePercent = Mathf.Clamp01(chargeTime / (effectiveMaxTime - _chargeThreshold));
         _currentChargeLevel = Mathf.Min(maxLevel - 1, Mathf.FloorToInt(_chargePercent * 4f));
 
-        float dynamicSizeMultiplier = Mathf.Lerp(_chargeLevels[0].weaponSizeMultiplier, _chargeLevels[3].weaponSizeMultiplier, _chargePercent);
+        float visualT = _chargePercent;
+        int maxIdx = maxLevel - 1;
+
+        float dynamicSizeMultiplier = Mathf.Lerp(_chargeLevels[0].weaponSizeMultiplier, _chargeLevels[maxIdx].weaponSizeMultiplier, visualT);
         Transform pivot = transform.parent;
         if (pivot != null)
             pivot.localScale = _initialPivotScale * dynamicSizeMultiplier;
 
         if (_weaponSpriteRenderer != null)
-            _weaponSpriteRenderer.color = Color.Lerp(_chargeLevels[0].weaponColor, _chargeLevels[3].weaponColor, _chargePercent);
+            _weaponSpriteRenderer.color = Color.Lerp(_chargeLevels[0].weaponColor, _chargeLevels[maxIdx].weaponColor, visualT);
 
         float minAngle = _chargeLevels[0].rotationAngle;
-        float maxAngle = _chargeLevels[3].rotationAngle;
-        float dynamicAngle = Mathf.Lerp(minAngle, maxAngle, _chargePercent);
+        float maxAngle = _chargeLevels[maxIdx].rotationAngle;
+        float dynamicAngle = Mathf.Lerp(minAngle, maxAngle, visualT);
         pivot.localRotation = Quaternion.Euler(0f, 0f, -dynamicAngle * 0.5f);
     }
 

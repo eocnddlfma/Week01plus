@@ -28,14 +28,35 @@ public class UI_HealthBar : MonoBehaviour
                     Debug.LogError("PlayerBase를 찾을 수 없습니다.");
             }
             if (_player != null)
+            {
                 GameEvents.OnPlayerDamaged += TakeDamage;  // Phase 6: GameEvents로 변경
+                GameEvents.OnMaxHpIncreased += HandleMaxHpIncreased;
+            }
     }
 
     private void OnDestroy()
     {
         GameEvents.OnGameStateChanged -= HandleStateChanged;  // Phase 6: GameEvents로 변경
+        GameEvents.OnMaxHpIncreased -= HandleMaxHpIncreased;
             if (_player != null)
                 GameEvents.OnPlayerDamaged -= TakeDamage;  // Phase 6: GameEvents로 변경
+    }
+
+    private void HandleMaxHpIncreased(int newMaxHp, int newCurrentHp)
+    {
+        // 새 하트 슬롯 추가
+        int slotsToAdd = newMaxHp - _lifeImages.Count;
+        for (int i = 0; i < slotsToAdd; i++)
+        {
+            var obj = Instantiate(_lifePrefab, _livesContainer);
+            _lifeImages.Add(obj.GetComponent<Image>());
+        }
+
+        // 늘어난 HP에 해당하는 슬롯 활성화 (alpha 복원)
+        for (int i = _currentHp; i < newCurrentHp; i++)
+            _lifeImages[i].DOFade(1f, 0.2f);
+
+        _currentHp = newCurrentHp;
     }
 
     void HandleStateChanged(GameManager.GameState state)

@@ -90,6 +90,7 @@ public class OrbitalWeapon : MonoBehaviour
 
     protected float ChargePercent => _chargePercent;
     protected float AttackPower => _attackPower;
+    protected PlayerController PlayerController => _playerController;
 
     protected virtual void Awake()
     {
@@ -159,9 +160,11 @@ public class OrbitalWeapon : MonoBehaviour
         UpdateSpin(dt);
     }
 
+    protected virtual bool EnableSpin => true;
+
     private void UpdateSpin(float dt)
     {
-        if (_currentSpinSpeed == 0f) return;
+        if (!EnableSpin || _currentSpinSpeed == 0f) return;
 
         transform.Rotate(0f, 0f, _currentSpinSpeed * dt);
 
