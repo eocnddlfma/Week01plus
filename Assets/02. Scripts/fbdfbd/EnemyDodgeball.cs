@@ -1,79 +1,93 @@
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// 닷지볼 적: 일정 거리에서 멈추고, P1보스처럼 ProjectileSpawner 프리팹을
-/// 플레이어 주변에 스폰해 경고 → 라인 발사 패턴을 사용하는 원거리 적.
+/// 닷지볼 적: 일정 거리에서 멈추고 플레이어 위치를 중심으로
+/// P1 보스의 닷지볼 패턴(라인 → 버스트)을 발사하는 원거리 적
 /// </summary>
 public class EnemyDodgeball : EnemyBase
 {
-    [Header("Ranged")]
-    [Min(0.1f)][SerializeField] private float _attackRange = 10f;
-
-    [Header("Dodgeball Pattern")]
-    [SerializeField] private GameObject _patternPrefab;         // ProjectileSpawner가 붙어있는 프리팹
-    [Min(1)][SerializeField] private int _laneCount = 2;        // 스폰할 레인 수
-    [Min(0f)][SerializeField] private float _laneSpacing = 2f;  // 레인 간격
-    [Min(0f)][SerializeField] private float _heightOffset = 5f; // 플레이어 위쪽으로 스폰 높이
-    [Min(1)][SerializeField] private int _projectilesPerLane = 3;
-    [Min(0f)][SerializeField] private float _warningDuration = 1.5f;
-    [Min(0f)][SerializeField] private float _blinkInterval = 0.2f;
-    [Min(0.1f)][SerializeField] private float _projectileSpeed = 3f;
-    [Min(1)][SerializeField] private int _damage = 1;
+    [Header("Dodgeball Attack")]
+    [SerializeField] private SSH_SOBossSkillDodgeball _so;
+    [SerializeField] private float _attackRange = 8f;
 
     [Header("Wave Scaling (Dodgeball)")]
-    [Min(0f)][SerializeField] private float _damageScalePerWave = 0.1f;
     [Min(0f)][SerializeField] private float _attackRangeScalePerWave = 0.05f;
-    [Min(0f)][SerializeField] private float _projectileSpeedScalePerWave = 0.04f;
 
-    private int _baseDamage;
     private float _baseAttackRange;
-    private float _baseProjectileSpeed;
-
-    protected override bool CanAttack(float distanceToTarget) => distanceToTarget <= _attackRange;
+    private bool _isAttacking = false;
 
     protected override void Awake()
     {
         base.Awake();
-        _baseDamage = _damage;
         _baseAttackRange = _attackRange;
-        _baseProjectileSpeed = _projectileSpeed;
     }
+
+    protected override bool CanAttack(float distanceToTarget) =>
+        !_isAttacking && distanceToTarget <= _attackRange;
 
     protected override void ApplyWaveScaling(int waveIndex)
     {
         base.ApplyWaveScaling(waveIndex);
-        _damage = Mathf.Max(1, Mathf.RoundToInt(_baseDamage * (1f + waveIndex * _damageScalePerWave)));
         _attackRange = _baseAttackRange * (1f + waveIndex * _attackRangeScalePerWave);
-        _projectileSpeed = _baseProjectileSpeed * (1f + waveIndex * _projectileSpeedScalePerWave);
     }
 
     protected override void DoAttack()
     {
-        if (_patternPrefab == null || Target == null) return;
+        if (_so == null || _so.PatternPrefab == null) return;
+        StartCoroutine(DodgeballPattern());
+    }
 
-        Vector3 playerPos = Target.position;
-
-        float halfSpread = (_laneCount - 1) * _laneSpacing * 0.5f;
-
-        for (int i = 0; i < _laneCount; i++)
+    private GameObject SpawnPattern(Vector3 worldPos, Quaternion rot)
+    {
+        GameObject obj = Instantiate(_so.PatternPrefab, worldPos, rot);
+        ProjectileSpawner spawner = obj.GetComponentInChildren<ProjectileSpawner>();
+        if (spawner != null)
         {
-            float xOffset = -halfSpread + i * _laneSpacing;
-
-            // 플레이어 위쪽에 레인 스폰 (ProjectileSpawner는 항상 아래로 발사)
-            Vector3 spawnPos = new(playerPos.x + xOffset, playerPos.y + _heightOffset, 0f);
-
-            GameObject obj = Instantiate(_patternPrefab, spawnPos, Quaternion.identity);
-
-            ProjectileSpawner spawner = obj.GetComponentInChildren<ProjectileSpawner>();
-            if (spawner != null)
-            {
-                spawner.SetWarningDuration(_warningDuration);
-                spawner.SetBlinkInterval(_blinkInterval);
-                spawner.SetCount(_projectilesPerLane);
-                spawner.SetSpeed(_projectileSpeed);
-                spawner.SetDamage(_damage);
-            }
+            spawner.SetWarningDuration(_so.WarningDuration);
+            spawner.SetBlinkInterval(_so.BlinkInterval);
         }
+        return obj;
+    }
+
+    private IEnumerator DodgeballPattern()
+    {
+        _isAttacking = true;
+
+        // 패턴 기준점: 공격 시작 시점의 플레이어 위치 (스냅)
+        Vector3 center = Target != null ? Target.position : transform.position;
+        float line  = _so.LineOffset * 0.5f;   // 보스보다 좁은 간격
+        float step  = _so.StepDelay  * 0.6f;   // 보스보다 빠른 진행
+
+        // Step 1: 가로 라인 (플레이어 통과)
+        SpawnPattern(center, Quaternion.Euler(0f, 0f, 90f));
+        yield return new WaitForSeconds(step);
+
+        // Step 2: 세로 라인 좌우 2개
+        SpawnPattern(center + Vector3.left  * line, Quaternion.identity);
+        SpawnPattern(center + Vector3.right * line, Quaternion.identity);
+        yield return new WaitForSeconds(step);
+
+        // Step 3: 가로 상하 + 세로 좌우 (2배 거리)
+        SpawnPattern(center + Vector3.up    * line,       Quaternion.Euler(0f, 0f, 90f));
+        SpawnPattern(center + Vector3.down  * line,       Quaternion.Euler(0f, 0f, 90f));
+        SpawnPattern(center + Vector3.left  * line * 2f,  Quaternion.identity);
+        SpawnPattern(center + Vector3.right * line * 2f,  Quaternion.identity);
+        yield return new WaitForSeconds(step);
+
+        // Step 4: 원형 버스트 (보스보다 작은 반경)
+        int   burstCount  = _so.BurstCount;
+        float burstRadius = _so.BurstRadius * 0.4f;
+        float angleStep   = 360f / Mathf.Max(1, burstCount);
+        for (int i = 0; i < burstCount; i++)
+        {
+            float rad = angleStep * i * Mathf.Deg2Rad;
+            Vector3 offset = new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * burstRadius;
+            SpawnPattern(center + offset, Quaternion.Euler(0f, 0f, angleStep * i));
+        }
+        yield return new WaitForSeconds(step);
+
+        _isAttacking = false;
     }
 
 #if UNITY_EDITOR
