@@ -100,7 +100,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: satelliteName
-      value: SmallBall
+      value: "\uC791\uC740\uACF5"
       objectReference: {fileID: 0}
     - target: {fileID: 2125266342259857812, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value

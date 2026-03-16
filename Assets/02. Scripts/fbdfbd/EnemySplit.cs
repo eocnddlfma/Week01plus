@@ -128,8 +128,9 @@ public class EnemySplit : EnemyBase
         _isSplitting = false;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         StopSplitRoutine();
     }
 

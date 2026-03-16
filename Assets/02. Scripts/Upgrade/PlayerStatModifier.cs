@@ -20,6 +20,13 @@ public class PlayerStatModifier : MonoBehaviour
     public float DashCooldownMult = 1f;  // 낮을수록 빠름
     public float InvincibilityMult = 1f;
 
+    [Header("회복")]
+    public float HpRegenAmount = 0f;  // 초당 회복량
+
+    [Header("배트 공격")]
+    public float BatAttackSpeedMult = 1f;  // 공격 속도
+    public float BatAttackCooldownMult = 1f;  // 공격 쿨다운 (낮을수록 빠름)
+
     private void Awake()
     {
         Instance = this;
@@ -42,5 +49,8 @@ public class PlayerStatModifier : MonoBehaviour
         AttackRangeMult = 1f;
         DashCooldownMult = 1f;
         InvincibilityMult = 1f;
+        HpRegenAmount = 0f;
+        BatAttackSpeedMult = 1f;
+        BatAttackCooldownMult = 1f;
     }
 }

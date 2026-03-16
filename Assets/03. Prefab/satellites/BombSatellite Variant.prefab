@@ -1,0 +1,131 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8798573742192467388
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: rarity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: description
+      value: "\uD3ED8\uC740 \uC608\uC220\uC774\uB2E4."
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: satelliteName
+      value: "\uD3ED\uD0C4 \uACF5"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_Name
+      value: BombSatellite Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 773.41125
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 528.2027
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 6698029494726192618}
+  m_SourcePrefab: {fileID: 100100000, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+--- !u!1 &6022483946288439729 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+  m_PrefabInstance: {fileID: 8798573742192467388}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6698029494726192618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6022483946288439729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112f7e1944a563940b0c5eb782fafb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BombOrbitalWeapon
+  _statsData: {fileID: 0}
+  _center: {fileID: 0}
+  _orbitRadius: 2
+  _orbitAngularSpeed: 180
+  _startAngle: 0
+  _launchSpeed: 14
+  _launchSpeedOffset: 2
+  _launchDuration: 0.35
+  _launchDurationOffset: 0.05
+  _randomAngleOffset: 10
+  _returnStrength: 16
+  _returnDamping: 1
+  _returnStrengthMax: 150
+  _returnEscalationTime: 3
+  _orbitAssistStrength: 12
+  _useCounterClockwiseAssist: 1
+  _maxReturnSpeed: 18
+  _rejoinDistanceToOrbit: 0.2
+  _rejoinVelocityLimit: 8
+  _rejoinBrakeDamping: 8
+  _snapDuration: 0.3
+  _baseDamage: 2
+  _maxChargeDamage: 20
+  _varianceRange: 0.1
+  _knockbackForce: 4
+  _drawOrbitGizmo: 1
+  _stateGizmoRadius: 0.5
+  _explosionRadius: 3
+  _explosionDamage: 3
+  _explosionForce: 8
+  _enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _explosionColor: {r: 1, g: 0.5, b: 0, a: 1}
+  _explosionDuration: 0.3

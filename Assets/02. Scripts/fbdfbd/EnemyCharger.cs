@@ -86,8 +86,9 @@ public class EnemyCharger : EnemyBase
         _chargeCooldownMax = _baseCooldownMax * cooldownMult;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         if (_windupRestoreRoutine != null)
         {
             StopCoroutine(_windupRestoreRoutine);

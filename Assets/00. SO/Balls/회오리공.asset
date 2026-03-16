@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a045bb5beb5d774c85b6816befab5a6, type: 3}
+  m_Name: "\uD68C\uC624\uB9AC\uACF5"
+  m_EditorClassIdentifier: Assembly-CSharp::BallData
+  ballName: "\uD68C\uC624\uB9AC\uACF5"
+  description: "\uD68C\uC624\uB9AC\uACF5\uC740 \uD68C\uC624\uB9AC\uCC98\uB7FC \uD68C\uC624\uB9AC\uCCD0\uC694!\n"
+  ballPrefab: {fileID: 135284923283796709, guid: 68385dcc17e7f0146ac0f454dfbc513b, type: 3}
+  rarity: 1
+  icon: {fileID: 0}

@@ -79,7 +79,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1990228690316024304, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: satelliteName
-      value: StraightBall
+      value: "\uC9C1\uC120\uACF5"
       objectReference: {fileID: 0}
     - target: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_Name

@@ -69,21 +69,29 @@ public class HitStopController : MonoBehaviour
     private IEnumerator HitStopRoutine(float durationMult, float mult = 0f)
     {
         float newTimeScale = _slowedTimeScale * mult;
-        Debug.Log($"[HitStop] Setting duration: {_defaultDuration * durationMult}");
         Time.timeScale = newTimeScale;
         yield return new WaitForSecondsRealtime(_defaultDuration * durationMult);
-        Debug.Log($"[HitStop] Restoring timeScale to 1");
-        Time.timeScale = 1f;
+        // UI 등 외부에서 timeScale을 0으로 내린 상태면 복원하지 않음
+        if (Time.timeScale <= newTimeScale)
+            Time.timeScale = 1f;
         _routine = null;
     }
 
     private void OnDisable()
     {
-        Time.timeScale = 1f;
+        if (_routine != null)
+        {
+            StopCoroutine(_routine);
+            _routine = null;
+        }
     }
 
     private void OnDestroy()
     {
-        Time.timeScale = 1f;
+        if (_routine != null)
+        {
+            StopCoroutine(_routine);
+            _routine = null;
+        }
     }
 }

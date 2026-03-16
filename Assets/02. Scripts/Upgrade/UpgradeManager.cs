@@ -30,6 +30,7 @@ public class UpgradeManager : MonoBehaviour
 
     [Header("UI 참조")]
     [SerializeField] private UpgradeUI _upgradeUI;
+    [SerializeField] private WS_BallGetter _ballGetter;
 
     [Header("설정")]
     [SerializeField] private int _choiceCount = 3;
@@ -81,7 +82,7 @@ public class UpgradeManager : MonoBehaviour
     {
         // 보스 웨이브만 옵션이 켜져 있으면 보스 웨이브가 아닐 때 스킵
         if (_showOnBossWaveOnly && !isBossWave) return;
-        if (GameManager.Instance.CurrentState != GameManager.GameState.Playing) return;
+        if (GameManager.Instance != null && GameManager.Instance.CurrentState != GameManager.GameState.Playing) return;
         if (_upgradePool == null || _upgradePool.Count == 0) return;
 
         ShowUpgradeSelection();
@@ -107,9 +108,13 @@ public class UpgradeManager : MonoBehaviour
         if (_upgradeUI != null)
             _upgradeUI.Hide();
 
-        Time.timeScale = 1f;
-
         Debug.Log($"[Upgrade] 선택 완료: {selected.upgradeName}");
+
+        // 업그레이드 선택 후 공 선택 UI 표시
+        if (_ballGetter != null)
+            _ballGetter.ShowBallSelection();
+        else
+            Time.timeScale = 1f;
     }
 
     private void ApplyUpgrade(UpgradeData data)
@@ -150,6 +155,15 @@ public class UpgradeManager : MonoBehaviour
                 if (playerBase != null)
                     playerBase.IncreaseMaxHp(Mathf.RoundToInt(data.value));
                 break;
+            case UpgradeStatType.HpRegen:
+                _statModifier.HpRegenAmount += data.value;
+                break;
+            case UpgradeStatType.BatAttackSpeed:
+                _statModifier.BatAttackSpeedMult += data.value;
+                break;
+            case UpgradeStatType.BatAttackCooldown:
+                _statModifier.BatAttackCooldownMult += data.value;
+                break;
         }
 
         Debug.Log($"[Upgrade] 적용: {data.upgradeName} ({data.statType} {(data.value >= 0 ? "+" : "")}{data.value})");
@@ -157,6 +171,9 @@ public class UpgradeManager : MonoBehaviour
 
     private bool IsUnlocked(UpgradeData data)
     {
+        // 이미 선택된 업그레이드는 제외
+        if (_appliedUpgrades.Contains(data)) return false;
+
         if (data.prerequisites == null || data.prerequisites.Count == 0) return true;
         foreach (var req in data.prerequisites)
             if (!_appliedUpgrades.Contains(req)) return false;

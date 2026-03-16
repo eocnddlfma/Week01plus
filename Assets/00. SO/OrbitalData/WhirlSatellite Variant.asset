@@ -14,12 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OrbitalStatsData
   orbitRadius: 2
   orbitAngularSpeed: 180
-  launchSpeed: 14
-  launchDuration: 0.35
+  launchSpeed: 40
+  launchSpeedOffset: 2
+  launchDuration: 0.2
+  launchDurationOffset: 0.05
   randomAngleOffset: 10
-  returnStrength: 16
-  returnStrengthMax: 150
-  maxReturnSpeed: 18
+  returnStrength: 2946
+  returnDamping: 1
+  returnStrengthMax: 9667
+  returnEscalationTime: 15
+  orbitAssistStrength: 200
+  useCounterClockwiseAssist: 1
+  maxReturnSpeed: 17559
+  rejoinDistanceToOrbit: 0.5
+  rejoinVelocityLimit: 17
+  rejoinBrakeDamping: 8
+  snapDuration: 1.41
   baseDamage: 2
   maxChargeDamage: 20
   varianceRange: 0.1
+  knockbackForce: 0.4

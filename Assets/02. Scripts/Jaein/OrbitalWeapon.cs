@@ -516,7 +516,7 @@ public class OrbitalWeapon : MonoBehaviour
         enemy.AddExternalVelocity(knockbackDir * force, duration);
     }
 
-    private int CalculateDamage(float chargePercent, float attackPower = 1f)
+    protected int CalculateDamage(float chargePercent, float attackPower = 1f)
     {
         float ballDmgMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.BallDamageMult : 1f;
         float rawDamage = Mathf.Lerp(_baseDamage, _maxChargeDamage, chargePercent) * attackPower * ballDmgMult;

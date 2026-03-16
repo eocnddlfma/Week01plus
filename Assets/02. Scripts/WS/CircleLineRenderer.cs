@@ -45,6 +45,8 @@ public class WS_CircleLineRenderer : MonoBehaviour
         }
     }
 
+    public float Radius => _radius;
+
     public void SetCircle(float radius, int segments)
     {
         _radius = radius;

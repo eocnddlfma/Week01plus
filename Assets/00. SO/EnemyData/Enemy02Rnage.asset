@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3d77ba6db56b044e9a39f83b192c06d, type: 3}
   m_Name: Enemy02Rnage
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatsData
-  hp: 30
+  hp: 25
   moveSpeed: 3
   stopDistance: 1.2
   scoreReward: 100

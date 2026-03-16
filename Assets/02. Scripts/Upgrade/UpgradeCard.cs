@@ -17,11 +17,11 @@ public class UpgradeCard : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] private Image _background;
-    [SerializeField] private Image _rarityBorder;
     [SerializeField] private Image _icon;
     [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private TextMeshProUGUI _descriptionText;
     [SerializeField] private Button _button;
+    [SerializeField] private Outline _outline;
 
     [Header("등급 색상")]
     [SerializeField] private Color _commonColor = new Color(0.6f, 0.6f, 0.6f);
@@ -31,8 +31,17 @@ public class UpgradeCard : MonoBehaviour
     private UpgradeData _data;
     private Action<UpgradeData> _onClick;
 
+    private void Awake()
+    {
+        if (_button == null)
+            _button = GetComponent<Button>();
+    }
+
     public void Setup(UpgradeData data, Action<UpgradeData> onClick)
     {
+        if (_button == null)
+            _button = GetComponent<Button>();
+
         _data = data;
         _onClick = onClick;
 
@@ -57,9 +66,9 @@ public class UpgradeCard : MonoBehaviour
         }
 
         // 등급 색상
-        if (_rarityBorder != null)
+        if (_outline != null)
         {
-            _rarityBorder.color = data.rarity switch
+            _outline.effectColor = data.rarity switch
             {
                 UpgradeRarity.Common => _commonColor,
                 UpgradeRarity.Rare => _rareColor,

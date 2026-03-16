@@ -19,7 +19,10 @@ public enum UpgradeStatType
     AttackRange,    // 공격 범위 배율
     DashCooldown,   // 대시 쿨다운 배율 (음수 = 감소)
     Invincibility,  // 무적 시간 배율
-    MaxHp           // 최대 체력 (정수 증가)
+    MaxHp,          // 최대 체력 (정수 증가)
+    HpRegen,        // 초당 체력 회복 (초당 회복량)
+    BatAttackSpeed, // 배트 공격 속도 (휘두르는 속도)
+    BatAttackCooldown // 배트 공격 쿨다운 (음수 = 감소)
 }
 
 /// <summary>

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3d77ba6db56b044e9a39f83b192c06d, type: 3}
   m_Name: Enemy04Charger
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatsData
-  hp: 50
+  hp: 35
   moveSpeed: 5
   stopDistance: 1.2
   scoreReward: 100

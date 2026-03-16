@@ -10,6 +10,8 @@ public class PlayerBase : EntityBase
     [SerializeField] protected float _flashInterval = 0.1f;
 
     private bool _isInvincible = false;
+    private float _regenTickTimer = 0f;
+    private float _regenTickInterval = 0.1f;  // 0.1초마다 회복 체크
 
     protected override void Awake()
     {
@@ -18,6 +20,24 @@ public class PlayerBase : EntityBase
 
         _hp = _maxHp;
         _isDead = false;
+    }
+
+    private void Update()
+    {
+        if (_isDead) return;
+
+        // 초당 회복
+        _regenTickTimer += Time.deltaTime;
+        if (_regenTickTimer >= _regenTickInterval)
+        {
+            _regenTickTimer = 0f;
+
+            float regenAmount = _regenTickInterval * (PlayerStatModifier.Instance?.HpRegenAmount ?? 0f);
+            if (regenAmount > 0)
+            {
+                Heal((int)regenAmount);
+            }
+        }
     }
 
     public override void TakeDamage(int damage, bool isCharge = false)

@@ -55,6 +55,8 @@ public class UpgradeUI : MonoBehaviour
         if (_canvasGroup != null)
         {
             _canvasGroup.alpha = 0f;
+            _canvasGroup.interactable = true;
+            _canvasGroup.blocksRaycasts = true;
             _canvasGroup.DOFade(1f, _fadeInDuration).SetUpdate(true);
         }
 
@@ -74,6 +76,8 @@ public class UpgradeUI : MonoBehaviour
     {
         if (_canvasGroup != null)
         {
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
             _canvasGroup.DOFade(0f, _fadeOutDuration)
                 .SetUpdate(true)
                 .OnComplete(() => gameObject.SetActive(false));

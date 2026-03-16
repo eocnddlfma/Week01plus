@@ -15,15 +15,15 @@ MonoBehaviour:
   id: 1
   enemyList:
   - enemyPrefab: {fileID: 4100931100401140479, guid: 6a7ac9444c936c14487ab3d48624d4c2, type: 3}
-    spawnCount: 50
+    spawnCount: 10
   - enemyPrefab: {fileID: 6089281691577615938, guid: 8c3c97c10d24bf2469900ba136fc6ab3, type: 3}
     spawnCount: 25
   - enemyPrefab: {fileID: 7644190236014916701, guid: 06c81189e55b04e489fb46c3966ed6ce, type: 3}
     spawnCount: 15
   - enemyPrefab: {fileID: 3809240490651407635, guid: e7c4fbadbb06aee42ba0017bc453ee80, type: 3}
-    spawnCount: 0
+    spawnCount: 5
   - enemyPrefab: {fileID: 3240521692412521015, guid: a0490b199e18de0418e7169e4a38b145, type: 3}
     spawnCount: 0
-  minSpawnInterval: 0.05
+  minSpawnInterval: 0.1
   maxSpawnInterval: 0.3
   isBoss: 0
