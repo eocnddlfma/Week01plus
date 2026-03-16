@@ -125,8 +125,56 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 272624102836432597, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 6201898148424791028}
   m_SourcePrefab: {fileID: 100100000, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+--- !u!1 &2798894495465884283 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
+  m_PrefabInstance: {fileID: 1106006137406207606}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6201898148424791028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2798894495465884283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa148b22a9b44b6458e2d1bcaec3a5bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StraightOrbitalWeapon
+  _statsData: {fileID: 11400000, guid: 45cfa34512a7dd849b0e027590bbdec6, type: 2}
+  _center: {fileID: 0}
+  _orbitRadius: 2
+  _orbitAngularSpeed: 180
+  _startAngle: 0
+  _launchSpeed: 14
+  _launchSpeedOffset: 2
+  _launchDuration: 0.35
+  _launchDurationOffset: 0.05
+  _randomAngleOffset: 10
+  _returnStrength: 16
+  _returnDamping: 1
+  _returnStrengthMax: 150
+  _returnEscalationTime: 3
+  _orbitAssistStrength: 12
+  _useCounterClockwiseAssist: 1
+  _maxReturnSpeed: 18
+  _rejoinDistanceToOrbit: 0.2
+  _rejoinVelocityLimit: 8
+  _rejoinBrakeDamping: 8
+  _snapDuration: 0.3
+  _baseDamage: 2
+  _maxChargeDamage: 20
+  _varianceRange: 0.1
+  _knockbackForce: 4
+  _drawOrbitGizmo: 1
+  _stateGizmoRadius: 0.5

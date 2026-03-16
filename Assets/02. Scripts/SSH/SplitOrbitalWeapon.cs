@@ -38,14 +38,28 @@ public class SplitOrbitalWeapon : OrbitalWeapon
         base.RejoinOrbit(currentPos);
     }
 
-    private void SpawnOppositeClone()
-    {
-        Vector2 radial = ((Vector2)transform.position - (Vector2)_center.position).normalized;
-        Vector2 reflected = 2f * Vector2.Dot(_velocity, radial) * radial - _velocity;
+    // 업그레이드: 사방미인=4, 팔방미인=8 (기본 2 = 원본+반대방향 1개)
+    public static int SplitDirections = 2;
 
-        GameObject cloneObj = Instantiate(gameObject, transform.position, transform.rotation);
-        SplitOrbitalWeapon clone = cloneObj.GetComponent<SplitOrbitalWeapon>();
-        clone.InitAsClone(reflected, _launchDuration);
+    private void SpawnClones()
+    {
+        int clonesCount = SplitDirections - 1;
+        float angleStep = 360f / SplitDirections;
+
+        for (int i = 1; i <= clonesCount; i++)
+        {
+            float angle = angleStep * i;
+            float rad = angle * Mathf.Deg2Rad;
+            float cos = Mathf.Cos(rad);
+            float sin = Mathf.Sin(rad);
+            Vector2 cloneVel = new Vector2(
+                _velocity.x * cos - _velocity.y * sin,
+                _velocity.x * sin + _velocity.y * cos
+            );
+            GameObject cloneObj = Instantiate(gameObject, transform.position, transform.rotation);
+            SplitOrbitalWeapon clone = cloneObj.GetComponent<SplitOrbitalWeapon>();
+            clone.InitAsClone(cloneVel, _launchDuration);
+        }
     }
 
     protected override void OnTriggerEnter2D(Collider2D other)
@@ -58,7 +72,7 @@ public class SplitOrbitalWeapon : OrbitalWeapon
         if (_state != BallState.Orbit
             && (_enemyLayer.value & (1 << other.gameObject.layer)) != 0)
         {
-            SpawnOppositeClone();
+            SpawnClones();
         }
     }
 }

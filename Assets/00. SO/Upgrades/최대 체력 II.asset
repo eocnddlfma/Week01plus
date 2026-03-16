@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: "\uCD5C\uB300 \uCCB4\uB825 II"
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
   upgradeName: "\uCD5C\uB300 \uCCB4\uB825 II"
-  description: "\uCD5C\uB300 \uCCB4\uB825 \uC99D\uAC00 (\uC0C1\uC704)"
+  description: "\uCD5C\uB300 \uCCB4\uB825\uC774 15 \uC99D\uAC00\uD569\uB2C8\uB2E4."
   icon: {fileID: 0}
   rarity: 1
   statType: 9
-  value: 10
-  prerequisites: []
+  value: 15
+  prerequisites:
+  - {fileID: 11400000, guid: c900f756cd2b7644eb3efffad49f0782, type: 2}

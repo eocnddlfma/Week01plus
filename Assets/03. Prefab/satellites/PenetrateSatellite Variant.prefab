@@ -27,7 +27,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_LocalPosition.x
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2169623950ca0714f9a29ad0af2f069b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PenetrationOrbitalWeapon
-  _statsData: {fileID: 0}
+  _statsData: {fileID: 11400000, guid: 1097f103f692b03488a21281936f31be, type: 2}
   _center: {fileID: 0}
   _orbitRadius: 2
   _orbitAngularSpeed: 180

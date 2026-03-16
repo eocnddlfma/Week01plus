@@ -164,6 +164,105 @@ public class UpgradeManager : MonoBehaviour
             case UpgradeStatType.BatAttackCooldown:
                 _statModifier.BatAttackCooldownMult += data.value;
                 break;
+
+            // ── 공 특화 업그레이드 ──
+            case UpgradeStatType.Split4Way:
+                SplitOrbitalWeapon.SplitDirections = 4;
+                break;
+            case UpgradeStatType.Split8Way:
+                SplitOrbitalWeapon.SplitDirections = 8;
+                break;
+
+            case UpgradeStatType.BombRadiusMult:
+                BombOrbitalWeapon.UpgradeExplosionMult = data.value;
+                break;
+            case UpgradeStatType.BombAutoExplode:
+                BombOrbitalWeapon.AutoExplode = true;
+                break;
+
+            case UpgradeStatType.BatSwingRadius:
+                BatOrbitalWeapon.UpgradeSwingRadiusMult = data.value;
+                foreach (var w in FindObjectsByType<BatOrbitalWeapon>(FindObjectsSortMode.None))
+                    w.ApplySwingRadiusVisual();
+                break;
+            case UpgradeStatType.BatHalfHp:
+                BatOrbitalWeapon.HalfHpOnHit = true;
+                break;
+
+            case UpgradeStatType.BounceNoDamp:
+                BounceOrbitalWeapon.NoDamp = true;
+                break;
+            case UpgradeStatType.BounceHitBonus:
+                BounceOrbitalWeapon.CollisionDamageBonus = true;
+                break;
+
+            case UpgradeStatType.GravityMult:
+                GravityOrbitalWeapon.UpgradeStrengthMult = data.value;
+                break;
+            case UpgradeStatType.GravityRepel:
+                GravityOrbitalWeapon.Repel = true;
+                break;
+
+            case UpgradeStatType.HeavyMaxHpDamage:
+                HeavyOrbitalWeapon.MaxHpDamagePercent = data.value;
+                break;
+            case UpgradeStatType.HeavyCurling:
+                HeavyOrbitalWeapon.Curling = true;
+                break;
+
+            case UpgradeStatType.NormalFixedDamage:
+                NormalOrbitalWeapon.FixedDamage = Mathf.RoundToInt(data.value);
+                break;
+
+            case UpgradeStatType.PenFencingMaster:
+                PenetrationOrbitalWeapon.UpgradeDurationMult = data.value;
+                foreach (var w in FindObjectsByType<PenetrationOrbitalWeapon>(FindObjectsSortMode.None))
+                    w.RefreshDurationUpgrade();
+                break;
+            case UpgradeStatType.PenContinuousStab:
+                PenetrationOrbitalWeapon.ContinuousStab = true;
+                break;
+
+            case UpgradeStatType.SmallDamageMult:
+                SmallOrbitalWeapon.DamageMult = data.value;
+                break;
+            case UpgradeStatType.SmallHackSlash:
+                SmallOrbitalWeapon.DamageMult = data.value; // 15f
+                SmallOrbitalWeapon.HackSlash = true;
+                break;
+
+            case UpgradeStatType.StraightRelaunch:
+                StraightOrbitalWeapon.Relaunch = true;
+                break;
+            case UpgradeStatType.StraightKnockback:
+                StraightOrbitalWeapon.KnockbackBonus = data.value;
+                break;
+
+            case UpgradeStatType.WallThresholdBlast:
+                WallOrbitalWeapon.ThresholdBlast = true;
+                break;
+            case UpgradeStatType.WallThrowDetach:
+                WallOrbitalWeapon.ThrowOnDetach = true;
+                break;
+            case UpgradeStatType.WallWideBody:
+                WallOrbitalWeapon.WideBody = true;
+                foreach (var w in FindObjectsByType<WallOrbitalWeapon>(FindObjectsSortMode.None))
+                    w.ApplyWideBody();
+                break;
+
+            case UpgradeStatType.WhirlNoReturn:
+                WhirlOrbitalWeapon.ApplyNoReturn = true;
+                foreach (var w in FindObjectsByType<WhirlOrbitalWeapon>(FindObjectsSortMode.None))
+                    w.SwapToNoReturnSO();
+                break;
+            case UpgradeStatType.WhirlCollisionStack:
+                WhirlOrbitalWeapon.CollisionStack = true;
+                break;
+
+            case UpgradeStatType.UnlockChargeLevel:
+                if (_statModifier != null)
+                    _statModifier.MaxChargeLevel = Mathf.Min(4, _statModifier.MaxChargeLevel + 1);
+                break;
         }
 
         Debug.Log($"[Upgrade] 적용: {data.upgradeName} ({data.statType} {(data.value >= 0 ? "+" : "")}{data.value})");
@@ -182,14 +281,16 @@ public class UpgradeManager : MonoBehaviour
 
     private List<UpgradeData> GetRandomUpgrades(int count)
     {
+        var availableBalls = GetAvailableBallTypes();
+
         List<UpgradeData> pool = new List<UpgradeData>();
         foreach (var data in _upgradePool)
-            if (IsUnlocked(data)) pool.Add(data);
-        List<UpgradeData> result = new List<UpgradeData>();
+            if (IsUnlocked(data) && HasRequiredBall(data.statType, availableBalls))
+                pool.Add(data);
 
+        List<UpgradeData> result = new List<UpgradeData>();
         count = Mathf.Min(count, pool.Count);
 
-        // Fisher-Yates 셔플로 중복 없이 선택
         for (int i = 0; i < count; i++)
         {
             int index = Random.Range(0, pool.Count);
@@ -198,5 +299,69 @@ public class UpgradeManager : MonoBehaviour
         }
 
         return result;
+    }
+
+    private HashSet<System.Type> GetAvailableBallTypes()
+    {
+        var types = new HashSet<System.Type>();
+        foreach (var orbital in FindObjectsByType<OrbitalWeapon>(FindObjectsSortMode.None))
+            types.Add(orbital.GetType());
+        return types;
+    }
+
+    private bool HasRequiredBall(UpgradeStatType statType, HashSet<System.Type> availableBalls)
+    {
+        switch (statType)
+        {
+            case UpgradeStatType.Split4Way:
+            case UpgradeStatType.Split8Way:
+                return availableBalls.Contains(typeof(SplitOrbitalWeapon));
+
+            case UpgradeStatType.BombRadiusMult:
+            case UpgradeStatType.BombAutoExplode:
+                return availableBalls.Contains(typeof(BombOrbitalWeapon));
+
+            case UpgradeStatType.BatSwingRadius:
+            case UpgradeStatType.BatHalfHp:
+                return availableBalls.Contains(typeof(BatOrbitalWeapon));
+
+            case UpgradeStatType.BounceNoDamp:
+            case UpgradeStatType.BounceHitBonus:
+                return availableBalls.Contains(typeof(BounceOrbitalWeapon));
+
+            case UpgradeStatType.GravityMult:
+            case UpgradeStatType.GravityRepel:
+                return availableBalls.Contains(typeof(GravityOrbitalWeapon));
+
+            case UpgradeStatType.HeavyMaxHpDamage:
+            case UpgradeStatType.HeavyCurling:
+                return availableBalls.Contains(typeof(HeavyOrbitalWeapon));
+
+            case UpgradeStatType.NormalFixedDamage:
+                return availableBalls.Contains(typeof(NormalOrbitalWeapon));
+
+            case UpgradeStatType.PenFencingMaster:
+            case UpgradeStatType.PenContinuousStab:
+                return availableBalls.Contains(typeof(PenetrationOrbitalWeapon));
+
+            case UpgradeStatType.SmallDamageMult:
+            case UpgradeStatType.SmallHackSlash:
+                return availableBalls.Contains(typeof(SmallOrbitalWeapon));
+
+            case UpgradeStatType.StraightRelaunch:
+            case UpgradeStatType.StraightKnockback:
+                return availableBalls.Contains(typeof(StraightOrbitalWeapon));
+
+            case UpgradeStatType.WallThresholdBlast:
+            case UpgradeStatType.WallThrowDetach:
+                return availableBalls.Contains(typeof(WallOrbitalWeapon));
+
+            case UpgradeStatType.WhirlNoReturn:
+            case UpgradeStatType.WhirlCollisionStack:
+                return availableBalls.Contains(typeof(WhirlOrbitalWeapon));
+
+            default:
+                return true; // 일반 업그레이드는 항상 허용
+        }
     }
 }

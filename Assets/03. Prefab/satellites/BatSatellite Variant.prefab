@@ -149,7 +149,7 @@ Transform:
   m_GameObject: {fileID: 8344077053923554496}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -1031.2151, y: -704.27026, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.3333334, y: 1.3333334, z: 1.3333334}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -245,15 +245,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 773.41125
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 528.2027
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_LocalPosition.z
@@ -321,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7361d9259d8ee1940965c45c27abeb62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BatOrbitalWeapon
-  _statsData: {fileID: 0}
+  _statsData: {fileID: 11400000, guid: 832e35651c7a6bd48aa76bdcd9fed0d0, type: 2}
   _center: {fileID: 0}
   _orbitRadius: 2
   _orbitAngularSpeed: 180
@@ -348,5 +348,35 @@ MonoBehaviour:
   _knockbackForce: 4
   _drawOrbitGizmo: 1
   _stateGizmoRadius: 0.5
-  _batPivot: {fileID: 0}
+  _swingRadius: 1.5
+  _enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _miniBatPivot: {fileID: 0}
+  _swingAngle: 180
+  _swingDuration: 0.25
+  _swingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _batManager: {fileID: 0}

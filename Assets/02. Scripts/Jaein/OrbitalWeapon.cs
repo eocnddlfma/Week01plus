@@ -59,6 +59,10 @@ public class OrbitalWeapon : MonoBehaviour
 
     [Header("Charge Orbit Effect")]
 
+    [Header("Spin")]
+    [SerializeField] private float _maxSpinSpeed = 720f;   // 발사 직후 최대 회전 속도 (도/초)
+    [SerializeField] private float _spinDecay = 180f;      // 초당 감속량 (도/초²)
+
     [Header("Debug")]
     [SerializeField] private bool _drawOrbitGizmo = true;
     [SerializeField] private float _stateGizmoRadius = 0.5f;
@@ -81,7 +85,11 @@ public class OrbitalWeapon : MonoBehaviour
 
     // 발사 시 저장된 차지 퍼센트 (Orbit 복귀 시 초기화)
     private float _chargePercent = 0f;
+    private float _currentSpinSpeed = 0f;
     private float _attackPower = 1f;
+
+    protected float ChargePercent => _chargePercent;
+    protected float AttackPower => _attackPower;
 
     protected virtual void Awake()
     {
@@ -100,7 +108,9 @@ public class OrbitalWeapon : MonoBehaviour
         _allOrbitals.Remove(this);
     }
 
-    private void InitFromStatsData()
+    private bool _noReturn = false;
+
+    protected void InitFromStatsData()
     {
         if (_statsData == null) return;
         _orbitRadius = _statsData.orbitRadius;
@@ -125,6 +135,7 @@ public class OrbitalWeapon : MonoBehaviour
         _maxChargeDamage = _statsData.maxChargeDamage;
         _varianceRange = _statsData.varianceRange;
         _knockbackForce = _statsData.knockbackForce;
+        _noReturn = _statsData.noReturn;
     }
 
     protected virtual void Start()
@@ -138,13 +149,24 @@ public class OrbitalWeapon : MonoBehaviour
         _velocity = Vector2.zero;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (_center == null) return;
 
         float dt = Time.deltaTime;
         if (dt <= 0.0f) return;
         UpdateState(dt);
+        UpdateSpin(dt);
+    }
+
+    private void UpdateSpin(float dt)
+    {
+        if (_currentSpinSpeed == 0f) return;
+
+        transform.Rotate(0f, 0f, _currentSpinSpeed * dt);
+
+        // 점점 느려짐
+        _currentSpinSpeed = Mathf.MoveTowards(_currentSpinSpeed, 0f, _spinDecay * dt);
     }
 
     private void UpdateState(float dt)
@@ -291,7 +313,8 @@ public class OrbitalWeapon : MonoBehaviour
         _stateTimer = _launchDuration * durationMultiplier + Random.Range(-_launchDurationOffset, _launchDurationOffset);
 
         _returnTimeElapsed = 0.0f;
-        
+        _currentSpinSpeed = _maxSpinSpeed * (1f + chargePercent);
+
         _state = BallState.Launched;
 
         //Debug.Log($"[Orbital] Charge: {chargePercent * 100}%, Speed: {_velocity.magnitude}");
@@ -299,6 +322,16 @@ public class OrbitalWeapon : MonoBehaviour
 
     protected virtual void RejoinOrbit(Vector2 currentPos)
     {
+        if (_noReturn)
+        {
+            Vector2 randDir = Random.insideUnitCircle.normalized;
+            if (randDir.sqrMagnitude < 0.001f) randDir = Vector2.right;
+            _velocity = randDir * Mathf.Max(_velocity.magnitude, 5f);
+            _stateTimer = _launchDuration;
+            _state = BallState.Launched;
+            return;
+        }
+
         Vector2 fromCenter = currentPos - (Vector2)_center.position;
 
         if (fromCenter.sqrMagnitude <= 0.0001f)
@@ -481,6 +514,8 @@ public class OrbitalWeapon : MonoBehaviour
         }
     }
 
+    protected virtual float GetKnockbackMultiplier() => 1f;
+
     private void ApplyKnockback(EnemyBase enemy)
     {
         if (_knockbackForce <= 0f || _center == null) return;
@@ -508,7 +543,7 @@ public class OrbitalWeapon : MonoBehaviour
         }
 
         float kbMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.KnockbackMult : 1f;
-        float force = _velocity.magnitude * _knockbackForce * kbMult;
+        float force = _velocity.magnitude * _knockbackForce * kbMult * GetKnockbackMultiplier();
 
         float t = Mathf.Clamp01(force / 15f);
         float duration = (1f - (1f - t) * (1f - t) * (1f - t)) * 0.15f;
@@ -516,7 +551,27 @@ public class OrbitalWeapon : MonoBehaviour
         enemy.AddExternalVelocity(knockbackDir * force, duration);
     }
 
-    protected int CalculateDamage(float chargePercent, float attackPower = 1f)
+    /// <summary>
+    /// SO를 클론하고 noReturn을 활성화 (가출 업그레이드)
+    /// </summary>
+    public void ApplyNoReturnUpgrade()
+    {
+        _statsData = Instantiate(_statsData);
+        _statsData.noReturn = true;
+        InitFromStatsData();
+    }
+
+    /// <summary>
+    /// 강제로 발사 상태로 전환 (컬링 등에 사용)
+    /// </summary>
+    public void ForceKnockOff(Vector2 dir, float speed)
+    {
+        _velocity = dir.normalized * speed;
+        _stateTimer = _launchDuration;
+        _state = BallState.Launched;
+    }
+
+    protected virtual int CalculateDamage(float chargePercent, float attackPower = 1f)
     {
         float ballDmgMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.BallDamageMult : 1f;
         float rawDamage = Mathf.Lerp(_baseDamage, _maxChargeDamage, chargePercent) * attackPower * ballDmgMult;

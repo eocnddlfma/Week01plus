@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: "\uB109\uBC31 II"
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
   upgradeName: "\uB109\uBC31 II"
-  description: "\uC801 \uB109\uBC31 \uC99D\uAC00 (\uC0C1\uC704)"
+  description: "\uB109\uBC31\uB7C9\uC774 \uCD1D 100% \uC99D\uAC00\uD569\uB2C8\uB2E4."
   icon: {fileID: 0}
   rarity: 1
   statType: 3
-  value: 0.15
-  prerequisites: []
+  value: 0.6
+  prerequisites:
+  - {fileID: 11400000, guid: 26ab571a637e0774fa37cc8544a03538, type: 2}

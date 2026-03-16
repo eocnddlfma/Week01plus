@@ -9,6 +9,9 @@ public class PlayerStatModifier : MonoBehaviour
 {
     public static PlayerStatModifier Instance { get; private set; }
 
+    [Header("차지 단계")]
+    public int MaxChargeLevel = 1; // 1~4, 업그레이드로 해금
+
     [Header("배율 (기본값 1.0, 증강이 누적됩니다)")]
     public float MoveSpeedMult = 1f;
     public float BatDamageMult = 1f;
@@ -40,6 +43,7 @@ public class PlayerStatModifier : MonoBehaviour
 
     public void ResetAll()
     {
+        MaxChargeLevel = 1;
         MoveSpeedMult = 1f;
         BatDamageMult = 1f;
         BallDamageMult = 1f;

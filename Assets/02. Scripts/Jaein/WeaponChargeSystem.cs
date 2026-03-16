@@ -36,7 +36,9 @@ public class WeaponChargeSystem : MonoBehaviour
     [SerializeField] private float _maxChargeTime = 1.2f;
     [SerializeField] private float _chargeThreshold = 0.2f;
 
+    private float _baseMaxChargeTime = 1.2f;
     private float _currentChargeTimer = 0f;
+    private WeaponHitProcessor _hitProcessor;
     private int _currentChargeLevel = 0;
     private bool _isCharging = false;
     private bool _wasPressed = false;
@@ -67,6 +69,7 @@ public class WeaponChargeSystem : MonoBehaviour
             _pivotParent = pivot.parent;
         }
 
+        _hitProcessor = GetComponent<WeaponHitProcessor>();
         SetupLevels();
         InitFromStatsData();
     }
@@ -75,7 +78,8 @@ public class WeaponChargeSystem : MonoBehaviour
     {
         if (_statsData == null) return;
         _chargeCooldown = _statsData.chargeCooldown;
-        _maxChargeTime = _statsData.maxChargeTime;
+        _baseMaxChargeTime = _statsData.maxChargeTime;
+        _maxChargeTime = _baseMaxChargeTime;
         _chargeThreshold = _statsData.chargeThreshold;
     }
 
@@ -160,7 +164,8 @@ public class WeaponChargeSystem : MonoBehaviour
 
     public void HandleAttackInput(bool pressed, bool held, bool released)
     {
-        if (pressed && !_isCharging && Time.time >= _lastAttackTime + _chargeCooldown)
+        float cooldownMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.BatAttackCooldownMult : 1f;
+        if (pressed && !_isCharging && !(_hitProcessor != null && _hitProcessor.IsAttacking) && Time.time >= _lastAttackTime + _chargeCooldown / cooldownMult)
         {
             _currentChargeTimer = 0f;
             _currentChargeLevel = 0;
@@ -197,9 +202,13 @@ public class WeaponChargeSystem : MonoBehaviour
 
     private void UpdateChargeVisuals()
     {
+        int maxLevel = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.MaxChargeLevel : 1;
+        float effectiveMaxTime = _baseMaxChargeTime + (maxLevel - 1) * 0.5f;
+        float maxPercent = maxLevel / 4f;
+
         float chargeTime = _currentChargeTimer - _chargeThreshold;
-        _chargePercent = Mathf.Clamp01(chargeTime / (_maxChargeTime - _chargeThreshold));
-        _currentChargeLevel = Mathf.Min(3, Mathf.FloorToInt(_chargePercent * 4f));
+        _chargePercent = Mathf.Clamp(chargeTime / (effectiveMaxTime - _chargeThreshold), 0f, maxPercent);
+        _currentChargeLevel = Mathf.Min(maxLevel - 1, Mathf.FloorToInt(_chargePercent * 4f));
 
         float dynamicSizeMultiplier = Mathf.Lerp(_chargeLevels[0].weaponSizeMultiplier, _chargeLevels[3].weaponSizeMultiplier, _chargePercent);
         Transform pivot = transform.parent;

@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: "\uBE60\uB530 \uD718\uB450\uB974\uAE30 II"
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
   upgradeName: "\uBE60\uB530 \uD718\uB450\uB974\uAE30 II"
-  description: "\uBC30\uD2B8 \uACF5\uACA9 \uC18D\uB3C4 \uC99D\uAC00 (\uC0C1\uC704)"
+  description: "\uBC30\uD2B8\uB97C \uD718\uB450\uB974\uB294\uB370 \uC808\uBC18\uC758
+    \uC2DC\uAC04\uBC16\uC5D0 \uAC78\uB9AC\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."
   icon: {fileID: 0}
   rarity: 1
   statType: 11
-  value: 0.15
-  prerequisites: []
+  value: 0.3
+  prerequisites:
+  - {fileID: 11400000, guid: ff6c5dd1232275f4cb5de63cd6c41536, type: 2}

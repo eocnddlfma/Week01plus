@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9cbdfe1f303334585bbfc46482bf5d, type: 3}
+  m_Name: "\uC800\uB9AC\uAC00!"
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
+  upgradeName: "\uC800\uB9AC\uAC00!"
+  description: "\uC778\uB825\uC774 \uCC99\uB825\uC73C\uB85C \uBC14\uB01D\uB2C8\uB2E4"
+  icon: {fileID: 0}
+  rarity: 2
+  statType: 22
+  value: 1
+  prerequisites:
+  - {fileID: 11400000, guid: d15794d92b31cf64a8927a3a8d4f1842, type: 2}

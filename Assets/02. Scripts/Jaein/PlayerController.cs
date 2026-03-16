@@ -62,7 +62,10 @@ public class PlayerController : PlayerBase
     private void OnDashStateChanged(bool isDashing, float duration)
     {
         if (isDashing)
-            StartInvincible(duration, flash: true);
+        {
+            float mult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.InvincibilityMult : 1f;
+            StartInvincible(duration * mult, flash: true);
+        }
     }
 
     private void InitFromStatsData()

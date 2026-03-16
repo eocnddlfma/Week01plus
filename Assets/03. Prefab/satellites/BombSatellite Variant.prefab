@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_LocalPosition.x
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112f7e1944a563940b0c5eb782fafb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BombOrbitalWeapon
-  _statsData: {fileID: 0}
+  _statsData: {fileID: 11400000, guid: e84d1b2113dabb64587edb30ee4a2392, type: 2}
   _center: {fileID: 0}
   _orbitRadius: 2
   _orbitAngularSpeed: 180

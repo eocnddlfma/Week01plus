@@ -42,4 +42,7 @@ public class OrbitalStatsData : ScriptableObject
     public int maxChargeDamage = 20;
     public float varianceRange = 0.1f;
     public float knockbackForce = 0.4f;
+
+    [Header("특수 동작")]
+    public bool noReturn = false; // 궤도로 복귀하지 않음 (가출)
 }

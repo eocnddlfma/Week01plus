@@ -1239,8 +1239,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: <special ball +1>
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c6db5df11c57c20419165e321a0a0a08, type: 2}
-  m_sharedMaterial: {fileID: -3875922560508329880, guid: c6db5df11c57c20419165e321a0a0a08, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b60eebd3c0f29c94d98e31a55d722f02, type: 2}
+  m_sharedMaterial: {fileID: -5889747395573889852, guid: b60eebd3c0f29c94d98e31a55d722f02, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1270,7 +1270,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -4210,32 +4210,62 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
   _upgradePool:
-  - {fileID: 11400000, guid: bee1e79e34bcc7643a8918ce542eedbf, type: 2}
+  - {fileID: 11400000, guid: 921895f98fb23d245b98e0e29fa76343, type: 2}
   - {fileID: 11400000, guid: 683022bf9dc7f804381c4f20cba13dc5, type: 2}
-  - {fileID: 11400000, guid: 4539165a516f71d46960447922ddb774, type: 2}
+  - {fileID: 11400000, guid: bee1e79e34bcc7643a8918ce542eedbf, type: 2}
   - {fileID: 11400000, guid: 3d7be4e218baa8b478a741e28d0a29de, type: 2}
-  - {fileID: 11400000, guid: b74418c69a23ff24d899f55e058887dd, type: 2}
+  - {fileID: 11400000, guid: 4539165a516f71d46960447922ddb774, type: 2}
   - {fileID: 11400000, guid: a6a37fe5a446b8f4f93149905748f070, type: 2}
-  - {fileID: 11400000, guid: 26ab571a637e0774fa37cc8544a03538, type: 2}
+  - {fileID: 11400000, guid: b74418c69a23ff24d899f55e058887dd, type: 2}
+  - {fileID: 11400000, guid: 61f1fc6a732bbd34c879c68e6e5b1e4f, type: 2}
+  - {fileID: 11400000, guid: d15794d92b31cf64a8927a3a8d4f1842, type: 2}
   - {fileID: 11400000, guid: 46d615fe41734604aa87cdcf6f90c953, type: 2}
-  - {fileID: 11400000, guid: 10bf15838814d7b43b79ad5463ffd37a, type: 2}
+  - {fileID: 11400000, guid: 26ab571a637e0774fa37cc8544a03538, type: 2}
+  - {fileID: 11400000, guid: c6dbfcf12b907244c839925276e17805, type: 2}
   - {fileID: 11400000, guid: 656e80a8a26126c4faf06c37d42f530d, type: 2}
-  - {fileID: 11400000, guid: 55d7f119000c7e14988d2b877960e114, type: 2}
+  - {fileID: 11400000, guid: 10bf15838814d7b43b79ad5463ffd37a, type: 2}
+  - {fileID: 11400000, guid: 968352f3a0d886841a6ca47625f17f27, type: 2}
   - {fileID: 11400000, guid: 94660df108569f94492a93a863a41898, type: 2}
-  - {fileID: 11400000, guid: 3dc34a751c0851f428de6bbf933cd1c1, type: 2}
+  - {fileID: 11400000, guid: 55d7f119000c7e14988d2b877960e114, type: 2}
   - {fileID: 11400000, guid: fb5dcea26457eec4895b2c26a5b75961, type: 2}
-  - {fileID: 11400000, guid: 46ce57644d94a9341a518082dcdb3502, type: 2}
+  - {fileID: 11400000, guid: 3dc34a751c0851f428de6bbf933cd1c1, type: 2}
+  - {fileID: 11400000, guid: bf62ef4e086c87047b0f340b3ed2ce53, type: 2}
+  - {fileID: 11400000, guid: 51431718aaf333c4fb3bffb83899bdda, type: 2}
   - {fileID: 11400000, guid: 402aa93e69f119647bb9bd79b60f03b6, type: 2}
-  - {fileID: 11400000, guid: ff6c5dd1232275f4cb5de63cd6c41536, type: 2}
+  - {fileID: 11400000, guid: 46ce57644d94a9341a518082dcdb3502, type: 2}
   - {fileID: 11400000, guid: 9c8ebd6d90785de469a39875885b46be, type: 2}
-  - {fileID: 11400000, guid: fdffb6d9a56d43d45bdd6ba7528569b0, type: 2}
+  - {fileID: 11400000, guid: ff6c5dd1232275f4cb5de63cd6c41536, type: 2}
+  - {fileID: 11400000, guid: 492539de3fbc34a449db9231fe2ea3de, type: 2}
+  - {fileID: 11400000, guid: 43955766922073a408f380cea556873f, type: 2}
+  - {fileID: 11400000, guid: 414b49ce7ebf2034e953e0e66f96ea8c, type: 2}
+  - {fileID: 11400000, guid: 18eef1dc8885a14449b60e234c840203, type: 2}
+  - {fileID: 11400000, guid: 6d8778ad381fcb0448d021d993294f03, type: 2}
+  - {fileID: 11400000, guid: d9677d60f8b22aa489da39cc536a5dac, type: 2}
   - {fileID: 11400000, guid: 643f829228cbb824ca7f0ee80c3ee349, type: 2}
-  - {fileID: 11400000, guid: bf7e4512a0622f448ba195335420ea1e, type: 2}
+  - {fileID: 11400000, guid: fdffb6d9a56d43d45bdd6ba7528569b0, type: 2}
+  - {fileID: 11400000, guid: abc477cd79c72d542bbac775a3377ceb, type: 2}
+  - {fileID: 11400000, guid: 0f3c5b31bed614b489f441ef41a24925, type: 2}
+  - {fileID: 11400000, guid: d49f42e06f892fa41870100fcc84d3fc, type: 2}
+  - {fileID: 11400000, guid: 536e84b26e819f9498324a9cf2f9ee44, type: 2}
+  - {fileID: 11400000, guid: 58fe7c9e440ba1e4c8f2da679d8a95a8, type: 2}
+  - {fileID: 11400000, guid: f821eec3171d7cf4d85819f62c2539a3, type: 2}
+  - {fileID: 11400000, guid: 771af6cad64d02f4c8973ee6c5bf43d8, type: 2}
   - {fileID: 11400000, guid: 01b77bab948c9c846a4c308eae0ec068, type: 2}
-  - {fileID: 11400000, guid: d89ee7c64c883484880f40e85f921b82, type: 2}
+  - {fileID: 11400000, guid: 7d010bfb5a2390d4eb2c5fccf9da8fcc, type: 2}
+  - {fileID: 11400000, guid: bf7e4512a0622f448ba195335420ea1e, type: 2}
   - {fileID: 11400000, guid: 745eed2dd9a864f44961b513e199a322, type: 2}
-  - {fileID: 11400000, guid: c900f756cd2b7644eb3efffad49f0782, type: 2}
+  - {fileID: 11400000, guid: d89ee7c64c883484880f40e85f921b82, type: 2}
   - {fileID: 11400000, guid: 24ff195cadd364041821abc80ab4e069, type: 2}
+  - {fileID: 11400000, guid: c900f756cd2b7644eb3efffad49f0782, type: 2}
+  - {fileID: 11400000, guid: 4116e899c49696b459e813f414f34c66, type: 2}
+  - {fileID: 11400000, guid: 02458e9918fe831429ea520ecb216209, type: 2}
+  - {fileID: 11400000, guid: 6290e818b7c39a24187208ab4a5e5c66, type: 2}
+  - {fileID: 11400000, guid: 52044367e97e11544934508359d52288, type: 2}
+  - {fileID: 11400000, guid: 5bed9426120ded941971e6357ab96493, type: 2}
+  - {fileID: 11400000, guid: c48fb96de6617824fb72130e90588c59, type: 2}
+  - {fileID: 11400000, guid: 7b118da1e225dc043a167acc5147470b, type: 2}
+  - {fileID: 11400000, guid: 468a19619bd6c4d4e8425e838f96e4fe, type: 2}
+  - {fileID: 11400000, guid: adf470714eb4dc94fac8b2418ff46574, type: 2}
   _upgradeUI: {fileID: 2095096080}
   _ballGetter: {fileID: 2100684998}
   _choiceCount: 3
@@ -4468,6 +4498,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: WallSatellite
       objectReference: {fileID: 0}
+    - target: {fileID: 1562003237888364345, guid: b1c94231f6390714299f29c288857f91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248159062452023015, guid: b1c94231f6390714299f29c288857f91, type: 3}
+      propertyPath: _launchSpeed
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248159062452023015, guid: b1c94231f6390714299f29c288857f91, type: 3}
+      propertyPath: _launchDuration
+      value: 0.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162962605155605843, guid: b1c94231f6390714299f29c288857f91, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162962605155605843, guid: b1c94231f6390714299f29c288857f91, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7162962605155605843, guid: b1c94231f6390714299f29c288857f91, type: 3}
       propertyPath: m_LocalPosition.x
       value: 773.41125
@@ -4507,6 +4557,10 @@ PrefabInstance:
     - target: {fileID: 7162962605155605843, guid: b1c94231f6390714299f29c288857f91, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7162962605155605843, guid: b1c94231f6390714299f29c288857f91, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4776,6 +4830,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BombSatellite
       objectReference: {fileID: 0}
+    - target: {fileID: 6022483946288439729, guid: 2af16143484bf1f4799ae287c4069efe, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4843,6 +4901,10 @@ PrefabInstance:
     - target: {fileID: 8232386652088388174, guid: 59c34bd839f0f5143b9da6803f2549ad, type: 3}
       propertyPath: m_Name
       value: BounceSatellite
+      objectReference: {fileID: 0}
+    - target: {fileID: 8232386652088388174, guid: 59c34bd839f0f5143b9da6803f2549ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5013,6 +5075,22 @@ PrefabInstance:
     - target: {fileID: 4981972773989758892, guid: b3a65d63a1288784c82210a92a701de8, type: 3}
       propertyPath: m_Name
       value: PenetrateSatellite
+      objectReference: {fileID: 0}
+    - target: {fileID: 4981972773989758892, guid: b3a65d63a1288784c82210a92a701de8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7250217740604213082, guid: b3a65d63a1288784c82210a92a701de8, type: 3}
+      propertyPath: _startAngle
+      value: 5.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 7250217740604213082, guid: b3a65d63a1288784c82210a92a701de8, type: 3}
+      propertyPath: _accelerationAmount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7250217740604213082, guid: b3a65d63a1288784c82210a92a701de8, type: 3}
+      propertyPath: _speedBoostDuration
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5678,6 +5756,10 @@ PrefabInstance:
     - target: {fileID: 9195915373759225289, guid: 70f99879551572843937f84621e8b1c0, type: 3}
       propertyPath: m_Name
       value: BatSatellite
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195915373759225289, guid: 70f99879551572843937f84621e8b1c0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -27,7 +27,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2994604641803959309, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6864704282836971111, guid: 6cac7b5a079381e4f80eb201908c7b81, type: 3}
       propertyPath: m_LocalPosition.x
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8cebdc582a0bf04ab2ad2487324b4c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BounceOrbitalWeapon
-  _statsData: {fileID: 0}
+  _statsData: {fileID: 11400000, guid: e63e5f5b1625e564da36ea44bd49952f, type: 2}
   _center: {fileID: 0}
   _orbitRadius: 2
   _orbitAngularSpeed: 180
@@ -123,6 +123,6 @@ MonoBehaviour:
   _drawOrbitGizmo: 1
   _stateGizmoRadius: 0.5
   _bounceDamper: 0.9
-  _wallLayer:
+  _enemyLayer:
     serializedVersion: 2
     m_Bits: 0

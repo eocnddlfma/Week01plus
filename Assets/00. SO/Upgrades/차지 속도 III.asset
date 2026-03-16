@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9cbdfe1f303334585bbfc46482bf5d, type: 3}
+  m_Name: "\uCC28\uC9C0 \uC18D\uB3C4 III"
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
+  upgradeName: "\uCC28\uC9C0 \uC18D\uB3C4 III"
+  description: "\uBC30\uD2B8 \uCC28\uC9C0\uC18D\uB3C4\uAC00 1/8\uC73C\uB85C \uAC10\uC18C\uD569\uB2C8\uB2E4"
+  icon: {fileID: 0}
+  rarity: 2
+  statType: 4
+  value: 4
+  prerequisites:
+  - {fileID: 11400000, guid: 01b77bab948c9c846a4c308eae0ec068, type: 2}

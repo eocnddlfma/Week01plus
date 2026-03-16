@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: "\uCC28\uC9C0 \uC18D\uB3C4 II"
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
   upgradeName: "\uCC28\uC9C0 \uC18D\uB3C4 II"
-  description: "\uBC30\uD2B8 \uCC28\uC9C0 \uC18D\uB3C4 \uC99D\uAC00 (\uC0C1\uC704)"
+  description: "\uBC30\uD2B8 \uCC28\uC9C0\uC18D\uB3C4\uAC00 1/4\uC73C\uB85C \uAC10\uC18C\uD569\uB2C8\uB2E4"
   icon: {fileID: 0}
   rarity: 1
   statType: 4
-  value: 0.1
-  prerequisites: []
+  value: 2
+  prerequisites:
+  - {fileID: 11400000, guid: bf7e4512a0622f448ba195335420ea1e, type: 2}
