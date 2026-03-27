@@ -24,6 +24,8 @@ MonoBehaviour:
     spawnCount: 66
   - enemyPrefab: {fileID: 3240521692412521015, guid: a0490b199e18de0418e7169e4a38b145, type: 3}
     spawnCount: 55
-  minSpawnInterval: 0.04
+  - enemyPrefab: {fileID: 3585218729025396699, guid: d142a488284f46741b63d69b8f54fe43, type: 3}
+    spawnCount: 12
+  minSpawnInterval: 0
   maxSpawnInterval: 0.1
   isBoss: 0

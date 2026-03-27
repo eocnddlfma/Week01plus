@@ -84,7 +84,8 @@ public class SSH_BossSkillPhase2OrbitalDropProjectile : OrbitalWeapon
             // 플레이어 피격
             if ((_playerMask.value & (1 << other.gameObject.layer)) != 0)
             {
-                other.SendMessage("TakeDamage", _damage, SendMessageOptions.DontRequireReceiver);
+                if (other.TryGetComponent<EntityBase>(out var entity))
+                    entity.TakeDamage(_damage);
                 Destroy(gameObject);
             }
         }
@@ -93,7 +94,8 @@ public class SSH_BossSkillPhase2OrbitalDropProjectile : OrbitalWeapon
             // 배트로 친 후 보스 피격
             if (_bossTransform != null && other.gameObject == _bossTransform.gameObject)
             {
-                _bossTransform.SendMessage("TakeDamage", _bossDamage, SendMessageOptions.DontRequireReceiver);
+                if (_bossTransform.TryGetComponent<EntityBase>(out var bossEntity))
+                    bossEntity.TakeDamage(_bossDamage);
                 Destroy(gameObject);
             }
         }

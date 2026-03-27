@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
 {
     [SerializeField] private Rigidbody2D _rb;
@@ -18,6 +19,7 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
     private GameObject _owner;
     private Color _originalColor;
     private bool _isReflected;
+    private SpriteRenderer _sr;
 
     public bool IsReflected => _isReflected;
 
@@ -26,7 +28,8 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
         if (_rb == null) _rb = GetComponent<Rigidbody2D>();
         if (_rb == null) _rb = gameObject.AddComponent<Rigidbody2D>();
 
-        _originalColor = GetComponent<SpriteRenderer>().color;
+        _sr = GetComponent<SpriteRenderer>();
+        _originalColor = _sr != null ? _sr.color : Color.white;
         _rb.gravityScale = 0f;
     }
 
@@ -95,8 +98,7 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
         _owner = null;
         _targetMask = enemyMask;
         _isReflected = true;
-        var sr = GetComponent<SpriteRenderer>();
-        if (sr != null) sr.color = Color.white;
+        if (_sr != null) _sr.color = Color.white;
         _lifeTime += 10f;
     }
 
@@ -112,7 +114,6 @@ public class EnemyProjectile : MonoBehaviour, IEnemyProjectile
     {
         _deflectTimer = 0f;
         _isReflected = false;
-        var sr = GetComponent<SpriteRenderer>();
-        if (sr != null) sr.color = _originalColor;
+        if (_sr != null) _sr.color = _originalColor;
     }
 }

@@ -67,6 +67,10 @@ public class UI_HealthBar : MonoBehaviour
 
     void SpawnLives(int count)
     {
+        _critSeq?.Kill();
+        foreach (Transform child in _livesContainer)
+            Destroy(child.gameObject);
+
         _lifeImages = new();
 
         for (int i = 0; i < count; i++)
@@ -81,11 +85,27 @@ public class UI_HealthBar : MonoBehaviour
     // TODO:  public 빼기
     public void TakeDamage(int hp)
     {
+        if (_lifeImages == null || _lifeImages.Count == 0) return;
         if (_currentHp == hp) return;
 
-        _currentHp = hp;  
+        if (hp > _currentHp)
+        {
+            // 회복: 복원할 슬롯들 알파 되살리기
+            int limit = Mathf.Min(hp, _lifeImages.Count);
+            for (int i = _currentHp; i < limit; i++)
+                _lifeImages[i].DOFade(1f, 0.2f);
 
-        var img = _lifeImages[_currentHp]; // 방금 깎인 슬롯  
+            _currentHp = hp;
+            StopCritical();
+            return;
+        }
+
+        // 데미지
+        _currentHp = hp;
+
+        if (_currentHp < 0 || _currentHp >= _lifeImages.Count) return;
+        var img = _lifeImages[_currentHp]; // 방금 깎인 슬롯
+        if (img == null) return;
 
         #region 연출
 
@@ -95,6 +115,8 @@ public class UI_HealthBar : MonoBehaviour
 
         if (_currentHp == 1) StartCritical();
         else StopCritical();
+
+        #endregion
 
         void StartCritical()
         {
@@ -114,7 +136,5 @@ public class UI_HealthBar : MonoBehaviour
             if (_lifeImages.Count > 0)
                 _lifeImages[0].DOColor(Color.white, 0.2f);
         }
-
-        #endregion
     }
 }

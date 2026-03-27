@@ -123,147 +123,183 @@ public class UpgradeManager : MonoBehaviour
         {
             case UpgradeStatType.MoveSpeed:
                 _statModifier.MoveSpeedMult += data.value;
+                Debug.Log($"[Upgrade] 이동속도 x{_statModifier.MoveSpeedMult}");
                 break;
             case UpgradeStatType.BatDamage:
                 _statModifier.BatDamageMult += data.value;
+                Debug.Log($"[Upgrade] 배트 데미지 x{_statModifier.BatDamageMult}");
                 break;
             case UpgradeStatType.BallDamage:
                 _statModifier.BallDamageMult += data.value;
+                Debug.Log($"[Upgrade] 공 데미지 x{_statModifier.BallDamageMult}");
                 break;
             case UpgradeStatType.Knockback:
                 _statModifier.KnockbackMult += data.value;
+                Debug.Log($"[Upgrade] 넉백 x{_statModifier.KnockbackMult}");
                 break;
             case UpgradeStatType.ChargeSpeed:
                 _statModifier.ChargeSpeedMult += data.value;
+                Debug.Log($"[Upgrade] 차지 속도 x{_statModifier.ChargeSpeedMult}");
                 break;
             case UpgradeStatType.BallSpeed:
                 _statModifier.BallSpeedMult += data.value;
+                Debug.Log($"[Upgrade] 공 속도 x{_statModifier.BallSpeedMult}");
                 break;
             case UpgradeStatType.AttackRange:
                 _statModifier.AttackRangeMult += data.value;
+                Debug.Log($"[Upgrade] 공격 범위 x{_statModifier.AttackRangeMult}");
                 break;
             case UpgradeStatType.DashCooldown:
                 _statModifier.DashCooldownMult += data.value;
+                Debug.Log($"[Upgrade] 대시 쿨다운 x{_statModifier.DashCooldownMult}");
                 break;
             case UpgradeStatType.Invincibility:
                 _statModifier.InvincibilityMult += data.value;
+                Debug.Log($"[Upgrade] 무적 시간 x{_statModifier.InvincibilityMult}");
                 break;
             case UpgradeStatType.MaxHp:
                 var playerBase = _statModifier.GetComponent<PlayerBase>();
                 if (playerBase != null)
                     playerBase.IncreaseMaxHp(Mathf.RoundToInt(data.value));
+                Debug.Log($"[Upgrade] 최대 HP +{(int)data.value}");
                 break;
             case UpgradeStatType.HpRegen:
                 _statModifier.HpRegenAmount += data.value;
+                Debug.Log($"[Upgrade] HP 회복량 {_statModifier.HpRegenAmount}");
                 break;
             case UpgradeStatType.BatAttackSpeed:
                 _statModifier.BatAttackSpeedMult += data.value;
+                Debug.Log($"[Upgrade] 배트 공격속도 x{_statModifier.BatAttackSpeedMult}");
                 break;
             case UpgradeStatType.BatAttackCooldown:
                 _statModifier.BatAttackCooldownMult += data.value;
+                Debug.Log($"[Upgrade] 배트 공격 쿨다운 x{_statModifier.BatAttackCooldownMult}");
                 break;
 
             // ── 공 특화 업그레이드 ──
             case UpgradeStatType.Split4Way:
                 SplitOrbitalWeapon.SplitDirections = 4;
+                Debug.Log("[Upgrade] 스플릿 4방향 발동");
                 break;
             case UpgradeStatType.Split8Way:
                 SplitOrbitalWeapon.SplitDirections = 8;
+                Debug.Log("[Upgrade] 스플릿 8방향 발동");
                 break;
 
             case UpgradeStatType.BombRadiusMult:
                 BombOrbitalWeapon.UpgradeExplosionMult = data.value;
+                Debug.Log($"[Upgrade] 폭탄 폭발 범위 x{data.value}");
                 break;
             case UpgradeStatType.BombAutoExplode:
                 BombOrbitalWeapon.AutoExplode = true;
+                Debug.Log("[Upgrade] 폭탄 자동 폭발 발동");
                 break;
 
             case UpgradeStatType.BatSwingRadius:
                 BatOrbitalWeapon.UpgradeSwingRadiusMult = data.value;
                 foreach (var w in FindObjectsByType<BatOrbitalWeapon>(FindObjectsSortMode.None))
                     w.ApplySwingRadiusVisual();
+                Debug.Log($"[Upgrade] 배트공 스윙 범위 x{data.value}");
                 break;
             case UpgradeStatType.BatHalfHp:
                 BatOrbitalWeapon.HalfHpOnHit = true;
+                Debug.Log("[Upgrade] 배트공 반피 발동");
                 break;
 
             case UpgradeStatType.BounceNoDamp:
                 BounceOrbitalWeapon.NoDamp = true;
+                Debug.Log("[Upgrade] 바운스 감속 없음 발동");
                 break;
             case UpgradeStatType.BounceHitBonus:
                 BounceOrbitalWeapon.CollisionDamageBonus = true;
+                Debug.Log("[Upgrade] 바운스 충돌 데미지 보너스 발동");
                 break;
 
             case UpgradeStatType.GravityMult:
                 GravityOrbitalWeapon.UpgradeStrengthMult = data.value;
+                Debug.Log($"[Upgrade] 중력공 인력 x{data.value}");
                 break;
             case UpgradeStatType.GravityRepel:
                 GravityOrbitalWeapon.Repel = true;
+                Debug.Log("[Upgrade] 중력공 척력 발동");
                 break;
 
             case UpgradeStatType.HeavyMaxHpDamage:
                 HeavyOrbitalWeapon.MaxHpDamagePercent = data.value;
+                Debug.Log($"[Upgrade] 헤비공 최대HP 비례 데미지 {data.value * 100f}%");
                 break;
             case UpgradeStatType.HeavyCurling:
                 HeavyOrbitalWeapon.Curling = true;
+                Debug.Log("[Upgrade] 헤비공 컬링 발동");
                 break;
 
             case UpgradeStatType.NormalFixedDamage:
                 NormalOrbitalWeapon.FixedDamage = Mathf.RoundToInt(data.value);
+                Debug.Log($"[Upgrade] 일반공 고정 데미지 {NormalOrbitalWeapon.FixedDamage}");
                 break;
 
             case UpgradeStatType.PenFencingMaster:
                 PenetrationOrbitalWeapon.UpgradeDurationMult = data.value;
                 foreach (var w in FindObjectsByType<PenetrationOrbitalWeapon>(FindObjectsSortMode.None))
                     w.RefreshDurationUpgrade();
+                Debug.Log($"[Upgrade] 관통공 지속시간 x{data.value}");
                 break;
             case UpgradeStatType.PenContinuousStab:
                 PenetrationOrbitalWeapon.ContinuousStab = true;
+                Debug.Log("[Upgrade] 관통공 연속 찌르기 발동");
                 break;
 
             case UpgradeStatType.SmallDamageMult:
                 SmallOrbitalWeapon.DamageMult = data.value;
+                Debug.Log($"[Upgrade] 작은공 데미지 x{data.value}");
                 break;
             case UpgradeStatType.SmallHackSlash:
-                SmallOrbitalWeapon.DamageMult = data.value; // 15f
+                SmallOrbitalWeapon.DamageMult = data.value;
                 SmallOrbitalWeapon.HackSlash = true;
+                Debug.Log($"[Upgrade] 작은공 난도질 발동 (데미지 x{data.value})");
                 break;
 
             case UpgradeStatType.StraightRelaunch:
                 StraightOrbitalWeapon.Relaunch = true;
+                Debug.Log("[Upgrade] 직선공 재발사 발동");
                 break;
             case UpgradeStatType.StraightKnockback:
                 StraightOrbitalWeapon.KnockbackBonus = data.value;
+                Debug.Log($"[Upgrade] 직선공 넉백 보너스 +{data.value}");
                 break;
 
             case UpgradeStatType.WallThresholdBlast:
                 WallOrbitalWeapon.ThresholdBlast = true;
+                Debug.Log("[Upgrade] 벽공 임계 폭발 발동");
                 break;
             case UpgradeStatType.WallThrowDetach:
                 WallOrbitalWeapon.ThrowOnDetach = true;
+                Debug.Log("[Upgrade] 벽공 분리 시 투척 발동");
                 break;
             case UpgradeStatType.WallWideBody:
                 WallOrbitalWeapon.WideBody = true;
                 foreach (var w in FindObjectsByType<WallOrbitalWeapon>(FindObjectsSortMode.None))
                     w.ApplyWideBody();
+                Debug.Log("[Upgrade] 판때기 발동 (가로 x4)");
                 break;
 
             case UpgradeStatType.WhirlNoReturn:
                 WhirlOrbitalWeapon.ApplyNoReturn = true;
                 foreach (var w in FindObjectsByType<WhirlOrbitalWeapon>(FindObjectsSortMode.None))
                     w.SwapToNoReturnSO();
+                Debug.Log("[Upgrade] 회오리공 귀환 없음 발동");
                 break;
             case UpgradeStatType.WhirlCollisionStack:
                 WhirlOrbitalWeapon.CollisionStack = true;
+                Debug.Log("[Upgrade] 회오리공 충돌 스택 발동");
                 break;
 
             case UpgradeStatType.UnlockChargeLevel:
                 if (_statModifier != null)
                     _statModifier.MaxChargeLevel = Mathf.Min(4, _statModifier.MaxChargeLevel + 1);
+                Debug.Log($"[Upgrade] 차지 레벨 해금 → 최대 {_statModifier.MaxChargeLevel}단계");
                 break;
         }
-
-        Debug.Log($"[Upgrade] 적용: {data.upgradeName} ({data.statType} {(data.value >= 0 ? "+" : "")}{data.value})");
     }
 
     private bool IsUnlocked(UpgradeData data)
@@ -349,6 +385,7 @@ public class UpgradeManager : MonoBehaviour
 
             case UpgradeStatType.WallThresholdBlast:
             case UpgradeStatType.WallThrowDetach:
+            case UpgradeStatType.WallWideBody:
                 return availableBalls.Contains(typeof(WallOrbitalWeapon));
 
             case UpgradeStatType.WhirlNoReturn:

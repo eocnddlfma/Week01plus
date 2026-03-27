@@ -30,7 +30,8 @@ MonoBehaviour:
   rejoinVelocityLimit: 17
   rejoinBrakeDamping: 8
   snapDuration: 1.41
-  baseDamage: 2
-  maxChargeDamage: 20
+  baseDamage: 6
+  maxChargeDamage: 120
   varianceRange: 0.1
   knockbackForce: 0.4
+  noReturn: 0

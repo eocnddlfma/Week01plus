@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -28,9 +27,8 @@ namespace SSH.Boss
         {
             base.Awake();
             _currentAngle = _startAngle;
-            UpdateOrbitPosition();
+            Rb.bodyType = RigidbodyType2D.Kinematic;
             SetupCamera();
-            StartCoroutine(OrbitLoop());
         }
 
         private void SetupCamera()
@@ -51,26 +49,20 @@ namespace SSH.Boss
             }
         }
 
-        private IEnumerator OrbitLoop()
-        {
-            while (true)
-            {
-                if (_orbitActive)
-                {
-                    float hpRatio       = _maxHp > 0 ? Mathf.Clamp01((float)_hp / _maxHp) : 1f;
-                    float speedMult     = Mathf.Lerp(_orbitSpeedMaxMultiplier, 1f, hpRatio);
-                    _currentAngle += _orbitSpeed * speedMult * Time.deltaTime;
-                    if (_currentAngle >= 360f) _currentAngle -= 360f;
-                    UpdateOrbitPosition();
-                }
-                yield return null;
-            }
-        }
+        public override void AddExternalVelocity(Vector2 vel, float duration = 0f) { }
 
-        private void UpdateOrbitPosition()
+        protected override void FixedUpdate()
         {
-            float rad = _currentAngle * Mathf.Deg2Rad;
-            transform.position = _orbitCenter + new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0f) * _orbitRadius;
+            if (!_orbitActive) return;
+
+            float hpRatio   = _maxHp > 0 ? Mathf.Clamp01((float)_hp / _maxHp) : 1f;
+            float speedMult = Mathf.Lerp(_orbitSpeedMaxMultiplier, 1f, hpRatio);
+            _currentAngle += _orbitSpeed * speedMult * Time.fixedDeltaTime;
+            if (_currentAngle >= 360f) _currentAngle -= 360f;
+
+            float rad        = _currentAngle * Mathf.Deg2Rad;
+            Vector2 targetPos = (Vector2)_orbitCenter + new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * _orbitRadius;
+            Rb.MovePosition(targetPos);
         }
 
         public void SetOrbitActive(bool active) => _orbitActive = active;

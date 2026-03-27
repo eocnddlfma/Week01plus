@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: "\uBCBD\uCE58\uAE30"
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
   upgradeName: "\uBCBD\uCE58\uAE30"
-  description: "\uBCF5\uADC0 \uC2DC \uB2EC\uB77C\uBD99\uC740 \uC801\uB4E4\uC744 \uB0A0\uB824\uBCF4\uB0C5\uB2C8\uB2E4"
+  description: "[\uBCBD\uACF5] \uBCF5\uADC0 \uC2DC \uB2EC\uB77C\uBD99\uC740 \uC801\uB4E4\uC744
+    \uB0A0\uB824\uBCF4\uB0C5\uB2C8\uB2E4."
   icon: {fileID: 0}
   rarity: 2
   statType: 33

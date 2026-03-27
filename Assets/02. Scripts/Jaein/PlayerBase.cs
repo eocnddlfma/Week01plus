@@ -10,13 +10,16 @@ public class PlayerBase : EntityBase
     [SerializeField] protected float _flashInterval = 0.1f;
 
     private bool _isInvincible = false;
+    private SpriteRenderer[] _allRenderers;
     private float _regenTickTimer = 0f;
     private float _regenTickInterval = 0.1f;  // 0.1초마다 회복 체크
+    private float _regenAccumulator = 0f;
 
     protected override void Awake()
     {
         base.Awake();
         if (_spriteRenderer == null) _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _allRenderers = GetComponentsInChildren<SpriteRenderer>();
 
         _hp = _maxHp;
         _isDead = false;
@@ -35,7 +38,13 @@ public class PlayerBase : EntityBase
             float regenAmount = _regenTickInterval * (PlayerStatModifier.Instance?.HpRegenAmount ?? 0f);
             if (regenAmount > 0)
             {
-                Heal((int)regenAmount);
+                _regenAccumulator += regenAmount;
+                int healInt = (int)_regenAccumulator;
+                if (healInt >= 1)
+                {
+                    _regenAccumulator -= healInt;
+                    Heal(healInt);
+                }
             }
         }
     }
@@ -86,24 +95,29 @@ public class PlayerBase : EntityBase
 
         if (flash)
         {
+            bool visible = true;
             float elapsed = 0f;
             while (elapsed < duration)
             {
-                if (_spriteRenderer != null)
+                visible = !visible;
+                float alpha = visible ? 1f : 0.2f;
+                foreach (var sr in _allRenderers)
                 {
-                    Color c = _spriteRenderer.color;
-                    c.a = (c.a == 1f) ? 0.2f : 1f;
-                    _spriteRenderer.color = c;
+                    if (sr == null) continue;
+                    Color c = sr.color;
+                    c.a = alpha;
+                    sr.color = c;
                 }
                 yield return new WaitForSeconds(_flashInterval);
                 elapsed += _flashInterval;
             }
 
-            if (_spriteRenderer != null)
+            foreach (var sr in _allRenderers)
             {
-                Color finalColor = _spriteRenderer.color;
-                finalColor.a = 1f;
-                _spriteRenderer.color = finalColor;
+                if (sr == null) continue;
+                Color c = sr.color;
+                c.a = 1f;
+                sr.color = c;
             }
         }
         else
@@ -118,6 +132,7 @@ public class PlayerBase : EntityBase
     public void Heal(int heal)
     {
         _hp = Math.Clamp(_hp + heal, 1, MaxHp);
+        GameEvents.RaisePlayerDamaged(_hp);
     }
 
     /// <summary>

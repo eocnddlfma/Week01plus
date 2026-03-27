@@ -203,10 +203,14 @@ public class WeaponChargeSystem : MonoBehaviour
     private void UpdateChargeVisuals()
     {
         int maxLevel = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.MaxChargeLevel : 1;
-        float effectiveMaxTime = _baseMaxChargeTime + (maxLevel - 1) * 0.5f;
+        float chargeMult = PlayerStatModifier.Instance != null ? PlayerStatModifier.Instance.ChargeSpeedMult : 1f;
 
-        float chargeTime = _currentChargeTimer - _chargeThreshold;
-        _chargePercent = Mathf.Clamp01(chargeTime / (effectiveMaxTime - _chargeThreshold));
+        float realMaxTime   = (_baseMaxChargeTime + (maxLevel - 1) * 0.5f) / chargeMult;
+        float realThreshold = _chargeThreshold / chargeMult;
+        float realElapsed   = _currentChargeTimer / chargeMult;
+
+        float chargeTime = realElapsed - realThreshold;
+        _chargePercent = Mathf.Clamp01(chargeTime / (realMaxTime - realThreshold));
         _currentChargeLevel = Mathf.Min(maxLevel - 1, Mathf.FloorToInt(_chargePercent * 4f));
 
         float visualT = _chargePercent;

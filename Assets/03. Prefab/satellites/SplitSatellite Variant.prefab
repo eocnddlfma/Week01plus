@@ -121,8 +121,8 @@ MonoBehaviour:
   _orbitAssistStrength: 12
   _useCounterClockwiseAssist: 1
   _maxReturnSpeed: 18
-  _rejoinDistanceToOrbit: 0.2
-  _rejoinVelocityLimit: 8
+  _rejoinDistanceToOrbit: 1
+  _rejoinVelocityLimit: 13.48
   _rejoinBrakeDamping: 8
   _snapDuration: 0.3
   _baseDamage: 2
@@ -135,4 +135,5 @@ MonoBehaviour:
   _stateGizmoRadius: 0.5
   _enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
+  _maxClones: 150

@@ -126,10 +126,10 @@ MonoBehaviour:
   _noiseSpeed: 1.2
   _attackIntervalMin: 1
   _attackIntervalMax: 2
-  _hpScalePerWave: 0.3
-  _speedScalePerWave: 0.05
-  _stopDistanceScalePerWave: 0.05
-  _attackIntervalReducePerWave: 0.05
+  _hpScalePerWave: 0.6
+  _speedScalePerWave: 0.1
+  _stopDistanceScalePerWave: 0.1
+  _attackIntervalReducePerWave: 0.1
 --- !u!114 &5897181862367962974
 MonoBehaviour:
   m_ObjectHideFlags: 0

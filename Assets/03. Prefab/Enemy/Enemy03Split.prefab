@@ -268,9 +268,9 @@ MonoBehaviour:
   _spawnPosList: []
   _splitInterval: 0.3
   _splitCycleInterval: 2
-  _cloneCountScalePerWave: 0.3
-  _splitIntervalReducePerWave: 0.05
-  _cycleIntervalReducePerWave: 0.01
+  _cloneCountScalePerWave: 0.6
+  _splitIntervalReducePerWave: 0.2
+  _cycleIntervalReducePerWave: 0.2
 --- !u!114 &1953790235574256340
 MonoBehaviour:
   m_ObjectHideFlags: 0

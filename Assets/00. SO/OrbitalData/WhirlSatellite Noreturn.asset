@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1a32b64f4d578a42b903b0909898171, type: 3}
+  m_Name: WhirlSatellite Noreturn
+  m_EditorClassIdentifier: Assembly-CSharp::OrbitalStatsData
+  orbitRadius: 2
+  orbitAngularSpeed: 180
+  launchSpeed: 60
+  launchSpeedOffset: 2
+  launchDuration: 0.2
+  launchDurationOffset: 0.05
+  randomAngleOffset: 10
+  returnStrength: 4500
+  returnDamping: 1
+  returnStrengthMax: 6000
+  returnEscalationTime: 15
+  orbitAssistStrength: 200
+  useCounterClockwiseAssist: 1
+  maxReturnSpeed: 92938
+  rejoinDistanceToOrbit: 0.2
+  rejoinVelocityLimit: 2
+  rejoinBrakeDamping: 1
+  snapDuration: 1.41
+  baseDamage: 6
+  maxChargeDamage: 120
+  varianceRange: 0.1
+  knockbackForce: 0.4
+  noReturn: 1

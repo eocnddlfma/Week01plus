@@ -95,6 +95,9 @@ public class WeaponHitProcessor : MonoBehaviour
     // SwingSystem의 OverlapCircleAll에서 수집한 적 총알에게 호출
     public void ProcessProjectileHit(IEnemyProjectile projectile)
     {
+        // 수집 후 yield 사이에 풀 반환/파괴된 경우 스킵
+        if (projectile is MonoBehaviour mb && (mb == null || !mb.gameObject.activeInHierarchy)) return;
+
         int chargeLevel = Mathf.FloorToInt(_currentChargePercentForAttack * 4f);
         chargeLevel = Mathf.Clamp(chargeLevel, 0, 3);
         HandleEnemyProjectile(projectile, chargeLevel);

@@ -170,10 +170,10 @@ MonoBehaviour:
   _targetMask:
     serializedVersion: 2
     m_Bits: 0
-  _damageScalePerWave: 0.1
+  _damageScalePerWave: 0.6
   _attackRangeScalePerWave: 0.08
-  _projectileSpeedScalePerWave: 0.01
-  _projectileLifeTimeScalePerWave: 0.05
+  _projectileSpeedScalePerWave: 0.08
+  _projectileLifeTimeScalePerWave: 0.08
 --- !u!114 &3406883839866746514
 MonoBehaviour:
   m_ObjectHideFlags: 0

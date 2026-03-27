@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: "\uACF5\uACA9 \uBC94\uC704"
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
   upgradeName: "\uACF5\uACA9 \uBC94\uC704"
-  description: "\uBC30\uD2B8 \uACF5\uACA9 \uBC94\uC704\uAC00 20% \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  description: "\uBC30\uD2B8 \uACF5\uACA9 \uBC94\uC704\uAC00 50% \uC99D\uAC00\uD569\uB2C8\uB2E4."
   icon: {fileID: 0}
   rarity: 0
   statType: 6
-  value: 0.2
+  value: 0.5
   prerequisites: []

@@ -60,13 +60,11 @@ public class EnemyDodgeball : EnemyBase
         float step  = _so.StepDelay  * 0.6f;   // 보스보다 빠른 진행
 
         // Step 1: 가로 라인 (플레이어 통과)
-        SpawnPattern(center, Quaternion.Euler(0f, 0f, 90f));
+        SpawnPattern(center, Quaternion.Euler(0f, 0f, -90f));
         yield return new WaitForSeconds(step);
 
-        // Step 2: 세로 라인 좌우 2개
+        // Step 2: 세로 라인 좌우
         SpawnPattern(center, Quaternion.identity);
-        yield return new WaitForSeconds(step);
-
         yield return new WaitForSeconds(step);
 
         _isAttacking = false;

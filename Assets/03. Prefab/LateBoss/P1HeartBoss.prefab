@@ -579,7 +579,7 @@ Transform:
   m_GameObject: {fileID: 6088497638872125639}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.4, y: 22, z: 0}
+  m_LocalPosition: {x: -0.4, y: 8.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -953,7 +953,7 @@ GameObject:
   - component: {fileID: 24521260830321913}
   m_Layer: 6
   m_Name: P1HeartBoss
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1017,9 +1017,9 @@ MonoBehaviour:
   _hp: 0
   _maxHp: 0
   _isDead: 0
-  _statsData: {fileID: 0}
+  _statsData: {fileID: 11400000, guid: c5b40b1356ad2f44b8fb3d0e3f3e104f, type: 2}
   _target: {fileID: 0}
-  _moveSpeed: 2
+  _moveSpeed: 0
   _stopDistance: 1.2
   _moveLerpSpeed: 8
   _enemyLayerMask:
@@ -1037,15 +1037,28 @@ MonoBehaviour:
   _stopDistanceScalePerWave: 0.05
   _attackIntervalReducePerWave: 0.05
   _stopMoveWhileCasting: 0
-  _skillSlots: []
-  _startPosition: {x: 0, y: 0, z: 0}
-  _targetCameraSize: 35
+  _skillSlots:
+  - _skillData: {fileID: 11400000, guid: e8ca23f211db30c499f9448cb34acc78, type: 2}
+    _skillLogic: {fileID: 1409126831885824140}
+    _weight: 1
+  - _skillData: {fileID: 11400000, guid: 2a13dca0103e55b44850f3e824406271, type: 2}
+    _skillLogic: {fileID: 7402948227832054284}
+    _weight: 1
+  - _skillData: {fileID: 11400000, guid: 20655fc2201200e41ac0e12699266fa1, type: 2}
+    _skillLogic: {fileID: 4668398771796576261}
+    _weight: 999
+  _startPosition: {x: 0, y: 44.18, z: 0}
+  _targetCameraSize: 37
   _cameraYOffset: 5
   _cameraTweenDuration: 1.2
-  _switchPrefab: {fileID: 0}
-  _switchSpawnPoints: []
-  _wallPrefab: {fileID: 0}
-  _wallSpawnPoint: {fileID: 0}
+  _switchPrefab: {fileID: 5095701238787383544, guid: 1db79d21b0fc63f47bc6b44b46bd7117, type: 3}
+  _switchSpawnPoints:
+  - {fileID: 2693982940355610192}
+  - {fileID: 8658875984745017799}
+  - {fileID: 6452192535822906642}
+  - {fileID: 9018541528134188846}
+  _wallPrefab: {fileID: 4254368762309950520, guid: 2c7b2e791ef64e145b64112866075d08, type: 3}
+  _wallSpawnPoint: {fileID: 8000623457540266441}
   _dodgeballUsed: 0
   _rainUsed: 0
   _forceAllSwitches: 0
@@ -1111,7 +1124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf5cac911c341684488cbe79a6dda798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemyHitFlashOnDamage
-  _enemy: {fileID: 0}
+  _enemy: {fileID: 6336922221856967088}
   _renderers:
   - {fileID: 2333952126385465865}
   - {fileID: 3175571784739450902}

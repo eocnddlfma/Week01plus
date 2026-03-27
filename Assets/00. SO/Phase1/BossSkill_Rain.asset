@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SSH_SOBossSkillRain
   _skillName: 
   _skillNumber: 102
-  _skillCooldown: 30
+  _skillCooldown: 70
   _skillCastTime: 30
   _skillRepeatCount: 0
   _bossSkillParticle: {fileID: 0}

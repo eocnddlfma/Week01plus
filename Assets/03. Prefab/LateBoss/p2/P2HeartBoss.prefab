@@ -476,7 +476,7 @@ GameObject:
   - component: {fileID: 5917702990860939499}
   m_Layer: 6
   m_Name: P2HeartBoss
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -594,14 +594,14 @@ MonoBehaviour:
   _hp: 0
   _maxHp: 0
   _isDead: 0
-  _statsData: {fileID: 0}
+  _statsData: {fileID: 11400000, guid: 200b1ef6f90d4fa40bd763110fc00fc5, type: 2}
   _target: {fileID: 0}
-  _moveSpeed: 2
+  _moveSpeed: 5
   _stopDistance: 1.2
   _moveLerpSpeed: 8
   _enemyLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _separationRadius: 0.7
   _separationWeight: 1
   _targetOffsetRadius: 0.5
@@ -609,12 +609,30 @@ MonoBehaviour:
   _noiseSpeed: 1.2
   _attackIntervalMin: 1
   _attackIntervalMax: 2
-  _hpScalePerWave: 0.3
+  _hpScalePerWave: 0.1
   _speedScalePerWave: 0.05
   _stopDistanceScalePerWave: 0.05
   _attackIntervalReducePerWave: 0.05
-  _stopMoveWhileCasting: 0
-  _skillSlots: []
+  _stopMoveWhileCasting: 1
+  _skillSlots:
+  - _skillData: {fileID: 11400000, guid: 57e2c67887703f948a9711c98cb7bb68, type: 2}
+    _skillLogic: {fileID: 7946383437749075836}
+    _weight: 1
+  - _skillData: {fileID: 11400000, guid: 7185323b6d8029a42ab26816c0035f9e, type: 2}
+    _skillLogic: {fileID: 7900008186490780577}
+    _weight: 1
+  - _skillData: {fileID: 11400000, guid: 72b60aab4db2473438dc030117c4136a, type: 2}
+    _skillLogic: {fileID: -1411796593297251578}
+    _weight: 1
+  - _skillData: {fileID: 11400000, guid: 39509f41cc71b7340a7be2569f70494a, type: 2}
+    _skillLogic: {fileID: 8849855858952122821}
+    _weight: 1
+  - _skillData: {fileID: 11400000, guid: 5cf626a5e44b2d944bd95ad1fe049868, type: 2}
+    _skillLogic: {fileID: 3924389231642482727}
+    _weight: 1
+  - _skillData: {fileID: 11400000, guid: 7ff8460d0d4441b4bb19d605d9307481, type: 2}
+    _skillLogic: {fileID: 6418342251414828307}
+    _weight: 1
   _targetCameraSize: 35
   _cameraYOffset: 5
   _cameraTweenDuration: 1.2
@@ -714,7 +732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf5cac911c341684488cbe79a6dda798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::fbdfbd_EnemyHitFlashOnDamage
-  _enemy: {fileID: 0}
+  _enemy: {fileID: 60423488096036522}
   _renderers:
   - {fileID: 6816355155357938804}
   - {fileID: 3047419248549220929}

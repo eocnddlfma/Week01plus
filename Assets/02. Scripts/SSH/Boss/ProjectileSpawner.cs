@@ -72,6 +72,9 @@ public class ProjectileSpawner : MonoBehaviour
         // Phase 7: 풀에서 투사체 획득
         if (EnemyProjectilePool.Instance == null) return;
 
+        // 스포너의 회전 방향으로 발사 (BossEnemyProjectile이 -transform.up으로 이동하던 것과 동일)
+        Vector2 dir = -(Vector2)transform.up;
+
         foreach (Vector3 pos in positions)
         {
             EnemyProjectile proj = EnemyProjectilePool.Instance.Get();
@@ -79,7 +82,7 @@ public class ProjectileSpawner : MonoBehaviour
             {
                 proj.transform.position = pos;
                 proj.transform.rotation = transform.rotation;
-                proj.Init(_damage, new Vector2(0, -1), _speed, 10f, _targetMask, gameObject);
+                proj.Init(_damage, dir, _speed, 10f, _targetMask, gameObject);
             }
         }
     }

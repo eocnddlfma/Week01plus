@@ -40,95 +40,83 @@ public class UpgradeDataGenerator : MonoBehaviour
         // 기본 강화들 (prerequisite: 선행 조건 업그레이드 이름들)
         var upgrades = new[]
         {
-            new UpgradeInfo("이동속도", "이동 속도가 20% 증가합니다", UpgradeStatType.MoveSpeed, 0.2f, UpgradeRarity.Common, null),
-            new UpgradeInfo("이동속도 II", "이동 속도가 30% 더 증가합니다", UpgradeStatType.MoveSpeed, 0.3f, UpgradeRarity.Rare, new[] { "이동속도" }),
+            new UpgradeInfo("이동속도", "이동 속도가 50% 증가합니다.", UpgradeStatType.MoveSpeed, 0.5f, UpgradeRarity.Common, null),
 
-            new UpgradeInfo("배트 데미지", "빠따가 50%의 데미지를 더 줍니다.", UpgradeStatType.BatDamage, 0.5f, UpgradeRarity.Common, null),
-            new UpgradeInfo("배트 데미지 II", "빠따가 총 3배의 대미지를 줍니다.", UpgradeStatType.BatDamage, 1.5f, UpgradeRarity.Rare, new[] { "배트 데미지" }),
+            new UpgradeInfo("배트 데미지", "빠따가 200% 더 피해를 줍니다.", UpgradeStatType.BatDamage, 2f, UpgradeRarity.Common, null),
 
-            new UpgradeInfo("공 데미지", "공이 50% 더 피해를 줍니다.", UpgradeStatType.BallDamage, 0.5f, UpgradeRarity.Common, null),
-            new UpgradeInfo("공 데미지 II", "공이 150% 더 피해를 줍니다", UpgradeStatType.BallDamage, 1.5f, UpgradeRarity.Rare, new[] { "공 데미지" }),
+            new UpgradeInfo("공 데미지", "공이 200% 더 피해를 줍니다.", UpgradeStatType.BallDamage, 2f, UpgradeRarity.Common, null),
 
-            new UpgradeInfo("넉백", "넉백량이 40% 증가합니다.", UpgradeStatType.Knockback, 0.4f, UpgradeRarity.Common, null),
-            new UpgradeInfo("넉백 II", "넉백량이 총 100% 증가합니다.", UpgradeStatType.Knockback, 0.6f, UpgradeRarity.Rare, new[] { "넉백" }),
+            new UpgradeInfo("넉백", "넉백량이 100% 증가합니다.", UpgradeStatType.Knockback, 1f, UpgradeRarity.Common, null),
 
             new UpgradeInfo("차지 속도", "배트 차지속도가 절반으로 감소합니다.", UpgradeStatType.ChargeSpeed, 1f, UpgradeRarity.Common, null),
             new UpgradeInfo("차지 속도 II", "배트 차지속도가 1/4으로 감소합니다", UpgradeStatType.ChargeSpeed, 2f, UpgradeRarity.Rare, new[] { "차지 속도" }),
             new UpgradeInfo("차지 속도 III", "배트 차지속도가 1/8으로 감소합니다", UpgradeStatType.ChargeSpeed, 4f, UpgradeRarity.Epic, new[] { "차지 속도 II" }),
 
-            new UpgradeInfo("공 발사 속도", "공이 20% 더 빨리 날아갑니다.", UpgradeStatType.BallSpeed, 0.2f, UpgradeRarity.Common, null),
-            new UpgradeInfo("공 발사 속도 II", "공이 총 50% 더 빨리 날아갑니다.", UpgradeStatType.BallSpeed, 0.3f, UpgradeRarity.Rare, new[] { "공 발사 속도" }),
+            new UpgradeInfo("공 발사 속도", "공이 50% 더 빨리 날아갑니다.", UpgradeStatType.BallSpeed, 0.5f, UpgradeRarity.Common, null),
 
-            new UpgradeInfo("공격 범위", "배트 공격 범위가 20% 증가합니다.", UpgradeStatType.AttackRange, 0.2f, UpgradeRarity.Common, null),
-            new UpgradeInfo("공격 범위 II", "배트 공격 범위가 총 50% 증가합니다.", UpgradeStatType.AttackRange, 0.3f, UpgradeRarity.Rare, new[] { "공격 범위" }),
+            new UpgradeInfo("공격 범위", "배트 공격 범위가 50% 증가합니다.", UpgradeStatType.AttackRange, 0.5f, UpgradeRarity.Common, null),
 
-            new UpgradeInfo("대시 쿨다운", "대시 쿨다운이 0.1초 감소합니다.", UpgradeStatType.DashCooldown, -0.1f, UpgradeRarity.Common, null),
-            new UpgradeInfo("대시 쿨다운 II", "대시 쿨다운이 총 0.2초 감소합니다.", UpgradeStatType.DashCooldown, -0.1f, UpgradeRarity.Rare, new[] { "대시 쿨다운" }),
+            new UpgradeInfo("대시 쿨다운", "대시 쿨다운이 0.2초 감소합니다.", UpgradeStatType.DashCooldown, -0.2f, UpgradeRarity.Common, null),
 
-            new UpgradeInfo("무적 시간", "무적시간이 0.1초 증가합니다.", UpgradeStatType.Invincibility, 0.1f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("무적 시간 II", "무적시간이 0.1초 더 증가합니다.", UpgradeStatType.Invincibility, 0.1f, UpgradeRarity.Epic, new[] { "무적 시간" }),
+            new UpgradeInfo("무적 시간", "무적시간이 0.2초 증가합니다.", UpgradeStatType.Invincibility, 0.2f, UpgradeRarity.Rare, null),
 
-            new UpgradeInfo("최대 체력", "최대 체력이 5 증가합니다.", UpgradeStatType.MaxHp, 5f, UpgradeRarity.Common, null),
-            new UpgradeInfo("최대 체력 II", "최대 체력이 15 증가합니다.", UpgradeStatType.MaxHp, 15f, UpgradeRarity.Rare, new[] { "최대 체력" }),
+            new UpgradeInfo("최대 체력", "최대 체력이 30 증가합니다.", UpgradeStatType.MaxHp, 30f, UpgradeRarity.Common, null),
 
-            new UpgradeInfo("초당 회복", "초당 체력 0.05 회복", UpgradeStatType.HpRegen, 0.05f, UpgradeRarity.Rare, new[] { "최대 체력" }),
-            new UpgradeInfo("초당 회복 II", "초당 체력 0.1 회복", UpgradeStatType.HpRegen, 0.1f, UpgradeRarity.Epic, new[] { "초당 회복" }),
+            new UpgradeInfo("초당 회복", "초당 체력 0.15 회복", UpgradeStatType.HpRegen, 0.15f, UpgradeRarity.Rare, new[] { "최대 체력" }),
 
-            new UpgradeInfo("빠따 휘두르기", "배트를 휘두르는 속도가 20% 빨라집니다..", UpgradeStatType.BatAttackSpeed, 0.2f, UpgradeRarity.Common, null),
-            new UpgradeInfo("빠따 휘두르기 II", "배트를 휘두르는데 절반의 시간밖에 걸리지 않습니다.", UpgradeStatType.BatAttackSpeed, 0.3f, UpgradeRarity.Rare, new[] { "빠따 휘두르기" }),
+            new UpgradeInfo("빠따 휘두르기", "배트를 휘두르는 속도가 50% 빨라집니다.", UpgradeStatType.BatAttackSpeed, 0.5f, UpgradeRarity.Common, null),
 
-            new UpgradeInfo("빠따 쿨다운", "배트 쿨다운이 20% 감소합니다.", UpgradeStatType.BatAttackCooldown, 0.2f, UpgradeRarity.Common, null),
-            new UpgradeInfo("빠따 쿨다운 II", "배트 쿨다운이 총 50% 감소합니다.", UpgradeStatType.BatAttackCooldown, 0.3f, UpgradeRarity.Rare, new[] { "빠따 쿨다운" }),
+            new UpgradeInfo("빠따 쿨다운", "배트 쿨다운이 50% 감소합니다.", UpgradeStatType.BatAttackCooldown, 0.5f, UpgradeRarity.Common, null),
 
             // ── 분열공 ──
-            new UpgradeInfo("사방미인", "분열공이 충돌 시 4방향으로 분열합니다", UpgradeStatType.Split4Way, 4f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("팔방미인", "분열공이 충돌 시 8방향으로 분열합니다", UpgradeStatType.Split8Way, 8f, UpgradeRarity.Epic, new[] { "사방미인" }),
-            
+            new UpgradeInfo("사방미인", "[분열공] 충돌 시 4방향으로 분열합니다.", UpgradeStatType.Split4Way, 4f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("팔방미인", "[분열공] 충돌 시 8방향으로 분열합니다.", UpgradeStatType.Split8Way, 8f, UpgradeRarity.Epic, new[] { "사방미인" }),
+
             // ── 폭탄공 ──
-            new UpgradeInfo("폭탄 받아라", "폭발 범위와 데미지가 2배 증가합니다", UpgradeStatType.BombRadiusMult, 2f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("터져버렷", "0.5초마다 자동으로 폭발합니다", UpgradeStatType.BombAutoExplode, 1f, UpgradeRarity.Epic, new[] { "폭탄 받아라" }),
+            new UpgradeInfo("폭탄 받아라", "[폭탄공] 폭발 범위와 데미지가 2배 증가합니다.", UpgradeStatType.BombRadiusMult, 2f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("터져버렷", "[폭탄공] 0.5초마다 자동으로 폭발합니다.", UpgradeStatType.BombAutoExplode, 1f, UpgradeRarity.Epic, new[] { "폭탄 받아라" }),
 
             // ── 빠따공 ──
-            new UpgradeInfo("홈런", "배트 스윙 범위가 2배 증가합니다", UpgradeStatType.BatSwingRadius, 2f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("빠따로 맞아볼래", "스윙 범위 내 적(보스 제외)의 현재 체력을 절반으로 만듭니다", UpgradeStatType.BatHalfHp, 1f, UpgradeRarity.Epic, new[] { "홈런" }),
+            new UpgradeInfo("홈런", "[빠따공] 배트 스윙 범위가 2배 증가합니다.", UpgradeStatType.BatSwingRadius, 2f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("빠따로 맞아볼래", "[빠따공] 스윙 범위 내 적(보스 제외)의 현재 체력을 절반으로 만듭니다.", UpgradeStatType.BatHalfHp, 1f, UpgradeRarity.Epic, new[] { "홈런" }),
 
             // ── 벽반사공 ──
-            new UpgradeInfo("작용반작용", "벽에 반사될 때 속도가 감소하지 않습니다", UpgradeStatType.BounceNoDamp, 1f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("예술적 각도", "벽 반사 횟수에 비례해 충돌 데미지가 10%씩 증가합니다", UpgradeStatType.BounceHitBonus, 1f, UpgradeRarity.Epic, new[] { "작용반작용" }),
+            new UpgradeInfo("작용반작용", "[벽반사공] 벽에 반사될 때 속도가 감소하지 않습니다.", UpgradeStatType.BounceNoDamp, 1f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("예술적 각도", "[벽반사공] 벽 반사 횟수에 비례해 충돌 데미지가 10%씩 증가합니다.", UpgradeStatType.BounceHitBonus, 1f, UpgradeRarity.Epic, new[] { "작용반작용" }),
 
             // ── 중력공 ──
-            new UpgradeInfo("내게로 와", "중력 인력이 2배 증가합니다", UpgradeStatType.GravityMult, 2f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("저리가!", "인력이 척력으로 바뀝니다", UpgradeStatType.GravityRepel, 1f, UpgradeRarity.Epic, new[] { "내게로 와" }),
+            new UpgradeInfo("내게로 와", "[중력공] 인력이 2배 증가합니다.", UpgradeStatType.GravityMult, 2f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("저리가!", "[중력공] 인력이 척력으로 바뀝니다.", UpgradeStatType.GravityRepel, 1f, UpgradeRarity.Epic, new[] { "내게로 와" }),
 
-            // ── 무거운 공 ──
-            new UpgradeInfo("압사", "적의 최대 체력의 3%를 추가 데미지로 입힙니다", UpgradeStatType.HeavyMaxHpDamage, 0.03f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("컬링 마스터", "충돌 시 주변의 다른 공들을 날려보냅니다", UpgradeStatType.HeavyCurling, 1f, UpgradeRarity.Epic, new[] { "압사" }),
+            // ── 무거운공 ──
+            new UpgradeInfo("압사", "[무거운공] 적의 최대 체력의 3%를 추가 데미지로 입힙니다.", UpgradeStatType.HeavyMaxHpDamage, 0.03f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("컬링 마스터", "[무거운공] 충돌 시 주변의 다른 공들을 날려보냅니다.", UpgradeStatType.HeavyCurling, 1f, UpgradeRarity.Epic, new[] { "압사" }),
 
-            // ── 평범한 공 ──
-            new UpgradeInfo("애도", "데미지가 100으로 고정됩니다", UpgradeStatType.NormalFixedDamage, 100f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("기도", "데미지가 500으로 고정됩니다", UpgradeStatType.NormalFixedDamage, 500f, UpgradeRarity.Epic, new[] { "애도" }),
-            new UpgradeInfo("회고", "데미지가 1000으로 고정됩니다", UpgradeStatType.NormalFixedDamage, 1000f, UpgradeRarity.Epic, new[] { "기도" }),
+            // ── 평범한공 ──
+            new UpgradeInfo("애도", "[평범한공] 데미지가 100으로 고정됩니다.", UpgradeStatType.NormalFixedDamage, 100f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("기도", "[평범한공] 데미지가 500으로 고정됩니다.", UpgradeStatType.NormalFixedDamage, 500f, UpgradeRarity.Epic, new[] { "애도" }),
+            new UpgradeInfo("회고", "[평범한공] 데미지가 1000으로 고정됩니다.", UpgradeStatType.NormalFixedDamage, 1000f, UpgradeRarity.Epic, new[] { "기도" }),
 
             // ── 관통공 ──
-            new UpgradeInfo("펜싱마스터", "발사 거리가 2배 증가합니다", UpgradeStatType.PenFencingMaster, 2f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("연속찌르기", "0.5초 이내 재충돌 시 1.2배 데미지를 입힙니다", UpgradeStatType.PenContinuousStab, 1f, UpgradeRarity.Epic, new[] { "펜싱마스터" }),
+            new UpgradeInfo("펜싱마스터", "[관통공] 발사 거리가 2배 증가합니다.", UpgradeStatType.PenFencingMaster, 2f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("연속찌르기", "[관통공] 0.5초 이내 재충돌 시 1.2배 데미지를 입힙니다.", UpgradeStatType.PenContinuousStab, 1f, UpgradeRarity.Epic, new[] { "펜싱마스터" }),
 
-            // ── 작은 공 ──
-            new UpgradeInfo("다윗과 골리앗", "데미지가 10배 증가합니다", UpgradeStatType.SmallDamageMult, 10f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("핵앤슬래시", "데미지가 15배로 증가하지만 홀수 번째 충돌은 1/10 데미지입니다", UpgradeStatType.SmallHackSlash, 15f, UpgradeRarity.Epic, new[] { "다윗과 골리앗" }),
+            // ── 작은공 ──
+            new UpgradeInfo("다윗과 골리앗", "[작은공] 데미지가 10배 증가합니다.", UpgradeStatType.SmallDamageMult, 10f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("핵앤슬래시", "[작은공] 데미지가 15배로 증가하지만 홀수 번째 충돌은 1/10 데미지입니다.", UpgradeStatType.SmallHackSlash, 15f, UpgradeRarity.Epic, new[] { "다윗과 골리앗" }),
 
             // ── 직선공 ──
-            new UpgradeInfo("찌찌르기!", "복귀 시 한 번 더 자동 발사됩니다", UpgradeStatType.StraightRelaunch, 1f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("직선넘네", "밀쳐내는 힘이 2배 증가합니다", UpgradeStatType.StraightKnockback, 2f, UpgradeRarity.Epic, new[] { "찌찌르기!" }),
+            new UpgradeInfo("찌찌르기!", "[직선공] 복귀 시 한 번 더 자동 발사됩니다.", UpgradeStatType.StraightRelaunch, 1f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("직선넘네", "[직선공] 밀쳐내는 힘이 2배 증가합니다.", UpgradeStatType.StraightKnockback, 2f, UpgradeRarity.Epic, new[] { "찌찌르기!" }),
 
             // ── 벽공 ──
-            new UpgradeInfo("벽력일섬", "10명 이상의 적이 달라붙으면 모두 현재 체력의 절반 피해를 입습니다", UpgradeStatType.WallThresholdBlast, 1f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("벽치기", "복귀 시 달라붙은 적들을 날려보냅니다", UpgradeStatType.WallThrowDetach, 1f, UpgradeRarity.Epic, new[] { "벽력일섬" }),
-            new UpgradeInfo("판때기", "공의 가로 크기가 4배 증가합니다", UpgradeStatType.WallWideBody, 1f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("벽력일섬", "[벽공] 10명 이상의 적이 달라붙으면 모두 현재 체력의 절반 피해를 입습니다.", UpgradeStatType.WallThresholdBlast, 1f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("벽치기", "[벽공] 복귀 시 달라붙은 적들을 날려보냅니다.", UpgradeStatType.WallThrowDetach, 1f, UpgradeRarity.Epic, new[] { "벽력일섬" }),
+            new UpgradeInfo("판때기", "[벽공] 공의 가로 크기가 4배 증가합니다.", UpgradeStatType.WallWideBody, 1f, UpgradeRarity.Rare, null),
 
             // ── 회오리공 ──
-            new UpgradeInfo("가출", "궤도로 돌아오지 않고 계속 날아다닙니다", UpgradeStatType.WhirlNoReturn, 1f, UpgradeRarity.Rare, null),
-            new UpgradeInfo("몰아치기", "충돌마다 데미지+1, 피격 시 초기화됩니다", UpgradeStatType.WhirlCollisionStack, 1f, UpgradeRarity.Epic, new[] { "가출" }),
+            new UpgradeInfo("가출", "[회오리공] 궤도로 돌아오지 않고 계속 날아다닙니다.", UpgradeStatType.WhirlNoReturn, 1f, UpgradeRarity.Rare, null),
+            new UpgradeInfo("몰아치기", "[회오리공] 충돌마다 데미지+1, 피격 시 초기화됩니다.", UpgradeStatType.WhirlCollisionStack, 1f, UpgradeRarity.Epic, new[] { "가출" }),
 
             // ── 차지 단계 해금 (시작은 0단계) ──
             new UpgradeInfo("차지 1단계", "배트 차지 1단계가 해금됩니다. 최대 차지 시간 +0.5초", UpgradeStatType.UnlockChargeLevel, 1f, UpgradeRarity.Rare, null),
@@ -144,12 +132,18 @@ public class UpgradeDataGenerator : MonoBehaviour
         {
             string assetPath = $"{folderPath}/{info.name}.asset";
 
-            // 이미 존재하면 로드
+            // 이미 존재하면 값 업데이트
             UpgradeData existingData = AssetDatabase.LoadAssetAtPath<UpgradeData>(assetPath);
             if (existingData != null)
             {
-                Debug.Log($"[스킵] 이미 존재: {info.name}");
+                existingData.upgradeName = info.name;
+                existingData.description = info.description;
+                existingData.statType    = info.statType;
+                existingData.value       = info.value;
+                existingData.rarity      = info.rarity;
+                EditorUtility.SetDirty(existingData);
                 createdAssets[info.name] = existingData;
+                Debug.Log($"[업데이트] {info.name}");
                 continue;
             }
 

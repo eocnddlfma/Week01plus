@@ -55,7 +55,7 @@ public abstract class EnemyBase : EntityBase
     private float _knockbackDuration = 0f;
     protected bool IsKnockedBack => Time.time < _knockbackStartTime + _knockbackDuration;
 
-    public void AddExternalVelocity(Vector2 vel, float duration = 0f)
+    public virtual void AddExternalVelocity(Vector2 vel, float duration = 0f)
     {
         _knockbackVelocity = vel;
         _knockbackStartTime = Time.time;
@@ -276,12 +276,10 @@ public abstract class EnemyBase : EntityBase
     protected override void OnDeath()
     {
         Rb.linearVelocity = Vector2.zero;
+        ReturnToPool(); // 예외와 무관하게 반드시 풀 반환 먼저
 
-        // 적이 죽을 때 직접 이벤트 호출
         GameEvents.RaiseEnemyKilled(this);
-
-        GameManager.Instance.AddScore(_statsData != null ? _statsData.scoreReward : 100);
-        ReturnToPool();
+        GameManager.Instance?.AddScore(_statsData != null ? _statsData.scoreReward : 100);
     }
 
     protected virtual void OnDestroy()

@@ -292,6 +292,7 @@ public class OrbitalWeapon : MonoBehaviour
 
     public void Launch(float chargePercent= 0.0f)
     {
+        if (this == null || !gameObject.activeInHierarchy) return;
         if (_center == null) return;
         
         if (chargePercent >= 0.999f)

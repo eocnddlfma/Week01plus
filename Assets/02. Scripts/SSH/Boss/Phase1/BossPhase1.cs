@@ -31,6 +31,18 @@ namespace SSH.Boss
         protected override void Awake()
         {
             base.Awake();
+            Rb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        public override void AddExternalVelocity(Vector2 vel, float duration = 0f) { }
+
+        protected override void FixedUpdate()
+        {
+            Rb.linearVelocity = Vector2.zero;
+        }
+
+        void Start()
+        {
             transform.position = _startPosition;
             SetupCamera();
             SpawnWall();
@@ -114,7 +126,7 @@ namespace SSH.Boss
             int rainIdx  = FindSkillIndexByLogic<SSH_BossSkillPhase1Rain>();
             int stabIdx  = FindSkillIndexByLogic<SSH_BossSkillPhase1Stab>();
 
-            // Á¶°Ç ÃæÁ· ½Ã stab ¿ì¼±
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ stab ï¿½ì¼±
             if (IsSkillReady(stabIdx) && CanActivateStab()) return stabIdx;
 
             var valid = new List<int>();

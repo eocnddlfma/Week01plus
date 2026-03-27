@@ -24,7 +24,6 @@ public class WaveManager : MonoBehaviour
 
     private void Start()
     {
-        _waveDatas.Sort((a, b) => a.id.CompareTo(b.id)); // 혹시 모르니 정렬.
         _currentWaveData = _waveDatas[0];
         CurrentWaveIndex = 0;
         _enemyContainer = new GameObject("Enemies").transform;
@@ -116,16 +115,9 @@ public class WaveManager : MonoBehaviour
         _currentWaveData = _waveDatas[_currentWaveIndex];
         GameEvents.RaiseWaveStarted(CurrentWaveIndex);
 
-        // 다음 웨이브가 보스 웨이브일 때만 잡몹 제거
-        if (_currentWaveData.isBoss)
-        {
-            ClearEnemies();
-            GameEvents.RaiseWaveCleared(true);  // Phase 6: GameEvents로 변경
-        }
-        else
-        {
-            GameEvents.RaiseWaveCleared(false);  // Phase 6: GameEvents로 변경
-        }
+        // 매 웨이브 전환 시 필드의 모든 적 제거 (잔존 적이 보스 킬카운트에 반영되는 버그 방지)
+        ClearEnemies();
+        GameEvents.RaiseWaveCleared(_currentWaveData.isBoss);
 
         // 남은 적 리스트 초기화
         _remainingEnemies = new List<WaveData.EnemySpawnInfo>();
@@ -169,7 +161,10 @@ public class WaveManager : MonoBehaviour
     {
         foreach (Transform enemy in _enemyContainer)
         {
-            Destroy(enemy.gameObject);
+            if (enemy == null) continue;
+            if (enemy.TryGetComponent<EnemyBase>(out var enemyBase))
+                enemyBase.UnregisterFromEnemyCount(); // 킬 카운트 미반영
+            enemy.gameObject.SetActive(false);        // 풀로 반환
         }
     }
 

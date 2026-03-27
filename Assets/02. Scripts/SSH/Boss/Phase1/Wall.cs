@@ -28,8 +28,7 @@ namespace SSH.Boss
             OrbitalWeapon orbital = other.GetComponent<OrbitalWeapon>();
             if (orbital == null) return;
 
-            Vector2 normal = ((Vector2)other.transform.position - (Vector2)transform.position).normalized;
-            orbital.ReflectVelocity(normal);
+            orbital.ReflectVelocity(Vector2.up);
 
             foreach (SpriteRenderer sr in _renderers)
             {

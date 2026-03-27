@@ -139,11 +139,11 @@ MonoBehaviour:
   _recoverDuration: 0.3
   _chargeCooldownMin: 1.2
   _chargeCooldownMax: 2
-  _chargeSpeedScalePerWave: 0.05
-  _chargeStartDistanceScalePerWave: 0.06
-  _chargeDurationScalePerWave: 0.05
-  _windupReducePerWave: 0.05
-  _cooldownReducePerWave: 0.01
+  _chargeSpeedScalePerWave: 0.41
+  _chargeStartDistanceScalePerWave: 0.36
+  _chargeDurationScalePerWave: 0.51
+  _windupReducePerWave: 0.37
+  _cooldownReducePerWave: 0.07
   _windupRenderers: []
   _hitFlash: {fileID: 0}
   _windupColor: {r: 0.3170516, g: 0.6150943, b: 0.23095044, a: 1}
